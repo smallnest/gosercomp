@@ -24,11 +24,6 @@
 * [gopkg.in/vmihailenco/msgpack.v2](http://gopkg.in/vmihailenco/msgpack.v2)
 
 ### 测试环境
-
-    
-### 性能测试结果
-
-
 对于`github.com/youtube/vitess/go/bson`，你可能需要安装 `goimports`和`codegen`:
 ``` go
 go get github.com/youtube/vitess/go/bson
@@ -77,4 +72,39 @@ type ColorGroup struct {
 	Colors []string `json:"colors" xml:"colors"`
 }
 ```
+
+    
+### 性能测试结果
+<pre>
+BenchmarkMarshalByJson-4                      1000000              1877 ns/op
+BenchmarkUnmarshalByJson-4                  300000                4099 ns/op
+
+BenchmarkMarshalByXml-4                       200000                8315 ns/op
+BenchmarkUnmarshalByXml-4                   100000                26627 ns/op
+
+BenchmarkMarshalByBson-4                      500000                3518 ns/op
+BenchmarkUnmarshalByBson-4                  1000000              1778 ns/op
+
+BenchmarkMarshalByMsgp-4                     5000000              292 ns/op
+BenchmarkUnmarshalByMsgp-4                 3000000              543 ns/op
+
+BenchmarkMarshalByProtoBuf-4                1000000              1011 ns/op
+BenchmarkUnmarshalByProtoBuf-4            1000000              1750 ns/op
+
+BenchmarkMarshalByGogoProtoBuf-4        5000000              220 ns/op
+BenchmarkUnmarshalByGogoProtoBuf-4    2000000              901 ns/op
+
+BenchmarkMarshalByFlatBuffers-4              3000000              566 ns/op
+BenchmarkUnmarshalByFlatBuffers-4          50000000            9.54 ns/op
+BenchmarUmByFlatBuffers_withFields-4      3000000              554 ns/op
+</pre>
+
+多次测试结果差不多。
+从结果上上来看， **MessagePack**,**gogo/protobuf**,和**flatbuffers**差不多，这三个优秀的库在序列化和反序列化上各有千秋，而且都是跨语言的。
+从便利性上来讲，你可以选择**MessagePack**和**gogo/protobuf**都可以，两者都有大厂在用。
+flatbuffers有点反人类，因为它的操作很底层，而且从结果上来看，序列化的性能要差一点。但是它有一个好处，那就是如果你只需要特定的字段，
+你无须将所有的字段都反序列化。从结果上看，不反序列化字段每个调用只用了9.54纳秒，这是因为字段只有在被访问的时候才从byte数组转化为相应的类型。
+因此在特殊的场景下，它可以提高N被的性能。但是序列化的代码的面相太难看了。
+
+
 

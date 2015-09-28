@@ -153,12 +153,21 @@ func BenchmarkUnmarshalByFlatBuffers(b *testing.B) {
 	bytes := serializeByFlatBuffers(builder, &group)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		result := GetRootAsFlatBufferColorGroup(bytes,0)
+		_ = GetRootAsFlatBufferColorGroup(bytes, 0)
+	}
+}
+
+func BenchmarkUnmarshalByFlatBuffers_withFields(b *testing.B) {
+	builder := flatbuffers.NewBuilder(0)
+	bytes := serializeByFlatBuffers(builder, &group)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		result := GetRootAsFlatBufferColorGroup(bytes, 0)
 		result.CgId()
-//		result.Name()
-//		colorsLen := result.ColorsLength()
-//		for j := 0; j < colorsLen; j++ {
-//			result.Colors(j)
-//		}
+		result.Name()
+		colorsLen := result.ColorsLength()
+		for j := 0; j < colorsLen; j++ {
+			result.Colors(j)
+		}
 	}
 }
