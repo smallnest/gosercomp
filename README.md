@@ -1,8 +1,8 @@
-## Golang ĞòÁĞ»¯·´ĞòÁĞ»¯¿âµÄĞÔÄÜ±È½Ï
+## Golang åºåˆ—åŒ–ååºåˆ—åŒ–åº“çš„æ€§èƒ½æ¯”è¾ƒ
 
 
-### ²âÊÔµÄ Serializers
-ÒÔgolang×Ô´øµÄ*encoding/json*ºÍ*encoding/xml*Îª»ù×¼£¬²âÊÔÒÔÏÂĞÔÄÜ±È½ÏºÃµÄ¼¸ÖÖĞòÁĞ»¯¿â¡£
+### æµ‹è¯•çš„ Serializers
+ä»¥golangè‡ªå¸¦çš„*encoding/json*å’Œ*encoding/xml*ä¸ºåŸºå‡†ï¼Œæµ‹è¯•ä»¥ä¸‹æ€§èƒ½æ¯”è¾ƒå¥½çš„å‡ ç§åºåˆ—åŒ–åº“ã€‚
 * [encoding/json](http://golang.org/pkg/encoding/json/)
 * [encoding/xml](http://golang.org/pkg/encoding/xml/)
 * [github.com/youtube/vitess/go/bson](http://github.com/youtube/vitess/go/bson)
@@ -12,8 +12,8 @@
 * [github.com/google/flatbuffers](http://github.com/google/flatbuffers)
 
 
-### ÅÅ³ıµÄ Serializers
-»ùÓÚ alecthomas ÒÑÓĞµÄ[²âÊÔ](https://github.com/alecthomas/go_serialization_benchmarks)£¬ÏÂÃæµÄ¿âÓÉÓÚĞÔÄÜµÄÔ­ÒòÃ»ÓĞ½øĞĞ²âÊÔ¡£
+### æ’é™¤çš„ Serializers
+åŸºäº alecthomas å·²æœ‰çš„[æµ‹è¯•](https://github.com/alecthomas/go_serialization_benchmarks)ï¼Œä¸‹é¢çš„åº“ç”±äºæ€§èƒ½çš„åŸå› æ²¡æœ‰è¿›è¡Œæµ‹è¯•ã€‚
 
 * [encoding/gob](http://golang.org/pkg/encoding/gob/)
 * [github.com/alecthomas/binary](http://github.com/alecthomas/binary)
@@ -23,48 +23,48 @@
 * [github.com/DeDiS/protobuf](http://github.com/DeDiS/protobuf)
 * [gopkg.in/vmihailenco/msgpack.v2](http://gopkg.in/vmihailenco/msgpack.v2)
 
-### ²âÊÔ»·¾³
-¶ÔÓÚ`github.com/youtube/vitess/go/bson`£¬Äã¿ÉÄÜĞèÒª°²×° `goimports`ºÍ`codegen`:
+### æµ‹è¯•ç¯å¢ƒ
+å¯¹äº`github.com/youtube/vitess/go/bson`ï¼Œä½ å¯èƒ½éœ€è¦å®‰è£… `goimports`å’Œ`codegen`:
 ``` go
 go get github.com/youtube/vitess/go/bson
 go get golang.org/x/tools/cmd/goimports
 go get github.com/youtube/vitess/tree/master/go/cmd/bsongen
 bsongen -file data.go -o bson_data.go -type ColorGroup
 ```
-¶ÔÓÚ `MessagePack`£¬ÄãĞèÒª°²×°¿âÒÔ¼°ÀûÓÃ`go generate`Éú³ÉÏà¹ØµÄÀà:
+å¯¹äº `MessagePack`ï¼Œä½ éœ€è¦å®‰è£…åº“ä»¥åŠåˆ©ç”¨`go generate`ç”Ÿæˆç›¸å…³çš„ç±»:
 ``` go
 go get github.com/tinylib/msgp
 go generate
 ```
 
-¶ÔÓÚ`ProtoBuf`,ÄãĞèÒª°²×°[protoc±àÒëÆ÷](https://github.com/google/protobuf/releases)£¬ÒÔ¼°protoc¿âÒÔ¼°Éú³ÉÏà¹ØµÄÀà£º
+å¯¹äº`ProtoBuf`,ä½ éœ€è¦å®‰è£…[protocç¼–è¯‘å™¨](https://github.com/google/protobuf/releases)ï¼Œä»¥åŠprotocåº“ä»¥åŠç”Ÿæˆç›¸å…³çš„ç±»ï¼š
 ``` go
 go get github.com/golang/protobuf
 go generate
 ```
 
-¶ÔÓÚ`gogo/protobuf`,ÄãĞèÒª°²×°¿âÒÔ¼°Éú³ÉÏà¹ØµÄÀà£º
+å¯¹äº`gogo/protobuf`,ä½ éœ€è¦å®‰è£…åº“ä»¥åŠç”Ÿæˆç›¸å…³çš„ç±»ï¼š
 ``` go
 go get github.com/gogo/protobuf/gogoproto
 go get github.com/gogo/protobuf/protoc-gen-gofast
 go generate
 ```
 
-¶ÔÓÚ`flatbuffers`,ÄãĞèÒª°²×°[flatbuffers±àÒëÆ÷](https://github.com/google/flatbuffers/releases), ÒÔ¼°flatbuffers¿â£º
+å¯¹äº`flatbuffers`,ä½ éœ€è¦å®‰è£…[flatbuffersç¼–è¯‘å™¨](https://github.com/google/flatbuffers/releases), ä»¥åŠflatbuffersåº“ï¼š
 ``` go
 github.com/google/flatbuffers/go
 go generate
 ```
 
-ÊÂÊµÉÏ£¬ÕâÀïÍ¨¹ı`go generate`Éú³ÉÏà¹ØµÄÀà£¬ÄãÒ²¿ÉÒÔÍ¨¹ıÃüÁîĞĞÉú³É£¬Çë²Î¿¼`data.go`ÖĞµÄ×¢ÊÍ¡£
+äº‹å®ä¸Šï¼Œè¿™é‡Œé€šè¿‡`go generate`ç”Ÿæˆç›¸å…³çš„ç±»ï¼Œä½ ä¹Ÿå¯ä»¥é€šè¿‡å‘½ä»¤è¡Œç”Ÿæˆï¼Œè¯·å‚è€ƒ`data.go`ä¸­çš„æ³¨é‡Šã€‚
 
 
-ÔËĞĞÏÂÃæµÄÃüÁî²âÊÔ:
+è¿è¡Œä¸‹é¢çš„å‘½ä»¤æµ‹è¯•:
 ```
 go test -bench=.
 ```
-### ²âÊÔÊı¾İ
-ËùÓĞµÄ²âÊÔ»ùÓÚÒÔÏÂµÄstruct,×Ô¶¯Éú³ÉµÄstruct£¬ ±ÈÈçprotobufÒ²ºÍ´Ë½á¹¹»ù±¾Ò»ÖÂ¡£
+### æµ‹è¯•æ•°æ®
+æ‰€æœ‰çš„æµ‹è¯•åŸºäºä»¥ä¸‹çš„struct,è‡ªåŠ¨ç”Ÿæˆçš„structï¼Œ æ¯”å¦‚protobufä¹Ÿå’Œæ­¤ç»“æ„åŸºæœ¬ä¸€è‡´ã€‚
 ``` go
 type ColorGroup struct {
 	ID     int `json:"id" xml:"id,attr""`
@@ -74,37 +74,38 @@ type ColorGroup struct {
 ```
 
     
-### ĞÔÄÜ²âÊÔ½á¹û
-<pre>
+### æ€§èƒ½æµ‹è¯•ç»“æœ
+```
+benchmark _name                               iter                 time/iter 
+------------------------------------------------------------------------------
 BenchmarkMarshalByJson-4                      1000000              1877 ns/op
-BenchmarkUnmarshalByJson-4                  300000                4099 ns/op
+BenchmarkUnmarshalByJson-4                    300000               4099 ns/op
 
-BenchmarkMarshalByXml-4                       200000                8315 ns/op
-BenchmarkUnmarshalByXml-4                   100000                26627 ns/op
+BenchmarkMarshalByXml-4                       200000               8315 ns/op
+BenchmarkUnmarshalByXml-4                     100000               26627 ns/op
 
-BenchmarkMarshalByBson-4                      500000                3518 ns/op
-BenchmarkUnmarshalByBson-4                  1000000              1778 ns/op
+BenchmarkMarshalByBson-4                      500000               3518 ns/op
+BenchmarkUnmarshalByBson-4                    1000000              1778 ns/op
 
-BenchmarkMarshalByMsgp-4                     5000000              292 ns/op
-BenchmarkUnmarshalByMsgp-4                 3000000              543 ns/op
+BenchmarkMarshalByMsgp-4                      5000000              292 ns/op
+BenchmarkUnmarshalByMsgp-4                    3000000              543 ns/op
 
-BenchmarkMarshalByProtoBuf-4                1000000              1011 ns/op
-BenchmarkUnmarshalByProtoBuf-4            1000000              1750 ns/op
+BenchmarkMarshalByProtoBuf-4                  1000000              1011 ns/op
+BenchmarkUnmarshalByProtoBuf-4                1000000              1750 ns/op
 
-BenchmarkMarshalByGogoProtoBuf-4        5000000              220 ns/op
-BenchmarkUnmarshalByGogoProtoBuf-4    2000000              901 ns/op
+BenchmarkMarshalByGogoProtoBuf-4              5000000              220 ns/op
+BenchmarkUnmarshalByGogoProtoBuf-4            2000000              901 ns/op
 
-BenchmarkMarshalByFlatBuffers-4              3000000              566 ns/op
-BenchmarkUnmarshalByFlatBuffers-4          50000000            9.54 ns/op
-BenchmarUmByFlatBuffers_withFields-4      3000000              554 ns/op
-</pre>
-
-¶à´Î²âÊÔ½á¹û²î²»¶à¡£
-´Ó½á¹ûÉÏÉÏÀ´¿´£¬ **MessagePack**,**gogo/protobuf**,ºÍ**flatbuffers**²î²»¶à£¬ÕâÈı¸öÓÅĞãµÄ¿âÔÚĞòÁĞ»¯ºÍ·´ĞòÁĞ»¯ÉÏ¸÷ÓĞÇ§Çï£¬¶øÇÒ¶¼ÊÇ¿çÓïÑÔµÄ¡£
-´Ó±ãÀûĞÔÉÏÀ´½²£¬Äã¿ÉÒÔÑ¡Ôñ**MessagePack**ºÍ**gogo/protobuf**¶¼¿ÉÒÔ£¬Á½Õß¶¼ÓĞ´ó³§ÔÚÓÃ¡£
-flatbuffersÓĞµã·´ÈËÀà£¬ÒòÎªËüµÄ²Ù×÷ºÜµ×²ã£¬¶øÇÒ´Ó½á¹ûÉÏÀ´¿´£¬ĞòÁĞ»¯µÄĞÔÄÜÒª²îÒ»µã¡£µ«ÊÇËüÓĞÒ»¸öºÃ´¦£¬ÄÇ¾ÍÊÇÈç¹ûÄãÖ»ĞèÒªÌØ¶¨µÄ×Ö¶Î£¬
-ÄãÎŞĞë½«ËùÓĞµÄ×Ö¶Î¶¼·´ĞòÁĞ»¯¡£´Ó½á¹ûÉÏ¿´£¬²»·´ĞòÁĞ»¯×Ö¶ÎÃ¿¸öµ÷ÓÃÖ»ÓÃÁË9.54ÄÉÃë£¬ÕâÊÇÒòÎª×Ö¶ÎÖ»ÓĞÔÚ±»·ÃÎÊµÄÊ±ºò²Å´ÓbyteÊı×é×ª»¯ÎªÏàÓ¦µÄÀàĞÍ¡£
-Òò´ËÔÚÌØÊâµÄ³¡¾°ÏÂ£¬Ëü¿ÉÒÔÌá¸ßN±»µÄĞÔÄÜ¡£µ«ÊÇĞòÁĞ»¯µÄ´úÂëµÄÃæÏàÌ«ÄÑ¿´ÁË¡£
+BenchmarkMarshalByFlatBuffers-4               3000000              566 ns/op
+BenchmarkUnmarshalByFlatBuffers-4             50000000             9.54 ns/op
+BenchmarUmByFlatBuffers_withFields-4          3000000              554 ns/op
+```
+å¤šæ¬¡æµ‹è¯•ç»“æœå·®ä¸å¤šã€‚
+ä»ç»“æœä¸Šä¸Šæ¥çœ‹ï¼Œ **MessagePack**,**gogo/protobuf**,å’Œ**flatbuffers**å·®ä¸å¤šï¼Œè¿™ä¸‰ä¸ªä¼˜ç§€çš„åº“åœ¨åºåˆ—åŒ–å’Œååºåˆ—åŒ–ä¸Šå„æœ‰åƒç§‹ï¼Œè€Œä¸”éƒ½æ˜¯è·¨è¯­è¨€çš„ã€‚
+ä»ä¾¿åˆ©æ€§ä¸Šæ¥è®²ï¼Œä½ å¯ä»¥é€‰æ‹©**MessagePack**å’Œ**gogo/protobuf**éƒ½å¯ä»¥ï¼Œä¸¤è€…éƒ½æœ‰å¤§å‚åœ¨ç”¨ã€‚
+flatbuffersæœ‰ç‚¹åäººç±»ï¼Œå› ä¸ºå®ƒçš„æ“ä½œå¾ˆåº•å±‚ï¼Œè€Œä¸”ä»ç»“æœä¸Šæ¥çœ‹ï¼Œåºåˆ—åŒ–çš„æ€§èƒ½è¦å·®ä¸€ç‚¹ã€‚ä½†æ˜¯å®ƒæœ‰ä¸€ä¸ªå¥½å¤„ï¼Œé‚£å°±æ˜¯å¦‚æœä½ åªéœ€è¦ç‰¹å®šçš„å­—æ®µï¼Œ
+ä½ æ— é¡»å°†æ‰€æœ‰çš„å­—æ®µéƒ½ååºåˆ—åŒ–ã€‚ä»ç»“æœä¸Šçœ‹ï¼Œä¸ååºåˆ—åŒ–å­—æ®µæ¯ä¸ªè°ƒç”¨åªç”¨äº†9.54çº³ç§’ï¼Œè¿™æ˜¯å› ä¸ºå­—æ®µåªæœ‰åœ¨è¢«è®¿é—®çš„æ—¶å€™æ‰ä»byteæ•°ç»„è½¬åŒ–ä¸ºç›¸åº”çš„ç±»å‹ã€‚
+å› æ­¤åœ¨ç‰¹æ®Šçš„åœºæ™¯ä¸‹ï¼Œå®ƒå¯ä»¥æé«˜Nè¢«çš„æ€§èƒ½ã€‚ä½†æ˜¯åºåˆ—åŒ–çš„ä»£ç çš„é¢ç›¸å¤ªéš¾çœ‹äº†ã€‚
 
 
 
