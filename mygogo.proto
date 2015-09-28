@@ -1,0 +1,14 @@
+package gosercomp;
+
+
+import "github.com/gogo/protobuf/gogoproto/gogo.proto";
+
+option (gogoproto.unmarshaler_all) = true;
+option (gogoproto.sizer_all) = true;
+option (gogoproto.marshaler_all) = true;
+
+message GogoProtoColorGroup {
+    required int32 id = 1 [(gogoproto.nullable) = false];
+    required string name = 2 [(gogoproto.nullable) = false];
+    repeated string colors = 3;
+}

@@ -1,0 +1,9 @@
+namespace gosercomp;
+
+table  FlatBufferColorGroup {
+    cgId:int (id: 0);
+    name:string (id: 1);
+    colors: [string] (id: 2);
+}
+
+root_type FlatBufferColorGroup;

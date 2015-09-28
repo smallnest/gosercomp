@@ -1,0 +1,8 @@
+package gosercomp;
+
+
+message ProtoColorGroup {
+    required int32 id = 1;
+    required string name = 2;
+    repeated string colors = 3;
+}
