@@ -1,0 +1,19 @@
+PASS
+BenchmarkMarshalByJson-4                    	 1000000	      1908 ns/op	     376 B/op	       4 allocs/op
+BenchmarkUnmarshalByJson-4                  	  500000	      3981 ns/op	     296 B/op	       9 allocs/op
+BenchmarkMarshalByXml-4                     	  200000	      7724 ns/op	    4801 B/op	      12 allocs/op
+BenchmarkUnmarshalByXml-4                   	   50000	     25281 ns/op	    2807 B/op	      67 allocs/op
+BenchmarkMarshalByBson-4                    	  500000	      3316 ns/op	    1248 B/op	      14 allocs/op
+BenchmarkUnmarshalByBson-4                  	 1000000	      1441 ns/op	     272 B/op	       7 allocs/op
+BenchmarkMarshalByMsgp-4                    	 5000000	       258 ns/op	      80 B/op	       1 allocs/op
+BenchmarkUnmarshalByMsgp-4                  	 3000000	       485 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByProtoBuf-4                	 1000000	      1032 ns/op	     328 B/op	       5 allocs/op
+BenchmarkUnmarshalByProtoBuf-4              	 1000000	      1669 ns/op	     400 B/op	      11 allocs/op
+BenchmarkMarshalByGogoProtoBuf-4            	10000000	       224 ns/op	      48 B/op	       1 allocs/op
+BenchmarkUnmarshalByGogoProtoBuf-4          	 2000000	       835 ns/op	     144 B/op	       8 allocs/op
+BenchmarkMarshalByFlatBuffers-4             	 2000000	       604 ns/op	      16 B/op	       1 allocs/op
+BenchmarkUnmarshalByFlatBuffers-4           	100000000	        10.3 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByFlatBuffers_withFields-4	 3000000	       501 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByThrift-4                  	 2000000	       851 ns/op	      64 B/op	       1 allocs/op
+BenchmarkUnmarshalByThrift-4                	 1000000	      1398 ns/op	      96 B/op	       6 allocs/op
+ok  	_/C_/Users/smallnest/Desktop/gosercomp	31.742s

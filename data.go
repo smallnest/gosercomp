@@ -4,6 +4,7 @@ package gosercomp
 //go:generate protoc --go_out=. protobuf.proto
 //go:generate  protoc --gofast_out=.  -I. -I$GOPATH/src  -I$GOPATH/src/github.com/gogo/protobuf/protobuf mygogo.proto
 //go:generate flatc -g -o .. flatbuffers.fbs
+//go:generate thrift.exe -r -out ./.. --gen go colorgroup.thrift
 
 type ColorGroup struct {
 	Id     int      `json:"id" xml:"id,attr" msg:"id"`

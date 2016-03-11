@@ -5,14 +5,21 @@ import (
 	"encoding/xml"
 	"testing"
 
-	vitessbson "github.com/youtube/vitess/go/bson"
-	"github.com/golang/protobuf/proto"
+	thrift "git.apache.org/thrift.git/lib/go/thrift"
 	goproto "github.com/gogo/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
+	vitessbson "github.com/youtube/vitess/go/bson"
 )
 
 var group = ColorGroup{
 	Id:     1,
+	Name:   "Reds",
+	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}
+
+var thriftColorGroup = ThriftColorGroup{
+	ID:     1,
 	Name:   "Reds",
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
@@ -28,7 +35,6 @@ var gogoProtobufGroup = GogoProtoColorGroup{
 	Name:   "Reds",
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
-
 
 func BenchmarkMarshalByJson(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -121,16 +127,16 @@ func serializeByFlatBuffers(builder *flatbuffers.Builder, cg *ColorGroup) []byte
 	name := builder.CreateString(cg.Name)
 	//prepare colors array
 	colorsLen := len(cg.Colors)
-	FlatBufferColorGroupStartColorsVector(builder, colorsLen)
 	offsets := make([]flatbuffers.UOffsetT, colorsLen)
 	for i := colorsLen - 1; i >= 0; i-- {
 		offsets[i] = builder.CreateString(cg.Colors[i])
 	}
+
+	FlatBufferColorGroupStartColorsVector(builder, colorsLen)
 	for i := colorsLen - 1; i >= 0; i-- {
 		builder.PrependUOffsetT(offsets[i])
 	}
 	offset := builder.EndVector(colorsLen)
-
 
 	FlatBufferColorGroupStart(builder)
 	FlatBufferColorGroupAddCgId(builder, int32(cg.Id))
@@ -169,5 +175,30 @@ func BenchmarkUnmarshalByFlatBuffers_withFields(b *testing.B) {
 		for j := 0; j < colorsLen; j++ {
 			result.Colors(j)
 		}
+	}
+}
+
+func BenchmarkMarshalByThrift(b *testing.B) {
+	t := thrift.NewTSerializer()
+	pf := thrift.NewTBinaryProtocolFactoryDefault() //NewTCompactProtocolFactory() or NewTJSONProtocolFactory()
+	t.Protocol = pf.GetProtocol(t.Transport)
+
+	for i := 0; i < b.N; i++ {
+		_, _ = t.Write(&thriftColorGroup)
+	}
+}
+func BenchmarkUnmarshalByThrift(b *testing.B) {
+	t := thrift.NewTDeserializer()
+	pf := thrift.NewTBinaryProtocolFactoryDefault()
+	t.Protocol = pf.GetProtocol(t.Transport)
+
+	t0 := thrift.NewTSerializer()
+	t0.Protocol = pf.GetProtocol(t0.Transport)
+	s, _ := t0.Write(&thriftColorGroup)
+
+	result := ThriftColorGroup{}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		t.Read(&result, s)
 	}
 }
