@@ -28,7 +28,6 @@
 ### 测试环境
 
 - 对于`github.com/youtube/vitess/go/bson`，你可能需要安装 `goimports`和`codegen`:
-
 ```go
 go get github.com/youtube/vitess/go/bson
 go get golang.org/x/tools/cmd/goimports
@@ -37,21 +36,18 @@ bsongen -file data.go -o bson_data.go -type ColorGroup
 ```
 
 - 对于 `MessagePack`，你需要安装库以及利用`go generate`生成相关的类:
-
 ```go
 go get github.com/tinylib/msgp
 go generate
 ```
 
 - 对于`ProtoBuf`,你需要安装[protoc编译器](https://github.com/google/protobuf/releases)，以及protoc库以及生成相关的类：
-
 ```go
 go get github.com/golang/protobuf
 go generate
 ```
 
 - 对于`gogo/protobuf`,你需要安装库以及生成相关的类：
-
 ```go
 go get github.com/gogo/protobuf/gogoproto
 go get github.com/gogo/protobuf/protoc-gen-gofast
@@ -59,14 +55,12 @@ go generate
 ```
 
 - 对于`flatbuffers`,你需要安装[thrift编译器](https://thrift.apache.org/download), 以及flatbuffers库：
-
 ```go
 go get github.com/google/flatbuffers/go
 go generate
 ```
 
 - 对于`thrift`,你需要安装[flatbuffers编译器](https://github.com/google/flatbuffers/releases), 以及thrift库：
-
 ```go
 go get git.apache.org/thrift.git/lib/go/thrift
 go generate
@@ -75,7 +69,6 @@ go generate
 > 事实上，这里通过`go generate`生成相关的类，你也可以通过命令行生成，请参考`data.go`中的注释。 但是你需要安装相关的工具，如Thrift,并把它们加入到环境变量Path中
 
 **运行下面的命令测试:**
-
 ```
 go test -bench=. -benchmem
 ```
@@ -99,19 +92,26 @@ benchmark _name                               iter                 time/iter    
 -------------------------------------------------------------------------------------------------------------------------
 BenchmarkMarshalByJson-4                         1000000          1908 ns/op         376 B/op           4 allocs/op
 BenchmarkUnmarshalByJson-4                        500000          3981 ns/op         296 B/op           9 allocs/op
+
 BenchmarkMarshalByXml-4                           200000          7724 ns/op        4801 B/op          12 allocs/op
 BenchmarkUnmarshalByXml-4                          50000         25281 ns/op        2807 B/op          67 allocs/op
+
 BenchmarkMarshalByBson-4                          500000          3316 ns/op        1248 B/op          14 allocs/op
 BenchmarkUnmarshalByBson-4                       1000000          1441 ns/op         272 B/op           7 allocs/op
+
 BenchmarkMarshalByMsgp-4                         5000000           258 ns/op          80 B/op           1 allocs/op
 BenchmarkUnmarshalByMsgp-4                       3000000           485 ns/op          32 B/op           5 allocs/op
+
 BenchmarkMarshalByProtoBuf-4                     1000000          1032 ns/op         328 B/op           5 allocs/op
 BenchmarkUnmarshalByProtoBuf-4                   1000000          1669 ns/op         400 B/op          11 allocs/op
+
 BenchmarkMarshalByGogoProtoBuf-4                10000000           224 ns/op          48 B/op           1 allocs/op
 BenchmarkUnmarshalByGogoProtoBuf-4               2000000           835 ns/op         144 B/op           8 allocs/op
+
 BenchmarkMarshalByFlatBuffers-4                  2000000           604 ns/op          16 B/op           1 allocs/op
 BenchmarkUnmarshalByFlatBuffers-4               100000000         10.3 ns/op           0 B/op           0 allocs/op
 BenchmarkUnmarshalByFlatBuffers_withFields-4     3000000           501 ns/op          32 B/op           5 allocs/op
+
 BenchmarkMarshalByThrift-4                       2000000           851 ns/op          64 B/op           1 allocs/op
 BenchmarkUnmarshalByThrift-4                     1000000          1398 ns/op          96 B/op           6 allocs/op
 ```
