@@ -12,6 +12,7 @@
 - [github.com/gogo/protobuf](http://github.com/gogo/protobuf)
 - [github.com/google/flatbuffers](http://github.com/google/flatbuffers)
 - [Apache/Thrift](https://github.com/apache/thrift/tree/master/lib/go)
+- [Apache/Avro](https://github.com/linkedin/goavro)
 
 ### 排除的 Serializers
 
@@ -28,47 +29,61 @@
 ### 测试环境
 
 - 对于`github.com/youtube/vitess/go/bson`，你可能需要安装 `goimports`和`codegen`:
-```go
-go get github.com/youtube/vitess/go/bson
-go get golang.org/x/tools/cmd/goimports
-go get github.com/youtube/vitess/tree/master/go/cmd/bsongen
-bsongen -file data.go -o bson_data.go -type ColorGroup
-```
+
+  ```go
+  go get github.com/youtube/vitess/go/bson
+  go get golang.org/x/tools/cmd/goimports
+  go get github.com/youtube/vitess/tree/master/go/cmd/bsongen
+  bsongen -file data.go -o bson_data.go -type ColorGroup
+  ```
 
 - 对于 `MessagePack`，你需要安装库以及利用`go generate`生成相关的类:
-```go
-go get github.com/tinylib/msgp
-go generate
-```
+
+  ```go
+  go get github.com/tinylib/msgp
+  go generate
+  ```
 
 - 对于`ProtoBuf`,你需要安装[protoc编译器](https://github.com/google/protobuf/releases)，以及protoc库以及生成相关的类：
-```go
-go get github.com/golang/protobuf
-go generate
-```
+
+  ```go
+  go get github.com/golang/protobuf
+  go generate
+  ```
 
 - 对于`gogo/protobuf`,你需要安装库以及生成相关的类：
-```go
-go get github.com/gogo/protobuf/gogoproto
-go get github.com/gogo/protobuf/protoc-gen-gofast
-go generate
-```
+
+  ```go
+  go get github.com/gogo/protobuf/gogoproto
+  go get github.com/gogo/protobuf/protoc-gen-gofast
+  go generate
+  ```
 
 - 对于`flatbuffers`,你需要安装[thrift编译器](https://thrift.apache.org/download), 以及flatbuffers库：
-```go
-go get github.com/google/flatbuffers/go
-go generate
-```
+
+  ```go
+  go get github.com/google/flatbuffers/go
+  go generate
+  ```
 
 - 对于`thrift`,你需要安装[flatbuffers编译器](https://github.com/google/flatbuffers/releases), 以及thrift库：
-```go
-go get git.apache.org/thrift.git/lib/go/thrift
-go generate
-```
+
+  ```go
+  go get git.apache.org/thrift.git/lib/go/thrift
+  go generate
+  ```
+
+  - 对于`Avro`,你需要安装goavro库：
+
+    ```go
+    go get github.com/linkedin/goavro
+    go generate
+    ```
 
 > 事实上，这里通过`go generate`生成相关的类，你也可以通过命令行生成，请参考`data.go`中的注释。 但是你需要安装相关的工具，如Thrift,并把它们加入到环境变量Path中
 
 **运行下面的命令测试:**
+
 ```
 go test -bench=. -benchmem
 ```
@@ -114,6 +129,9 @@ BenchmarkUnmarshalByFlatBuffers_withFields-4     3000000           501 ns/op    
 
 BenchmarkMarshalByThrift-4                       2000000           851 ns/op          64 B/op           1 allocs/op
 BenchmarkUnmarshalByThrift-4                     1000000          1398 ns/op          96 B/op           6 allocs/op
+
+BenchmarkMarshalByAvro-4                         1000000          1369 ns/op         133 B/op           7 allocs/op
+BenchmarkUnmarshalByAvro-4                        200000          7300 ns/op        1680 B/op          63 allocs/op
 ```
 
 多次测试结果差不多。 从结果上上来看， **MessagePack**,**gogo/protobuf**,和**flatbuffers**差不多，这三个优秀的库在序列化和反序列化上各有千秋，而且都是跨语言的。 从便利性上来讲，你可以选择**MessagePack**和**gogo/protobuf**都可以，两者都有大厂在用。 flatbuffers有点反人类，因为它的操作很底层，而且从结果上来看，序列化的性能要差一点。但是它有一个好处，那就是如果你只需要特定的字段， 你无须将所有的字段都反序列化。从结果上看，不反序列化字段每个调用只用了9.54纳秒，这是因为字段只有在被访问的时候才从byte数组转化为相应的类型。 因此在特殊的场景下，它可以提高N被的性能。但是序列化的代码的面相太难看了。

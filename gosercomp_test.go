@@ -1,6 +1,7 @@
 package gosercomp
 
 import (
+	"bytes"
 	"encoding/json"
 	"encoding/xml"
 	"testing"
@@ -9,6 +10,7 @@ import (
 	goproto "github.com/gogo/protobuf/proto"
 	"github.com/golang/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
+	"github.com/linkedin/goavro"
 	vitessbson "github.com/youtube/vitess/go/bson"
 )
 
@@ -35,6 +37,16 @@ var gogoProtobufGroup = GogoProtoColorGroup{
 	Name:   "Reds",
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
+
+var avroSchema = `{"namespace": "gosercomp",
+"type": "record",
+"name": "ColorGroup",
+"fields": [
+	 {"name": "id", "type": "int"},
+	 {"name": "name",  "type": "string"},
+	 {"name": "colors", "type": {"type": "array", "items": "string"}}
+]
+}`
 
 func BenchmarkMarshalByJson(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -200,5 +212,59 @@ func BenchmarkUnmarshalByThrift(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		t.Read(&result, s)
+	}
+}
+
+func BenchmarkMarshalByAvro(b *testing.B) {
+	someRecord, err := goavro.NewRecord(goavro.RecordSchema(avroSchema))
+	someRecord.Set("id", int32(1))
+	someRecord.Set("name", "Reds")
+	colors := []string{"Crimson", "Red", "Ruby", "Maroon"}
+	s := make([]interface{}, len(colors))
+	for i, v := range colors {
+		s[i] = v
+	}
+	someRecord.Set("colors", s)
+
+	codec, err := goavro.NewCodec(avroSchema)
+	if err != nil {
+		panic(err)
+	}
+
+	buf := new(bytes.Buffer)
+	for i := 0; i < b.N; i++ {
+		err = codec.Encode(buf, someRecord)
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
+func BenchmarkUnmarshalByAvro(b *testing.B) {
+	codec, err := goavro.NewCodec(avroSchema)
+	if err != nil {
+		panic(err)
+	}
+	someRecord, err := goavro.NewRecord(goavro.RecordSchema(avroSchema))
+	someRecord.Set("id", int32(1))
+	someRecord.Set("name", "Reds")
+	colors := []string{"Crimson", "Red", "Ruby", "Maroon"}
+	s := make([]interface{}, len(colors))
+	for i, v := range colors {
+		s[i] = v
+	}
+	someRecord.Set("colors", s)
+
+	buf := new(bytes.Buffer)
+	err = codec.Encode(buf, someRecord)
+	if err != nil {
+		panic(err)
+	}
+	objectBytes := buf.Bytes()
+	for i := 0; i < b.N; i++ {
+		_, err = codec.Decode(bytes.NewReader(objectBytes))
+		if err != nil {
+			panic(err)
+		}
 	}
 }
