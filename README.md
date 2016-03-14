@@ -55,7 +55,7 @@
 
   ```go
   go get github.com/gogo/protobuf/gogoproto
-  go get github.com/gogo/protobuf/protoc-gen-gofast
+  go get -u github.com/gogo/protobuf/protoc-gen-gogofaster
   go generate
   ```
 
@@ -140,7 +140,7 @@ BenchmarkUnmarshalByThrift-4                     1000000          1575 ns/op    
 BenchmarkMarshalByAvro-4                         1000000          1330 ns/op         133 B/op           7 allocs/op
 BenchmarkUnmarshalByAvro-4                        200000          7036 ns/op        1680 B/op          63 allocs/op
 
-BenchmarkMarshalByGencode-4                     20000000            66.2 ns/op           0 B/op           0 allocs/op
+BenchmarkMarshalByGencode-4                     20000000          66.2 ns/op           0 B/op           0 allocs/op
 BenchmarkUnmarshalByGencode-4                    5000000           258 ns/op          32 B/op           5 allocs/op
 ```
 
