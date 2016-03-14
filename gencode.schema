@@ -1,0 +1,5 @@
+struct GencodeColorGroup {
+	Id     int32
+	Name   string
+	Colors []string
+}

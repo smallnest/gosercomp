@@ -195,6 +195,7 @@ func BenchmarkMarshalByThrift(b *testing.B) {
 	pf := thrift.NewTBinaryProtocolFactoryDefault() //NewTCompactProtocolFactory() or NewTJSONProtocolFactory()
 	t.Protocol = pf.GetProtocol(t.Transport)
 
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_, _ = t.Write(&thriftColorGroup)
 	}
@@ -232,6 +233,8 @@ func BenchmarkMarshalByAvro(b *testing.B) {
 	}
 
 	buf := new(bytes.Buffer)
+
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		err = codec.Encode(buf, someRecord)
 		if err != nil {
@@ -261,10 +264,43 @@ func BenchmarkUnmarshalByAvro(b *testing.B) {
 		panic(err)
 	}
 	objectBytes := buf.Bytes()
+
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_, err = codec.Decode(bytes.NewReader(objectBytes))
 		if err != nil {
 			panic(err)
 		}
+	}
+}
+
+func BenchmarkMarshalByGencode(b *testing.B) {
+	var group = GencodeColorGroup{
+		Id:     1,
+		Name:   "Reds",
+		Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+	}
+
+	buf := make([]byte, group.Size())
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		group.Marshal(buf)
+	}
+}
+func BenchmarkUnmarshalByGencode(b *testing.B) {
+	var group = GencodeColorGroup{
+		Id:     1,
+		Name:   "Reds",
+		Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+	}
+
+	buf, _ := group.Marshal(nil)
+
+	var groupResult GencodeColorGroup
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		groupResult.Unmarshal(buf)
 	}
 }
