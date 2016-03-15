@@ -11,6 +11,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
 	"github.com/linkedin/goavro"
+	"github.com/ugorji/go/codec"
 	vitessbson "github.com/youtube/vitess/go/bson"
 )
 
@@ -302,5 +303,53 @@ func BenchmarkUnmarshalByGencode(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		groupResult.Unmarshal(buf)
+	}
+}
+
+func BenchmarkMarshalByCodecAndCbor(b *testing.B) {
+	var buf bytes.Buffer
+	var ch codec.CborHandle
+	enc := codec.NewEncoder(&buf, &ch)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = enc.Encode(group)
+	}
+}
+func BenchmarkUnmarshalByCodecAndCbor(b *testing.B) {
+	var buf bytes.Buffer
+	var ch codec.CborHandle
+	enc := codec.NewEncoder(&buf, &ch)
+	_ = enc.Encode(group)
+
+	var g ColorGroup
+	dec := codec.NewDecoder(&buf, &ch)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = dec.Decode(&g)
+	}
+}
+
+func BenchmarkMarshalByCodecAndMsgp(b *testing.B) {
+	var buf bytes.Buffer
+	var mh codec.MsgpackHandle
+	enc := codec.NewEncoder(&buf, &mh)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = enc.Encode(group)
+	}
+}
+func BenchmarkUnmarshalByCodecAndMsgp(b *testing.B) {
+	var buf bytes.Buffer
+	var mh codec.MsgpackHandle
+	enc := codec.NewEncoder(&buf, &mh)
+	_ = enc.Encode(group)
+
+	var g ColorGroup
+	dec := codec.NewDecoder(&buf, &mh)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = dec.Decode(&g)
 	}
 }
