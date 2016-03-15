@@ -147,7 +147,7 @@ BenchmarkMarshalByGogoProtoBuf-4                10000000           219 ns/op    
 BenchmarkUnmarshalByGogoProtoBuf-4               2000000           809 ns/op         144 B/op           8 allocs/op
 
 BenchmarkMarshalByFlatBuffers-4                  3000000           596 ns/op          16 B/op           1 allocs/op
-BenchmarkUnmarshalByFlatBuffers-4               200000000             9.80 ns/op           0 B/op           0 allocs/op
+BenchmarkUnmarshalByFlatBuffers-4               200000000         9.80 ns/op           0 B/op           0 allocs/op
 BenchmarkUnmarshalByFlatBuffers_withFields-4     3000000           493 ns/op          32 B/op           5 allocs/op
 
 BenchmarkMarshalByThrift-4                       2000000           831 ns/op          64 B/op           1 allocs/op
@@ -156,7 +156,7 @@ BenchmarkUnmarshalByThrift-4                     1000000          1347 ns/op    
 BenchmarkMarshalByAvro-4                         1000000          1333 ns/op         133 B/op           7 allocs/op
 BenchmarkUnmarshalByAvro-4                        200000          7063 ns/op        1680 B/op          63 allocs/op
 
-BenchmarkMarshalByGencode-4                     20000000            66.4 ns/op           0 B/op           0 allocs/op
+BenchmarkMarshalByGencode-4                     20000000          66.4 ns/op           0 B/op           0 allocs/op
 BenchmarkUnmarshalByGencode-4                    5000000           271 ns/op          32 B/op           5 allocs/op
 
 BenchmarkMarshalByCodecAndCbor-4                 1000000          1125 ns/op         239 B/op           2 allocs/op
@@ -170,4 +170,4 @@ BenchmarkUnmarshalByCodecAndMsgp-4              10000000           228 ns/op    
 
 新增加了**gencode**的测试，它表现相当出色，而且生成的字节也非常的小。
 
-`Codec`的Unmarshal性能不错，但是Marshal性能不是太好。
+**Codec**的Unmarshal性能不错，但是Marshal性能不是太好。
