@@ -22,6 +22,10 @@ var _ = proto.Marshal
 var _ = fmt.Errorf
 var _ = math.Inf
 
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the proto package it is being compiled against.
+const _ = proto.ProtoPackageIsVersion1
+
 type ProtoColorGroup struct {
 	Id               *int32   `protobuf:"varint,1,req,name=id" json:"id,omitempty"`
 	Name             *string  `protobuf:"bytes,2,req,name=name" json:"name,omitempty"`
@@ -29,9 +33,10 @@ type ProtoColorGroup struct {
 	XXX_unrecognized []byte   `json:"-"`
 }
 
-func (m *ProtoColorGroup) Reset()         { *m = ProtoColorGroup{} }
-func (m *ProtoColorGroup) String() string { return proto.CompactTextString(m) }
-func (*ProtoColorGroup) ProtoMessage()    {}
+func (m *ProtoColorGroup) Reset()                    { *m = ProtoColorGroup{} }
+func (m *ProtoColorGroup) String() string            { return proto.CompactTextString(m) }
+func (*ProtoColorGroup) ProtoMessage()               {}
+func (*ProtoColorGroup) Descriptor() ([]byte, []int) { return fileDescriptor0, []int{0} }
 
 func (m *ProtoColorGroup) GetId() int32 {
 	if m != nil && m.Id != nil {
@@ -52,4 +57,19 @@ func (m *ProtoColorGroup) GetColors() []string {
 		return m.Colors
 	}
 	return nil
+}
+
+func init() {
+	proto.RegisterType((*ProtoColorGroup)(nil), "gosercomp.ProtoColorGroup")
+}
+
+var fileDescriptor0 = []byte{
+	// 103 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x09, 0x6e, 0x88, 0x02, 0xff, 0xe2, 0xe2, 0x2b, 0x28, 0xca, 0x2f,
+	0xc9, 0x4f, 0x2a, 0x4d, 0xd3, 0x03, 0x33, 0x84, 0x38, 0xd3, 0xf3, 0x8b, 0x53, 0x8b, 0x92, 0xf3,
+	0x73, 0x0b, 0x94, 0xac, 0xb9, 0xf8, 0x03, 0x40, 0x62, 0xce, 0xf9, 0x39, 0xf9, 0x45, 0xee, 0x45,
+	0xf9, 0xa5, 0x05, 0x42, 0x5c, 0x5c, 0x4c, 0x99, 0x29, 0x12, 0x8c, 0x0a, 0x4c, 0x1a, 0xac, 0x42,
+	0x3c, 0x5c, 0x2c, 0x79, 0x89, 0xb9, 0xa9, 0x12, 0x4c, 0x40, 0x1e, 0xa7, 0x10, 0x1f, 0x17, 0x5b,
+	0x32, 0x48, 0x5d, 0xb1, 0x04, 0xb3, 0x02, 0xb3, 0x06, 0x27, 0x20, 0x00, 0x00, 0xff, 0xff, 0x8d,
+	0x90, 0x09, 0x14, 0x58, 0x00, 0x00, 0x00,
 }
