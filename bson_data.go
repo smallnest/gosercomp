@@ -10,12 +10,11 @@ package gosercomp
 import (
 	"bytes"
 
-	"github.com/youtube/vitess/go/bson"
-	"github.com/youtube/vitess/go/bytes2"
+	"github.com/micro/go-bson"
 )
 
 // MarshalBson bson-encodes ColorGroup.
-func (colorGroup *ColorGroup) MarshalBson(buf *bytes2.ChunkedWriter, key string) {
+func (colorGroup *ColorGroup) MarshalBson(buf *bson.ChunkedWriter, key string) {
 	bson.EncodeOptionalPrefix(buf, bson.Object, key)
 	lenWriter := bson.NewLenWriter(buf)
 

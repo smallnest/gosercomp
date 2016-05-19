@@ -6,7 +6,7 @@
 
 - [encoding/json](http://golang.org/pkg/encoding/json/)
 - [encoding/xml](http://golang.org/pkg/encoding/xml/)
-- [github.com/youtube/vitess/go/bson](http://github.com/youtube/vitess/go/bson)
+- [bson](http://github.com/micro/go-bson)
 - [github.com/tinylib/msgp](http://github.com/tinylib/msgp)
 - [github.com/golang/protobuf](http://github.com/golang/protobuf)
 - [github.com/gogo/protobuf](http://github.com/gogo/protobuf)
