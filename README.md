@@ -6,7 +6,6 @@
 
 - [encoding/json](http://golang.org/pkg/encoding/json/)
 - [encoding/xml](http://golang.org/pkg/encoding/xml/)
-- [bson](http://github.com/micro/go-bson)
 - [github.com/tinylib/msgp](http://github.com/tinylib/msgp)
 - [github.com/golang/protobuf](http://github.com/golang/protobuf)
 - [github.com/gogo/protobuf](http://github.com/gogo/protobuf)
@@ -15,6 +14,7 @@
 - [Apache/Avro](https://github.com/linkedin/goavro)
 - [andyleap/gencode](https://github.com/andyleap/gencode)
 - [ugorji/go/codec](https://github.com/ugorji/go/tree/master/codec)
+- [go-memdump](https://github.com/alexflint/go-memdump)
 
 ### 排除的 Serializers
 
@@ -27,6 +27,7 @@
 - [labix.org/v2/mgo/bson](http://labix.org/v2/mgo/bson)
 - [github.com/DeDiS/protobuf](http://github.com/DeDiS/protobuf)
 - [gopkg.in/vmihailenco/msgpack.v2](http://gopkg.in/vmihailenco/msgpack.v2)
+- [bson](http://github.com/micro/go-bson)
 
 ### 测试环境
 
@@ -126,44 +127,33 @@ type ColorGroup struct {
 ### 性能测试结果
 
 ```
-benchmark _name                               iter                 time/iter        alloc bytes/iter    allocs/iter
+benchmark _name                                  iter          time/iter        alloc bytes/iter    allocs/iter
 -------------------------------------------------------------------------------------------------------------------------
-BenchmarkMarshalByJson-4                         1000000          1909 ns/op         376 B/op           4 allocs/op
-BenchmarkUnmarshalByJson-4                        500000          4044 ns/op         296 B/op           9 allocs/op
-
-BenchmarkMarshalByXml-4                           200000          7893 ns/op        4801 B/op          12 allocs/op
-BenchmarkUnmarshalByXml-4                         100000         25615 ns/op        2807 B/op          67 allocs/op
-
-BenchmarkMarshalByBson-4                          500000          3412 ns/op        1248 B/op          14 allocs/op
-BenchmarkUnmarshalByBson-4                       1000000          1429 ns/op         272 B/op           7 allocs/op
-
-BenchmarkMarshalByMsgp-4                         5000000           256 ns/op          80 B/op           1 allocs/op
-BenchmarkUnmarshalByMsgp-4                       3000000           459 ns/op          32 B/op           5 allocs/op
-
-BenchmarkMarshalByProtoBuf-4                     2000000           969 ns/op         328 B/op           5 allocs/op
-BenchmarkUnmarshalByProtoBuf-4                   1000000          1617 ns/op         400 B/op          11 allocs/op
-
-BenchmarkMarshalByGogoProtoBuf-4                10000000           219 ns/op          48 B/op           1 allocs/op
-BenchmarkUnmarshalByGogoProtoBuf-4               2000000           809 ns/op         144 B/op           8 allocs/op
-
-BenchmarkMarshalByFlatBuffers-4                  3000000           596 ns/op          16 B/op           1 allocs/op
-BenchmarkUnmarshalByFlatBuffers-4               200000000         9.80 ns/op           0 B/op           0 allocs/op
-BenchmarkUnmarshalByFlatBuffers_withFields-4     3000000           493 ns/op          32 B/op           5 allocs/op
-
-BenchmarkMarshalByThrift-4                       2000000           831 ns/op          64 B/op           1 allocs/op
-BenchmarkUnmarshalByThrift-4                     1000000          1347 ns/op          96 B/op           6 allocs/op
-
-BenchmarkMarshalByAvro-4                         1000000          1333 ns/op         133 B/op           7 allocs/op
-BenchmarkUnmarshalByAvro-4                        200000          7063 ns/op        1680 B/op          63 allocs/op
-
-BenchmarkMarshalByGencode-4                     20000000          66.4 ns/op           0 B/op           0 allocs/op
-BenchmarkUnmarshalByGencode-4                    5000000           271 ns/op          32 B/op           5 allocs/op
-
-BenchmarkMarshalByCodecAndCbor-4                 1000000          1125 ns/op         239 B/op           2 allocs/op
-BenchmarkUnmarshalByCodecAndCbor-4              10000000           228 ns/op           0 B/op           0 allocs/op
-
-BenchmarkMarshalByCodecAndMsgp-4                 1000000          1123 ns/op         239 B/op           2 allocs/op
-BenchmarkUnmarshalByCodecAndMsgp-4              10000000           228 ns/op           0 B/op           0 allocs/op
+BenchmarkMarshalByJson-8                       	 1000000	      1137 ns/op	     376 B/op	       4 allocs/op
+BenchmarkUnmarshalByJson-8                     	 1000000	      2260 ns/op	     296 B/op	       9 allocs/op
+BenchmarkMarshalByXml-8                        	  500000	      3351 ns/op	    4801 B/op	      12 allocs/op
+BenchmarkUnmarshalByXml-8                      	  100000	     13278 ns/op	    2807 B/op	      67 allocs/op
+BenchmarkMarshalByMsgp-8                       	20000000	       102 ns/op	      80 B/op	       1 allocs/op
+BenchmarkUnmarshalByMsgp-8                     	 5000000	       266 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByProtoBuf-8                   	 3000000	       450 ns/op	     328 B/op	       5 allocs/op
+BenchmarkUnmarshalByProtoBuf-8                 	 2000000	       754 ns/op	     400 B/op	      11 allocs/op
+BenchmarkMarshalByGogoProtoBuf-8               	20000000	        99.0 ns/op	      48 B/op	       1 allocs/op
+BenchmarkUnmarshalByGogoProtoBuf-8             	 5000000	       389 ns/op	     144 B/op	       8 allocs/op
+BenchmarkMarshalByFlatBuffers-8                	 5000000	       352 ns/op	      16 B/op	       1 allocs/op
+BenchmarkUnmarshalByFlatBuffers-8              	500000000	         3.48 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByFlatBuffers_withFields-8   	10000000	       157 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMarshalByThrift-8                     	 3000000	       517 ns/op	      64 B/op	       1 allocs/op
+BenchmarkUnmarshalByThrift-8                   	 1000000	      1224 ns/op	     656 B/op	      11 allocs/op
+BenchmarkMarshalByAvro-8                       	 2000000	       889 ns/op	     133 B/op	       7 allocs/op
+BenchmarkUnmarshalByAvro-8                     	  500000	      3128 ns/op	    1680 B/op	      63 allocs/op
+BenchmarkMarshalByGencode-8                    	50000000	        37.2 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByGencode-8                  	10000000	       139 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByCodecAndCbor-8               	 2000000	       697 ns/op	     239 B/op	       2 allocs/op
+BenchmarkUnmarshalByCodecAndCbor-8             	10000000	       149 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMarshalByCodecAndMsgp-8               	 2000000	       676 ns/op	     239 B/op	       2 allocs/op
+BenchmarkUnmarshalByCodecAndMsgp-8             	10000000	       158 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMarshalByGoMemdump-8                  	  300000	      5217 ns/op	    1487 B/op	      31 allocs/op
+BenchmarkUnmarshalByGoMemdump-8                	 3000000	       474 ns/op	     112 B/op	       5 allocs/op
 ```
 
 多次测试结果差不多。 从结果上上来看， **MessagePack**,**gogo/protobuf**,和**flatbuffers**差不多，这三个优秀的库在序列化和反序列化上各有千秋，而且都是跨语言的。 从便利性上来讲，你可以选择**MessagePack**和**gogo/protobuf**都可以，两者都有大厂在用。 flatbuffers有点反人类，因为它的操作很底层，而且从结果上来看，序列化的性能要差一点。但是它有一个好处，那就是如果你只需要特定的字段， 你无须将所有的字段都反序列化。从结果上看，不反序列化字段每个调用只用了9.54纳秒，这是因为字段只有在被访问的时候才从byte数组转化为相应的类型。 因此在特殊的场景下，它可以提高N被的性能。但是序列化的代码的面相太难看了。

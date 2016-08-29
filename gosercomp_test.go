@@ -1,18 +1,20 @@
 package gosercomp
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
 	"testing"
 
 	thrift "git.apache.org/thrift.git/lib/go/thrift"
+	memdump "github.com/alexflint/go-memdump"
 	goproto "github.com/gogo/protobuf/proto"
 	"github.com/golang/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
 	"github.com/linkedin/goavro"
 	"github.com/ugorji/go/codec"
-	vitessbson "github.com/youtube/vitess/go/bson"
+	//vitessbson "github.com/youtube/vitess/go/bson"
 )
 
 var group = ColorGroup{
@@ -77,19 +79,19 @@ func BenchmarkUnmarshalByXml(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshalByBson(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		vitessbson.Marshal(group)
-	}
-}
-func BenchmarkUnmarshalByBson(b *testing.B) {
-	bytes, _ := vitessbson.Marshal(group)
-	result := ColorGroup{}
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		vitessbson.Unmarshal(bytes, &result)
-	}
-}
+// func BenchmarkMarshalByBson(b *testing.B) {
+// 	for i := 0; i < b.N; i++ {
+// 		vitessbson.Marshal(group)
+// 	}
+// }
+// func BenchmarkUnmarshalByBson(b *testing.B) {
+// 	bytes, _ := vitessbson.Marshal(group)
+// 	result := ColorGroup{}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		vitessbson.Unmarshal(bytes, &result)
+// 	}
+// }
 
 func BenchmarkMarshalByMsgp(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -351,5 +353,27 @@ func BenchmarkUnmarshalByCodecAndMsgp(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_ = dec.Decode(&g)
+	}
+}
+
+func BenchmarkMarshalByGoMemdump(b *testing.B) {
+	var buf bytes.Buffer
+	w := bufio.NewWriter(&buf)
+
+	for i := 0; i < b.N; i++ {
+		memdump.Encode(w, &group)
+	}
+}
+func BenchmarkUnmarshalByGoMemdump(b *testing.B) {
+	result := &ColorGroup{}
+
+	var buf bytes.Buffer
+	w := bufio.NewWriter(&buf)
+	r := bufio.NewReader(&buf)
+	memdump.Encode(w, &group)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		memdump.Decode(r, &result)
 	}
 }
