@@ -1,7 +1,6 @@
 package gosercomp
 
 import (
-	"bufio"
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
@@ -358,22 +357,20 @@ func BenchmarkUnmarshalByCodecAndMsgp(b *testing.B) {
 
 func BenchmarkMarshalByGoMemdump(b *testing.B) {
 	var buf bytes.Buffer
-	w := bufio.NewWriter(&buf)
+	//w := bufio.NewWriter(&buf)
 
 	for i := 0; i < b.N; i++ {
-		memdump.Encode(w, &group)
+		memdump.Encode(&buf, &group)
 	}
 }
 func BenchmarkUnmarshalByGoMemdump(b *testing.B) {
 	result := &ColorGroup{}
 
 	var buf bytes.Buffer
-	w := bufio.NewWriter(&buf)
-	r := bufio.NewReader(&buf)
-	memdump.Encode(w, &group)
+	memdump.Encode(&buf, &group)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		memdump.Decode(r, &result)
+		memdump.Decode(&buf, &result)
 	}
 }
