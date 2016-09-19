@@ -40,6 +40,12 @@ var gogoProtobufGroup = GogoProtoColorGroup{
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
 
+var colferGroup = ColferColorGroup{
+	Id:     1,
+	Name:   "Reds",
+	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}
+
 var avroSchema = `{"namespace": "gosercomp",
 "type": "record",
 "name": "ColorGroup",
@@ -372,5 +378,21 @@ func BenchmarkUnmarshalByGoMemdump(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		memdump.Decode(&buf, &result)
+	}
+}
+
+func BenchmarkMarshalByColfer(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, _ = colferGroup.MarshalBinary()
+	}
+}
+func BenchmarkUnmarshalByColfer(b *testing.B) {
+	result := &ColferColorGroup{}
+
+	buf, _ := colferGroup.MarshalBinary()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		result.UnmarshalBinary(buf)
 	}
 }

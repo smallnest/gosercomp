@@ -1,0 +1,7 @@
+package gosercomp
+
+type ColorGroup struct {
+	id     int32
+	name   text
+	colors []text
+}
