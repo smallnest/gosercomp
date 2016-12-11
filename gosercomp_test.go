@@ -382,13 +382,17 @@ func BenchmarkUnmarshalByGoMemdump(b *testing.B) {
 }
 
 func BenchmarkMarshalByColfer(b *testing.B) {
+	l, _ := colferGroup.MarshalLen()
+	buf := make([]byte, l)
+
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, _ = colferGroup.MarshalBinary()
+		colferGroup.MarshalTo(buf)
 	}
 }
+
 func BenchmarkUnmarshalByColfer(b *testing.B) {
 	result := &ColferColorGroup{}
-
 	buf, _ := colferGroup.MarshalBinary()
 
 	b.ResetTimer()
