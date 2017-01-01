@@ -22,6 +22,12 @@ var group = ColorGroup{
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
 
+var zgroup = ZColorGroup{
+	Id:     1,
+	Name:   "Reds",
+	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}
+
 var thriftColorGroup = ThriftColorGroup{
 	ID:     1,
 	Name:   "Reds",
@@ -394,5 +400,26 @@ func BenchmarkUnmarshalByColfer(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		result.UnmarshalBinary(buf)
+	}
+}
+
+func BenchmarkMarshalByZebrapack(b *testing.B) {
+	var bytes []byte
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		bytes, _ = zgroup.MarshalMsg(bytes)
+	}
+}
+
+func BenchmarkUnmarshalByZebrapack(b *testing.B) {
+	bts, _ := zgroup.MarshalMsg(nil)
+	v := &ZColorGroup{}
+	//b.SetBytes(int64(len(bts)))
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_, err := v.UnmarshalMsg(bts)
+		if err != nil {
+			b.Fatal(err)
+		}
 	}
 }

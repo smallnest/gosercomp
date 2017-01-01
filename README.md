@@ -16,6 +16,7 @@
 - [ugorji/go/codec](https://github.com/ugorji/go/tree/master/codec)
 - [go-memdump](https://github.com/alexflint/go-memdump)
 - [colfer](https://github.com/pascaldekloe/colfer)
+- [zebrapack](github.com/glycerine/zebrapack)
 
 ### 排除的 Serializers
 
@@ -31,16 +32,8 @@
 - [bson](http://github.com/micro/go-bson)
 
 ### 测试环境
-go version: **1.7.1**
+go version: **1.7.4**
 
-- 对于`github.com/youtube/vitess/go/bson`，你可能需要安装 `goimports`和`codegen`:
-
-  ```go
-  go get github.com/youtube/vitess/go/bson
-  go get golang.org/x/tools/cmd/goimports
-  go get github.com/youtube/vitess/tree/master/go/cmd/bsongen
-  bsongen -file data.go -o bson_data.go -type ColorGroup
-  ```
 
 - 对于 `MessagePack`，你需要安装库以及利用`go generate`生成相关的类:
 
@@ -78,7 +71,7 @@ go version: **1.7.1**
   go generate
   ```
 
-  - 对于`Avro`,你需要安装goavro库：
+- 对于`Avro`,你需要安装goavro库：
 
     ```go
     go get github.com/linkedin/goavro
@@ -93,6 +86,14 @@ go version: **1.7.1**
   ```
 
   `gencode`也是一个高性能的编解码库，提供了代码生成工具，而且产生的数据非常的小。
+
+
+- 对于`zebraPack `,你需要安装zebraPack库,并使用zebraPack工具产生数据对象：
+
+  ```go
+  go get github.com/glycerine/zebrapack
+  go generate zebrapack_data.go 
+  ```
 
 - 对于`ugorji/go/codec`,你需要安装代码生成工具和`codec`库:
 
@@ -129,45 +130,48 @@ type ColorGroup struct {
 ### 性能测试结果
 
 ```
-BenchmarkMarshalByJson-8                       	 1000000	      1059 ns/op	     376 B/op	       4 allocs/op
-BenchmarkUnmarshalByJson-8                     	 1000000	      2189 ns/op	     296 B/op	       9 allocs/op
+BenchmarkMarshalByJson-4                         1000000              1375 ns/op             376 B/op          4 allocs/op
+BenchmarkUnmarshalByJson-4                        500000              2849 ns/op             296 B/op          9 allocs/op
 
-BenchmarkMarshalByXml-8                        	  500000	      3400 ns/op	    4801 B/op	      12 allocs/op
-BenchmarkUnmarshalByXml-8                      	  100000	     13445 ns/op	    2807 B/op	      67 allocs/op
+BenchmarkMarshalByXml-4                           300000              5323 ns/op            4801 B/op         12 allocs/op
+BenchmarkUnmarshalByXml-4                         100000             18414 ns/op            2807 B/op         67 allocs/op
 
-BenchmarkMarshalByMsgp-8                       	20000000	      98.4 ns/op	      80 B/op	       1 allocs/op
-BenchmarkUnmarshalByMsgp-8                     	 5000000	       252 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByMsgp-4                        10000000               128 ns/op              80 B/op          1 allocs/op
+BenchmarkUnmarshalByMsgp-4                       5000000               320 ns/op              32 B/op          5 allocs/op
 
-BenchmarkMarshalByProtoBuf-8                   	 3000000	       428 ns/op	     328 B/op	       5 allocs/op
-BenchmarkUnmarshalByProtoBuf-8                 	 2000000	       718 ns/op	     399 B/op	      11 allocs/op
+BenchmarkMarshalByProtoBuf-4                     2000000               608 ns/op             328 B/op          5 allocs/op
+BenchmarkUnmarshalByProtoBuf-4                   1000000              1049 ns/op             400 B/op         11 allocs/op
 
-BenchmarkMarshalByGogoProtoBuf-8               	20000000	      99.5 ns/op	      48 B/op	       1 allocs/op
-BenchmarkUnmarshalByGogoProtoBuf-8             	 5000000	       386 ns/op	     144 B/op	       8 allocs/op
+BenchmarkMarshalByGogoProtoBuf-4                10000000               133 ns/op              48 B/op          1 allocs/op
+BenchmarkUnmarshalByGogoProtoBuf-4               3000000               544 ns/op             144 B/op          8 allocs/op
 
-BenchmarkMarshalByFlatBuffers-8                	 5000000	       348 ns/op	      16 B/op	       1 allocs/op
-BenchmarkUnmarshalByFlatBuffers-8              	500000000	      3.30 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUnmarshalByFlatBuffers_withFields-8   	10000000	       147 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMarshalByFlatBuffers-4                  3000000               438 ns/op              16 B/op          1 allocs/op
+BenchmarkUnmarshalByFlatBuffers-4               300000000                4.68 ns/op            0 B/op          0 allocs/op
+BenchmarkUnmarshalByFlatBuffers_withFields-4    10000000               162 ns/op               0 B/op          0 allocs/op
 
-BenchmarkMarshalByThrift-8                     	 3000000	       481 ns/op	      64 B/op	       1 allocs/op
-BenchmarkUnmarshalByThrift-8                   	 1000000	      1176 ns/op	     656 B/op	      11 allocs/op
+BenchmarkMarshalByThrift-4                       2000000               654 ns/op              64 B/op          1 allocs/op
+BenchmarkUnmarshalByThrift-4                     1000000              1810 ns/op             656 B/op         11 allocs/op
 
-BenchmarkMarshalByAvro-8                       	 2000000	       805 ns/op	     133 B/op	       7 allocs/op
-BenchmarkUnmarshalByAvro-8                     	  500000	      3116 ns/op	    1680 B/op	      63 allocs/op
+BenchmarkMarshalByAvro-4                         1000000              1167 ns/op             133 B/op          7 allocs/op
+BenchmarkUnmarshalByAvro-4                        300000              4199 ns/op            1680 B/op         63 allocs/op
 
-BenchmarkMarshalByGencode-8                    	50000000	      34.9 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUnmarshalByGencode-8                  	10000000	       139 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByGencode-4                     30000000                41.8 ns/op             0 B/op          0 allocs/op
+BenchmarkUnmarshalByGencode-4                   10000000               199 ns/op              32 B/op          5 allocs/op
 
-BenchmarkMarshalByCodecAndCbor-8               	 2000000	       670 ns/op	     239 B/op	       2 allocs/op
-BenchmarkUnmarshalByCodecAndCbor-8             	10000000	       149 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMarshalByCodecAndCbor-4                 2000000               940 ns/op             239 B/op          2 allocs/op
+BenchmarkUnmarshalByCodecAndCbor-4              10000000               223 ns/op               0 B/op          0 allocs/op
 
-BenchmarkMarshalByCodecAndMsgp-8               	 2000000	       622 ns/op	     239 B/op	       2 allocs/op
-BenchmarkUnmarshalByCodecAndMsgp-8             	10000000	       154 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMarshalByCodecAndMsgp-4                 2000000              1097 ns/op             239 B/op          2 allocs/op
+BenchmarkUnmarshalByCodecAndMsgp-4              10000000               239 ns/op               0 B/op          0 allocs/op
 
-BenchmarkMarshalByGoMemdump-8                  	  300000	      5002 ns/op	    1739 B/op	      31 allocs/op
-BenchmarkUnmarshalByGoMemdump-8                	 3000000	       431 ns/op	     112 B/op	       5 allocs/op
+BenchmarkMarshalByGoMemdump-4                     200000              8577 ns/op            1564 B/op         31 allocs/op
+BenchmarkUnmarshalByGoMemdump-4                  3000000               559 ns/op             112 B/op          5 allocs/op
 
-BenchmarkMarshalByColfer-8                     	20000000	      65.6 ns/op	      48 B/op	       1 allocs/op
-BenchmarkUnmarshalByColfer-8                   	10000000	       209 ns/op	      96 B/op	       6 allocs/op
+BenchmarkMarshalByColfer-4                      20000000                84.9 ns/op            48 B/op          1 allocs/op
+BenchmarkUnmarshalByColfer-4                     5000000               282 ns/op              96 B/op          6 allocs/op
+
+BenchmarkMarshalByZebrapack-4                   20000000               128 ns/op             132 B/op          0 allocs/op
+BenchmarkUnmarshalByZebrapack-4                 10000000               177 ns/op               0 B/op          0 allocs/op
 ```
 
 多次测试结果差不多。 从结果上上来看， **MessagePack**,**gogo/protobuf**,和**flatbuffers**差不多，这三个优秀的库在序列化和反序列化上各有千秋，而且都是跨语言的。 从便利性上来讲，你可以选择**MessagePack**和**gogo/protobuf**都可以，两者都有大厂在用。 flatbuffers有点反人类，因为它的操作很底层，而且从结果上来看，序列化的性能要差一点。但是它有一个好处，那就是如果你只需要特定的字段， 你无须将所有的字段都反序列化。从结果上看，不反序列化字段每个调用只用了9.54纳秒，这是因为字段只有在被访问的时候才从byte数组转化为相应的类型。 因此在特殊的场景下，它可以提高N被的性能。但是序列化的代码的面相太难看了。
@@ -177,3 +181,5 @@ BenchmarkUnmarshalByColfer-8                   	10000000	       209 ns/op	      
 **Codec**的Unmarshal性能不错，但是Marshal性能不是太好。
 
 **colfer**的性能也不错，它能够跨Go，Java, Javascript平台。
+
+新加入的**zebrapack**性能抢眼，不但性能卓越，而且可以实现zero allocation，值得关注。

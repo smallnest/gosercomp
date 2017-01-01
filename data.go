@@ -7,7 +7,6 @@ package gosercomp
 //go:generate thrift.exe -r -out ./.. --gen go colorgroup.thrift
 //go:generate gencode.exe go -schema=gencode.schema -package gosercomp
 //go:generate codecgen.exe codecgen.exe -o data_codec.go data.go
-
 type ColorGroup struct {
 	Id     int      `json:"id" xml:"id,attr" msg:"id"`
 	Name   string   `json:"name" xml:"name" msg:"name"`
