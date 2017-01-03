@@ -57,14 +57,14 @@ go version: **1.7.4**
   go generate
   ```
 
-- 对于`flatbuffers`,你需要安装[thrift编译器](https://thrift.apache.org/download), 以及flatbuffers库：
+- 对于`flatbuffers`,你需要安装[flatbuffers编译器](https://github.com/google/flatbuffers/releases, 以及flatbuffers库：
 
   ```go
   go get github.com/google/flatbuffers/go
   go generate
   ```
 
-- 对于`thrift`,你需要安装[flatbuffers编译器](https://github.com/google/flatbuffers/releases), 以及thrift库：
+- 对于`thrift`,), 你需要安装[thrift编译器](https://thrift.apache.org/download)以及thrift库：
 
   ```go
   go get git.apache.org/thrift.git/lib/go/thrift
