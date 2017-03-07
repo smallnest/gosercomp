@@ -14,6 +14,7 @@ import (
 	"github.com/linkedin/goavro"
 	"github.com/ugorji/go/codec"
 	//vitessbson "github.com/youtube/vitess/go/bson"
+	"github.com/niubaoshu/gotiny"
 )
 
 var group = ColorGroup{
@@ -425,5 +426,25 @@ func BenchmarkUnmarshalByZebrapack(b *testing.B) {
 		if err != nil {
 			b.Fatal(err)
 		}
+	}
+}
+
+func BenchmarkMarshalByGotiny(b *testing.B) {
+	var bytes []byte
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		bytes = gotiny.Encodes(&group)
+	}
+
+	_ = bytes
+}
+
+func BenchmarkUnmarshalByGotiny(b *testing.B) {
+	bytes := gotiny.Encodes(&group)
+	v := &ColorGroup{}
+	//b.SetBytes(int64(len(bts)))
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		gotiny.Decodes(bytes, v)
 	}
 }
