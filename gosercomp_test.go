@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
+	"reflect"
 	"testing"
 
 	thrift "git.apache.org/thrift.git/lib/go/thrift"
@@ -16,9 +17,9 @@ import (
 	"github.com/ugorji/go/codec"
 	//vitessbson "github.com/youtube/vitess/go/bson"
 
-	"reflect"
-
+	"github.com/Sereal/Sereal/Go/sereal"
 	"github.com/niubaoshu/gotiny"
+	msgpackv2 "gopkg.in/vmihailenco/msgpack.v2"
 )
 
 var group = ColorGroup{
@@ -548,5 +549,41 @@ func BenchmarkUnmarshalByHprose(b *testing.B) {
 		reader := hprose.NewReader(bs, true)
 		s.reader = reader
 		s.Unmarshal(v)
+	}
+}
+
+func BenchmarkMarshalBySereal(b *testing.B) {
+	encoder := sereal.NewEncoderV3()
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		encoder.Marshal(&group)
+	}
+}
+
+func BenchmarkUnmarshalBySereal(b *testing.B) {
+	encoder := sereal.NewEncoderV3()
+	bytes, _ := encoder.Marshal(&group)
+
+	decoder := sereal.NewDecoder()
+	v := &ColorGroup{}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		decoder.Unmarshal(bytes, v)
+	}
+}
+
+func BenchmarkMarshalByMsgpackV2(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msgpackv2.Marshal(&group)
+	}
+}
+func BenchmarkUnmarshalByMsgpackv2(b *testing.B) {
+	bytes, _ := msgpackv2.Marshal(&group)
+	v := &ColorGroup{}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		msgpackv2.Unmarshal(bytes, v)
 	}
 }
