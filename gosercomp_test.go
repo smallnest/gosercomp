@@ -11,9 +11,13 @@ import (
 	goproto "github.com/gogo/protobuf/proto"
 	"github.com/golang/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
+	hprose "github.com/hprose/hprose-golang/io"
 	"github.com/linkedin/goavro"
 	"github.com/ugorji/go/codec"
 	//vitessbson "github.com/youtube/vitess/go/bson"
+
+	"reflect"
+
 	"github.com/niubaoshu/gotiny"
 )
 
@@ -320,7 +324,7 @@ func BenchmarkUnmarshalByGencode(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshalByCodecAndCbor(b *testing.B) {
+func BenchmarkMarshalByUgorjiCodecAndCbor(b *testing.B) {
 	var buf bytes.Buffer
 	var ch codec.CborHandle
 	enc := codec.NewEncoder(&buf, &ch)
@@ -330,7 +334,7 @@ func BenchmarkMarshalByCodecAndCbor(b *testing.B) {
 		_ = enc.Encode(group)
 	}
 }
-func BenchmarkUnmarshalByCodecAndCbor(b *testing.B) {
+func BenchmarkUnmarshalByUgorjiCodecAndCbor(b *testing.B) {
 	var buf bytes.Buffer
 	var ch codec.CborHandle
 	enc := codec.NewEncoder(&buf, &ch)
@@ -344,7 +348,7 @@ func BenchmarkUnmarshalByCodecAndCbor(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshalByCodecAndMsgp(b *testing.B) {
+func BenchmarkMarshalByUgorjiCodecAndMsgp(b *testing.B) {
 	var buf bytes.Buffer
 	var mh codec.MsgpackHandle
 	enc := codec.NewEncoder(&buf, &mh)
@@ -354,9 +358,57 @@ func BenchmarkMarshalByCodecAndMsgp(b *testing.B) {
 		_ = enc.Encode(group)
 	}
 }
-func BenchmarkUnmarshalByCodecAndMsgp(b *testing.B) {
+func BenchmarkUnmarshalByUgorjiCodecAndMsgp(b *testing.B) {
 	var buf bytes.Buffer
 	var mh codec.MsgpackHandle
+	enc := codec.NewEncoder(&buf, &mh)
+	_ = enc.Encode(group)
+
+	var g ColorGroup
+	dec := codec.NewDecoder(&buf, &mh)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = dec.Decode(&g)
+	}
+}
+
+func BenchmarkMarshalByUgorjiCodecAndBinc(b *testing.B) {
+	var buf bytes.Buffer
+	var mh codec.BincHandle
+	enc := codec.NewEncoder(&buf, &mh)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = enc.Encode(group)
+	}
+}
+func BenchmarkUnmarshalByUgorjiCodecAndBinc(b *testing.B) {
+	var buf bytes.Buffer
+	var mh codec.BincHandle
+	enc := codec.NewEncoder(&buf, &mh)
+	_ = enc.Encode(group)
+
+	var g ColorGroup
+	dec := codec.NewDecoder(&buf, &mh)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = dec.Decode(&g)
+	}
+}
+
+func BenchmarkMarshalByUgorjiCodecAndJson(b *testing.B) {
+	var buf bytes.Buffer
+	var mh codec.JsonHandle
+	enc := codec.NewEncoder(&buf, &mh)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = enc.Encode(group)
+	}
+}
+func BenchmarkUnmarshalByUgorjiCodecAndJson(b *testing.B) {
+	var buf bytes.Buffer
+	var mh codec.JsonHandle
 	enc := codec.NewEncoder(&buf, &mh)
 	_ = enc.Encode(group)
 
@@ -446,5 +498,55 @@ func BenchmarkUnmarshalByGotiny(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		gotiny.Decodes(bytes, v)
+	}
+}
+
+type HproseSerializer struct {
+	writer *hprose.Writer
+	reader *hprose.Reader
+}
+
+func (s *HproseSerializer) Marshal(o *ColorGroup) []byte {
+	writer := s.writer
+	writer.WriteInt(int64(o.Id))
+	writer.WriteString(o.Name)
+	writer.WriteValue(reflect.ValueOf(o.Colors))
+	return writer.Bytes()
+}
+
+func (s *HproseSerializer) Unmarshal(o *ColorGroup) error {
+	reader := s.reader
+	id := reader.ReadInt()
+	o.Id = int(id)
+	o.Name = reader.ReadString()
+	var colors []string
+	reader.ReadValue(reflect.ValueOf(&colors))
+	o.Colors = colors
+	return nil
+}
+
+func BenchmarkMarshalByHprose(b *testing.B) {
+	writer := hprose.NewWriter(true)
+	s := &HproseSerializer{writer: writer}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = s.Marshal(&group)
+	}
+}
+
+func BenchmarkUnmarshalByHprose(b *testing.B) {
+	v := &ColorGroup{}
+
+	writer := hprose.NewWriter(true)
+
+	s := &HproseSerializer{writer: writer}
+	bs := s.Marshal(&group)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		reader := hprose.NewReader(bs, true)
+		s.reader = reader
+		s.Unmarshal(v)
 	}
 }
