@@ -130,6 +130,7 @@ go test -bench=. -benchmem
 ### 测试数据
 
 所有的测试基于以下的struct,自动生成的struct， 比如protobuf也和此结构基本一致。
+所以本测试的数据以小数据为主， 不同的测试数据(数据大小，数据类型)可能会导致各框架的表现不一样，注意区别。
 
 ```go
 type ColorGroup struct {

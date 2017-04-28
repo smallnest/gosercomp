@@ -519,6 +519,29 @@ func BenchmarkUnmarshalByJsoniter(b *testing.B) {
 	}
 }
 
+// func BenchmarkMarshalByIntelFastjson(b *testing.B) {
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		if _, err := fastjson.Marshal(&group); err != nil {
+// 			b.Fatal(err)
+// 		}
+// 	}
+// }
+// func BenchmarkUnmarshalByIntelFastjson(b *testing.B) {
+// 	data, err := fastjson.Marshal(&group)
+// 	if err != nil {
+// 		b.Fatal(err)
+// 	}
+
+// 	var g ColorGroup
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		if err := fastjson.Unmarshal(data, &g); err != nil {
+// 			b.Fatal(err)
+// 		}
+// 	}
+// }
+
 func BenchmarkMarshalByGoMemdump(b *testing.B) {
 	var buf bytes.Buffer
 	//w := bufio.NewWriter(&buf)
