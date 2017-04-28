@@ -13,6 +13,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
 	hprose "github.com/hprose/hprose-golang/io"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/linkedin/goavro"
 	"github.com/ugorji/go/codec"
 	//vitessbson "github.com/youtube/vitess/go/bson"
@@ -490,6 +491,29 @@ func BenchmarkUnmarshalByFfjson(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		if err := g.UnmarshalJSON(data); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkMarshalByJsoniter(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		if _, err := jsoniter.Marshal(&group); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+func BenchmarkUnmarshalByJsoniter(b *testing.B) {
+	data, err := jsoniter.Marshal(&group)
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	var g ColorGroup
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		if err := jsoniter.Unmarshal(data, &g); err != nil {
 			b.Fatal(err)
 		}
 	}
