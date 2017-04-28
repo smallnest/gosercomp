@@ -34,6 +34,12 @@ var zgroup = ZColorGroup{
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
 
+var egroup = EColorGroup{
+	Id:     1,
+	Name:   "Reds",
+	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}
+
 var thriftColorGroup = ThriftColorGroup{
 	ID:     1,
 	Name:   "Reds",
@@ -418,6 +424,29 @@ func BenchmarkUnmarshalByUgorjiCodecAndJson(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		_ = dec.Decode(&g)
+	}
+}
+
+func BenchmarkMarshalByEasyjson(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		if _, err := egroup.MarshalJSON(); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+func BenchmarkUnmarshalByEasyjson(b *testing.B) {
+	data, err := egroup.MarshalJSON()
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		var g EColorGroup
+		if err := g.UnmarshalJSON(data); err != nil {
+			b.Fatal(err)
+		}
 	}
 }
 

@@ -91,6 +91,12 @@ go version: **1.8.1**
 
   `gencode`也是一个高性能的编解码库，提供了代码生成工具，而且产生的数据非常的小。
 
+- 对于`easyjson`,你需要安装easyjson库:
+
+  ```go
+  go get github.com/mailru/easyjson
+  go generate
+  ```
 
 - 对于`zebraPack `,你需要安装zebraPack库,并使用zebraPack工具产生数据对象：
 
