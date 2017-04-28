@@ -268,6 +268,7 @@ func BenchmarkMarshalByAvro(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		buf.Reset()
 		err = codec.Encode(buf, someRecord)
 		if err != nil {
 			panic(err)
@@ -344,6 +345,7 @@ func BenchmarkMarshalByUgorjiCodecAndCbor(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		buf.Reset()
 		_ = enc.Encode(group)
 	}
 }
@@ -353,10 +355,13 @@ func BenchmarkUnmarshalByUgorjiCodecAndCbor(b *testing.B) {
 	enc := codec.NewEncoder(&buf, &ch)
 	_ = enc.Encode(group)
 
+	objectBytes := buf.Bytes()
+
 	var g ColorGroup
-	dec := codec.NewDecoder(&buf, &ch)
+	dec := codec.NewDecoder(bytes.NewReader(objectBytes), &ch)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		dec.ResetBytes(objectBytes)
 		_ = dec.Decode(&g)
 	}
 }
@@ -368,6 +373,7 @@ func BenchmarkMarshalByUgorjiCodecAndMsgp(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		buf.Reset()
 		_ = enc.Encode(group)
 	}
 }
@@ -377,10 +383,12 @@ func BenchmarkUnmarshalByUgorjiCodecAndMsgp(b *testing.B) {
 	enc := codec.NewEncoder(&buf, &mh)
 	_ = enc.Encode(group)
 
+	objectBytes := buf.Bytes()
+	dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 	var g ColorGroup
-	dec := codec.NewDecoder(&buf, &mh)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		dec.ResetBytes(objectBytes)
 		_ = dec.Decode(&g)
 	}
 }
@@ -392,6 +400,7 @@ func BenchmarkMarshalByUgorjiCodecAndBinc(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		buf.Reset()
 		_ = enc.Encode(group)
 	}
 }
@@ -401,10 +410,13 @@ func BenchmarkUnmarshalByUgorjiCodecAndBinc(b *testing.B) {
 	enc := codec.NewEncoder(&buf, &mh)
 	_ = enc.Encode(group)
 
+	objectBytes := buf.Bytes()
+	dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 	var g ColorGroup
-	dec := codec.NewDecoder(&buf, &mh)
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		dec.ResetBytes(objectBytes)
 		_ = dec.Decode(&g)
 	}
 }
@@ -416,6 +428,7 @@ func BenchmarkMarshalByUgorjiCodecAndJson(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		buf.Reset()
 		_ = enc.Encode(group)
 	}
 }
@@ -425,10 +438,13 @@ func BenchmarkUnmarshalByUgorjiCodecAndJson(b *testing.B) {
 	enc := codec.NewEncoder(&buf, &mh)
 	_ = enc.Encode(group)
 
+	objectBytes := buf.Bytes()
+	dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 	var g ColorGroup
-	dec := codec.NewDecoder(&buf, &mh)
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		dec.ResetBytes(objectBytes)
 		_ = dec.Decode(&g)
 	}
 }
@@ -447,9 +463,9 @@ func BenchmarkUnmarshalByEasyjson(b *testing.B) {
 		b.Fatal(err)
 	}
 
+	var g EColorGroup
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		var g EColorGroup
 		if err := g.UnmarshalJSON(data); err != nil {
 			b.Fatal(err)
 		}
@@ -470,9 +486,9 @@ func BenchmarkUnmarshalByFfjson(b *testing.B) {
 		b.Fatal(err)
 	}
 
+	var g FColorGroup
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		var g FColorGroup
 		if err := g.UnmarshalJSON(data); err != nil {
 			b.Fatal(err)
 		}
@@ -484,6 +500,7 @@ func BenchmarkMarshalByGoMemdump(b *testing.B) {
 	//w := bufio.NewWriter(&buf)
 
 	for i := 0; i < b.N; i++ {
+		buf.Reset()
 		memdump.Encode(&buf, &group)
 	}
 }
@@ -493,9 +510,11 @@ func BenchmarkUnmarshalByGoMemdump(b *testing.B) {
 	var buf bytes.Buffer
 	memdump.Encode(&buf, &group)
 
+	objectBytes := buf.Bytes()
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		memdump.Decode(&buf, &result)
+		memdump.Decode(bytes.NewReader(objectBytes), &result)
 	}
 }
 
