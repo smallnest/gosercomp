@@ -40,6 +40,12 @@ var egroup = EColorGroup{
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
 
+var fgroup = FColorGroup{
+	Id:     1,
+	Name:   "Reds",
+	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}
+
 var thriftColorGroup = ThriftColorGroup{
 	ID:     1,
 	Name:   "Reds",
@@ -444,6 +450,29 @@ func BenchmarkUnmarshalByEasyjson(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		var g EColorGroup
+		if err := g.UnmarshalJSON(data); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkMarshalByFfjson(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		if _, err := fgroup.MarshalJSON(); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+func BenchmarkUnmarshalByFfjson(b *testing.B) {
+	data, err := fgroup.MarshalJSON()
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		var g FColorGroup
 		if err := g.UnmarshalJSON(data); err != nil {
 			b.Fatal(err)
 		}
