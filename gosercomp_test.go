@@ -15,6 +15,7 @@ import (
 	hprose "github.com/hprose/hprose-golang/io"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/linkedin/goavro"
+	"github.com/tidwall/gjson"
 	"github.com/ugorji/go/codec"
 	//vitessbson "github.com/youtube/vitess/go/bson"
 
@@ -514,6 +515,21 @@ func BenchmarkUnmarshalByJsoniter(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		if err := jsoniter.Unmarshal(data, &g); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkUnmarshalByGJSON(b *testing.B) {
+	data, err := json.Marshal(group)
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	var g ColorGroup
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		if err := gjson.Unmarshal(data, &g); err != nil {
 			b.Fatal(err)
 		}
 	}
