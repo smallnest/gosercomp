@@ -27,7 +27,7 @@ func (d *GencodeColorGroup) Size() (s uint64) {
 
 			t := l
 			for t >= 0x80 {
-				t <<= 7
+				t >>= 7
 				s++
 			}
 			s++
@@ -42,22 +42,23 @@ func (d *GencodeColorGroup) Size() (s uint64) {
 
 			t := l
 			for t >= 0x80 {
-				t <<= 7
+				t >>= 7
 				s++
 			}
 			s++
 
 		}
-		for k := range d.Colors {
+
+		for k0 := range d.Colors {
 
 			{
-				l := uint64(len(d.Colors[k]))
+				l := uint64(len(d.Colors[k0]))
 
 				{
 
 					t := l
 					for t >= 0x80 {
-						t <<= 7
+						t >>= 7
 						s++
 					}
 					s++
@@ -67,6 +68,7 @@ func (d *GencodeColorGroup) Size() (s uint64) {
 			}
 
 		}
+
 	}
 	s += 4
 	return
@@ -84,13 +86,13 @@ func (d *GencodeColorGroup) Marshal(buf []byte) ([]byte, error) {
 
 	{
 
-		buf[i+0+0] = byte(d.Id >> 0)
+		buf[0+0] = byte(d.Id >> 0)
 
-		buf[i+1+0] = byte(d.Id >> 8)
+		buf[1+0] = byte(d.Id >> 8)
 
-		buf[i+2+0] = byte(d.Id >> 16)
+		buf[2+0] = byte(d.Id >> 16)
 
-		buf[i+3+0] = byte(d.Id >> 24)
+		buf[3+0] = byte(d.Id >> 24)
 
 	}
 	{
@@ -128,10 +130,10 @@ func (d *GencodeColorGroup) Marshal(buf []byte) ([]byte, error) {
 			i++
 
 		}
-		for k := range d.Colors {
+		for k0 := range d.Colors {
 
 			{
-				l := uint64(len(d.Colors[k]))
+				l := uint64(len(d.Colors[k0]))
 
 				{
 
@@ -146,7 +148,7 @@ func (d *GencodeColorGroup) Marshal(buf []byte) ([]byte, error) {
 					i++
 
 				}
-				copy(buf[i+4:], d.Colors[k])
+				copy(buf[i+4:], d.Colors[k0])
 				i += l
 			}
 
@@ -205,7 +207,7 @@ func (d *GencodeColorGroup) Unmarshal(buf []byte) (uint64, error) {
 		} else {
 			d.Colors = make([]string, l)
 		}
-		for k := range d.Colors {
+		for k0 := range d.Colors {
 
 			{
 				l := uint64(0)
@@ -224,7 +226,7 @@ func (d *GencodeColorGroup) Unmarshal(buf []byte) (uint64, error) {
 					l = t
 
 				}
-				d.Colors[k] = string(buf[i+4 : i+4+l])
+				d.Colors[k0] = string(buf[i+4 : i+4+l])
 				i += l
 			}
 

@@ -144,77 +144,76 @@ type ColorGroup struct {
 ### 性能测试结果
 
 ```
-BenchmarkMarshalByJson-4                       	 1000000	      1092 ns/op	     376 B/op	       4 allocs/op
-BenchmarkUnmarshalByJson-4                     	  500000	      2765 ns/op	     344 B/op	       9 allocs/op
+BenchmarkMarshalByJson-4                       	 2000000	       867 ns/op	     368 B/op	       3 allocs/op
+BenchmarkUnmarshalByJson-4                     	  500000	      2609 ns/op	     344 B/op	       9 allocs/op
 
-BenchmarkMarshalByXml-4                        	  500000	      3958 ns/op	    4801 B/op	      12 allocs/op
-BenchmarkUnmarshalByXml-4                      	  100000	     16309 ns/op	    3139 B/op	      75 allocs/op
+BenchmarkMarshalByXml-4                        	  300000	      3858 ns/op	    4800 B/op	      11 allocs/op
+BenchmarkUnmarshalByXml-4                      	  100000	     14348 ns/op	    3139 B/op	      75 allocs/op
 
-BenchmarkMarshalByMsgp-4                       	20000000	       117 ns/op	      80 B/op	       1 allocs/op
-BenchmarkUnmarshalByMsgp-4                     	 5000000	       283 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByMsgp-4                       	20000000	       112 ns/op	      80 B/op	       1 allocs/op
+BenchmarkUnmarshalByMsgp-4                     	10000000	       232 ns/op	      32 B/op	       5 allocs/op
 
-BenchmarkMarshalByProtoBuf-4                   	 3000000	       492 ns/op	     328 B/op	       5 allocs/op
-BenchmarkUnmarshalByProtoBuf-4                 	 2000000	       849 ns/op	     400 B/op	      11 allocs/op
+BenchmarkMarshalByProtoBuf-4                   	 3000000	       481 ns/op	     328 B/op	       5 allocs/op
+BenchmarkUnmarshalByProtoBuf-4                 	 2000000	       775 ns/op	     400 B/op	      11 allocs/op
 
-BenchmarkMarshalByGogoProtoBuf-4               	20000000	       114 ns/op	      48 B/op	       1 allocs/op
-BenchmarkUnmarshalByGogoProtoBuf-4             	 3000000	       467 ns/op	     144 B/op	       8 allocs/op
+BenchmarkMarshalByGogoProtoBuf-4               	20000000	       109 ns/op	      48 B/op	       1 allocs/op
+BenchmarkUnmarshalByGogoProtoBuf-4             	 3000000	       408 ns/op	     144 B/op	       8 allocs/op
 
-BenchmarkMarshalByFlatBuffers-4                	 3000000	       416 ns/op	      16 B/op	       1 allocs/op
-BenchmarkUnmarshalByFlatBuffers-4              	500000000	         3.25 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUnmarshalByFlatBuffers_withFields-4   	10000000	       188 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMarshalByFlatBuffers-4                	 5000000	       392 ns/op	      16 B/op	       1 allocs/op
+BenchmarkUnmarshalByFlatBuffers-4              	1000000000	         2.73 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByFlatBuffers_withFields-4   	10000000	       172 ns/op	       0 B/op	       0 allocs/op
 
-BenchmarkMarshalByThrift-4                     	 3000000	       590 ns/op	      64 B/op	       1 allocs/op
-BenchmarkUnmarshalByThrift-4                   	 1000000	      1358 ns/op	     656 B/op	      11 allocs/op
+BenchmarkMarshalByThrift-4                     	 3000000	       462 ns/op	      64 B/op	       1 allocs/op
+BenchmarkUnmarshalByThrift-4                   	 1000000	      1356 ns/op	     656 B/op	      11 allocs/op
 
-BenchmarkMarshalByAvro-4                       	 2000000	       726 ns/op	      56 B/op	       7 allocs/op
-BenchmarkUnmarshalByAvro-4                     	  500000	      3648 ns/op	    1680 B/op	      63 allocs/op
+BenchmarkMarshalByAvro-4                       	 3000000	       554 ns/op	      48 B/op	       6 allocs/op
+BenchmarkUnmarshalByAvro-4                     	  500000	      3388 ns/op	    1672 B/op	      62 allocs/op
 
-BenchmarkMarshalByGencode-4                    	30000000	        43.8 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUnmarshalByGencode-4                  	10000000	       171 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByGencode-4                    	30000000	        41.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByGencode-4                  	10000000	       126 ns/op	      32 B/op	       5 allocs/op
 
-BenchmarkMarshalByUgorjiCodecAndCbor-4         	 2000000	       744 ns/op	      96 B/op	       2 allocs/op
-BenchmarkUnmarshalByUgorjiCodecAndCbor-4       	 2000000	       610 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByUgorjiCodecAndCbor-4         	 2000000	       642 ns/op	     112 B/op	       3 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndCbor-4       	 2000000	       879 ns/op	      48 B/op	       6 allocs/op
 
-BenchmarkMarshalByUgorjiCodecAndMsgp-4         	 2000000	       723 ns/op	      96 B/op	       2 allocs/op
-BenchmarkUnmarshalByUgorjiCodecAndMsgp-4       	 2000000	       600 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByUgorjiCodecAndMsgp-4         	 2000000	       606 ns/op	     112 B/op	       3 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndMsgp-4       	 2000000	       913 ns/op	      48 B/op	       6 allocs/op
 
-BenchmarkMarshalByUgorjiCodecAndBinc-4         	 2000000	       746 ns/op	      96 B/op	       2 allocs/op
-BenchmarkUnmarshalByUgorjiCodecAndBinc-4       	 2000000	       631 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByUgorjiCodecAndBinc-4         	 2000000	       667 ns/op	     112 B/op	       3 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndBinc-4       	 1000000	      1363 ns/op	     824 B/op	      10 allocs/op
 
-BenchmarkMarshalByUgorjiCodecAndJson-4         	 1000000	      1096 ns/op	      96 B/op	       2 allocs/op
-BenchmarkUnmarshalByUgorjiCodecAndJson-4       	 1000000	      1068 ns/op	     128 B/op	       8 allocs/op
+BenchmarkMarshalByUgorjiCodecAndJson-4         	 2000000	       827 ns/op	     112 B/op	       3 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndJson-4       	 1000000	      1074 ns/op	      48 B/op	       6 allocs/op
 
-BenchmarkMarshalByEasyjson-4                   	 5000000	       361 ns/op	     128 B/op	       1 allocs/op
-BenchmarkUnmarshalByEasyjson-4                 	 3000000	       584 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByEasyjson-4                   	 5000000	       319 ns/op	     128 B/op	       1 allocs/op
+BenchmarkUnmarshalByEasyjson-4                 	 3000000	       496 ns/op	      32 B/op	       5 allocs/op
 
-BenchmarkMarshalByFfjson-4                     	 1000000	      1032 ns/op	     424 B/op	       9 allocs/op
-BenchmarkUnmarshalByFfjson-4                   	 1000000	      1532 ns/op	     480 B/op	      13 allocs/op
+BenchmarkMarshalByFfjson-4                     	 2000000	       954 ns/op	     424 B/op	       9 allocs/op
+BenchmarkUnmarshalByFfjson-4                   	 1000000	      1442 ns/op	     480 B/op	      13 allocs/op
 
-BenchmarkMarshalByJsoniter-4                   	 1000000	      1725 ns/op	    4384 B/op	       5 allocs/op
-BenchmarkUnmarshalByJsoniter-4                 	 3000000	       524 ns/op	     240 B/op	       6 allocs/op
+BenchmarkMarshalByJsoniter-4                   	 2000000	       721 ns/op	     800 B/op	       5 allocs/op
+BenchmarkUnmarshalByJsoniter-4                 	 3000000	       473 ns/op	     112 B/op	       6 allocs/op
+BenchmarkUnmarshalByGJSON-4                    	 1000000	      1926 ns/op	     624 B/op	       7 allocs/op
 
-BenchmarkUnmarshalByGJSON-4                    	 1000000	      1975 ns/op	     624 B/op	       7 allocs/op
+BenchmarkMarshalByGoMemdump-4                  	  300000	      5165 ns/op	    1032 B/op	      30 allocs/op
+BenchmarkUnmarshalByGoMemdump-4                	 1000000	      1263 ns/op	    2288 B/op	      11 allocs/op
 
-BenchmarkMarshalByGoMemdump-4                  	  300000	      5892 ns/op	    1040 B/op	      31 allocs/op
-BenchmarkUnmarshalByGoMemdump-4                	 1000000	      1331 ns/op	    2288 B/op	      11 allocs/op
+BenchmarkMarshalByColfer-4                     	50000000	        31.6 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByColfer-4                   	10000000	       211 ns/op	      96 B/op	       6 allocs/op
 
-BenchmarkMarshalByColfer-4                     	50000000	        33.8 ns/op	       0 B/op	       0 allocs/op
-BenchmarkUnmarshalByColfer-4                   	 5000000	       248 ns/op	      96 B/op	       6 allocs/op
+BenchmarkMarshalByZebrapack-4                  	20000000	       299 ns/op	     132 B/op	       0 allocs/op
+BenchmarkUnmarshalByZebrapack-4                	 5000000	       260 ns/op	      32 B/op	       5 allocs/op
 
-BenchmarkMarshalByZebrapack-4                  	10000000	       276 ns/op	     132 B/op	       0 allocs/op
-BenchmarkUnmarshalByZebrapack-4                	10000000	       172 ns/op	       0 B/op	       0 allocs/op
+BenchmarkMarshalByGotiny-4                     	 3000000	       451 ns/op	     144 B/op	       5 allocs/op
+BenchmarkUnmarshalByGotiny-4                   	 5000000	       282 ns/op	      88 B/op	       2 allocs/op
 
-BenchmarkMarshalByGotiny-4                     	 5000000	       387 ns/op	     144 B/op	       5 allocs/op
-BenchmarkUnmarshalByGotiny-4                   	 5000000	       277 ns/op	      88 B/op	       2 allocs/op
+BenchmarkMarshalByHprose-4                     	 3000000	       468 ns/op	     210 B/op	       1 allocs/op
+BenchmarkUnmarshalByHprose-4                   	 2000000	       663 ns/op	     288 B/op	       9 allocs/op
 
-BenchmarkMarshalByHprose-4                     	 3000000	       520 ns/op	     210 B/op	       1 allocs/op
-BenchmarkUnmarshalByHprose-4                   	 2000000	       712 ns/op	     288 B/op	       9 allocs/op
+BenchmarkMarshalBySereal-4                     	 1000000	      2433 ns/op	     792 B/op	      22 allocs/op
+BenchmarkUnmarshalBySereal-4                   	 2000000	       793 ns/op	      80 B/op	       6 allocs/op
 
-BenchmarkMarshalBySereal-4                     	  500000	      2512 ns/op	     792 B/op	      22 allocs/op
-BenchmarkUnmarshalBySereal-4                   	 2000000	       846 ns/op	      80 B/op	       6 allocs/op
-
-BenchmarkMarshalByMsgpackV2-4                  	 1000000	      2121 ns/op	     192 B/op	       4 allocs/op
-BenchmarkUnmarshalByMsgpackv2-4                	 1000000	      1893 ns/op	     232 B/op	      11 allocs/op
+BenchmarkMarshalByMsgpackV2-4                  	 1000000	      1968 ns/op	     192 B/op	       4 allocs/op
+BenchmarkUnmarshalByMsgpackv2-4                	 1000000	      1692 ns/op	     232 B/op	      11 allocs/op
 ```
 
 多次测试结果差不多。 从结果上上来看， **MessagePack**,**gogo/protobuf**,和**flatbuffers**差不多，这三个优秀的库在序列化和反序列化上各有千秋，而且都是跨语言的。 从便利性上来讲，你可以选择**MessagePack**和**gogo/protobuf**都可以，两者都有大厂在用。 flatbuffers有点反人类，因为它的操作很底层，而且从结果上来看，序列化的性能要差一点。但是它有一个好处，那就是如果你只需要特定的字段， 你无须将所有的字段都反序列化。从结果上看，不反序列化字段每个调用只用了9.54纳秒，这是因为字段只有在被访问的时候才从byte数组转化为相应的类型。 因此在特殊的场景下，它可以提高N被的性能。但是序列化的代码的面相太难看了。
