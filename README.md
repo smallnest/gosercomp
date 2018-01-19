@@ -225,3 +225,33 @@ BenchmarkUnmarshalByMsgpackv2-4                	 1000000	      1692 ns/op	     2
 **colfer**的性能也不错，它能够跨Go，Java, Javascript平台。
 
 新加入的**zebrapack**性能抢眼，不但性能卓越，而且可以实现zero allocation，值得关注。
+
+## 序列化大小
+
+下面显示了各个序列化相同的数据后的大小：
+
+```
+	gosercomp_test.go:90:  json:				      65 bytes
+	gosercomp_test.go:93:  xml:				        137 bytes
+	gosercomp_test.go:96:  msgp:				      47 bytes
+	gosercomp_test.go:99:  protobuf:				  36 bytes
+	gosercomp_test.go:102: gogoprotobuf:			36 bytes
+	gosercomp_test.go:106: flatbuffers:			  108 bytes
+	gosercomp_test.go:112: thrift:				    63 bytes
+	gosercomp_test.go:126: avro:				      32 bytes
+	gosercomp_test.go:135: gencode:				    34 bytes
+	gosercomp_test.go:141: UgorjiCodec_Cbor:	47 bytes
+	gosercomp_test.go:147: UgorjiCodec_Msgp:	47 bytes
+	gosercomp_test.go:153: UgorjiCodec_Bin:		53 bytes
+	gosercomp_test.go:155: UgorjiCodec_Json:	91 bytes
+	gosercomp_test.go:158: easyjson:			    65 bytes
+	gosercomp_test.go:161: ffjson:				    65 bytes
+	gosercomp_test.go:164: jsoniter:			    65 bytes
+	gosercomp_test.go:168: memdump:				    200 bytes
+	gosercomp_test.go:171: colfer:				    35 bytes
+	gosercomp_test.go:174: zebrapack:			    35 bytes
+	gosercomp_test.go:177: gotiny:				    32 bytes
+	gosercomp_test.go:182: hprose:				    32 bytes
+	gosercomp_test.go:186: sereal:				    76 bytes
+	gosercomp_test.go:189: msgpackv2:			    47 bytes
+```

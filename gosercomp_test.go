@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"encoding/xml"
+	"log"
 	"reflect"
 	"testing"
 
@@ -82,6 +83,111 @@ var avroSchema = `{"namespace": "gosercomp",
 ]
 }`
 
+func TestMarshaledDataLen(t *testing.T) {
+	log.SetFlags(log.LstdFlags)
+
+	buf, _ := json.Marshal(group)
+	t.Logf("json:\t\t\t\t %d bytes", len(buf))
+
+	buf, _ = xml.Marshal(group)
+	t.Logf("xml:\t\t\t\t %d bytes", len(buf))
+
+	buf, _ = group.MarshalMsg(nil)
+	t.Logf("msgp:\t\t\t\t %d bytes", len(buf))
+
+	buf, _ = proto.Marshal(&protobufGroup)
+	t.Logf("protobuf:\t\t\t\t %d bytes", len(buf))
+
+	buf, _ = goproto.Marshal(&gogoProtobufGroup)
+	t.Logf("gogoprotobuf:\t\t\t %d bytes", len(buf))
+
+	builder := flatbuffers.NewBuilder(0)
+	buf = serializeByFlatBuffers(builder, &group)
+	t.Logf("flatbuffers:\t\t\t %d bytes", len(buf))
+
+	ts := thrift.NewTSerializer()
+	pf := thrift.NewTBinaryProtocolFactoryDefault() //NewTCompactProtocolFactory() or NewTJSONProtocolFactory()
+	ts.Protocol = pf.GetProtocol(ts.Transport)
+	buf, _ = ts.Write(&thriftColorGroup)
+	t.Logf("thrift:\t\t\t\t %d bytes", len(buf))
+
+	someRecord, _ := goavro.NewRecord(goavro.RecordSchema(avroSchema))
+	someRecord.Set("id", int32(1))
+	someRecord.Set("name", "Reds")
+	colors := []string{"Crimson", "Red", "Ruby", "Maroon"}
+	s := make([]interface{}, len(colors))
+	for i, v := range colors {
+		s[i] = v
+	}
+	someRecord.Set("colors", s)
+	acodec, _ := goavro.NewCodec(avroSchema)
+	buff := new(bytes.Buffer)
+	_ = acodec.Encode(buff, someRecord)
+	t.Logf("avro:\t\t\t\t %d bytes", len(buff.Bytes()))
+
+	var group1 = GencodeColorGroup{
+		Id:     1,
+		Name:   "Reds",
+		Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+	}
+	buff2 := make([]byte, group1.Size())
+	b, _ := group1.Marshal(buff2)
+	t.Logf("gencode:\t\t\t\t %d bytes", len(b))
+
+	var buf3 bytes.Buffer
+	var ch codec.CborHandle
+	enc := codec.NewEncoder(&buf3, &ch)
+	_ = enc.Encode(group)
+	t.Logf("UgorjiCodec_Cbor:\t\t %d bytes", len(buf3.Bytes()))
+
+	var buf4 bytes.Buffer
+	var mh codec.MsgpackHandle
+	enc4 := codec.NewEncoder(&buf4, &mh)
+	enc4.Encode(group)
+	t.Logf("UgorjiCodec_Msgp:\t\t %d bytes", len(buf4.Bytes()))
+
+	var buf5 bytes.Buffer
+	var mh5 codec.BincHandle
+	enc5 := codec.NewEncoder(&buf5, &mh5)
+	_ = enc5.Encode(group)
+	t.Logf("UgorjiCodec_Bin:\t\t\t %d bytes", len(buf5.Bytes()))
+	_ = enc5.Encode(group)
+	t.Logf("UgorjiCodec_Json:\t\t %d bytes", len(buf5.Bytes()))
+
+	buf, _ = egroup.MarshalJSON()
+	t.Logf("easyjson:\t\t\t %d bytes", len(buf))
+
+	buf, _ = fgroup.MarshalJSON()
+	t.Logf("ffjson:\t\t\t\t %d bytes", len(buf))
+
+	buf, _ = jsoniter.Marshal(&group)
+	t.Logf("jsoniter:\t\t\t %d bytes", len(buf))
+
+	var buf6 bytes.Buffer
+	memdump.Encode(&buf6, &group)
+	t.Logf("memdump:\t\t\t\t %d bytes", len(buf6.Bytes()))
+
+	l, _ := colferGroup.MarshalLen()
+	t.Logf("colfer:\t\t\t\t %d bytes", l)
+
+	buf, _ = zgroup.MarshalMsg(buf[:0])
+	t.Logf("zebrapack:\t\t\t %d bytes", len(buf))
+
+	buf = gotiny.Encodes(&group)
+	t.Logf("gotiny:\t\t\t\t %d bytes", len(buf))
+
+	writer := hprose.NewWriter(true)
+	ss := &HproseSerializer{writer: writer}
+	_ = ss.Marshal(&group)
+	t.Logf("hprose:\t\t\t\t %d bytes", len(buf))
+
+	encoder := sereal.NewEncoderV3()
+	buf, _ = encoder.Marshal(&group)
+	t.Logf("sereal:\t\t\t\t %d bytes", len(buf))
+
+	buf, _ = msgpackv2.Marshal(&group)
+	t.Logf("msgpackv2:\t\t\t %d bytes", len(buf))
+}
 func BenchmarkMarshalByJson(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		json.Marshal(group)
