@@ -1,8 +1,8 @@
-## Golang Serialization Benchmark
+## Golang 序列化反序列化库的性能比较
 
-### Serializers
+### 测试的 Serializers
 
-This project test the below go serializers, which compares with go standard _json_ and _xml_.
+以golang自带的_encoding/json_和_encoding/xml_为基准，测试以下性能比较好的几种序列化库。
 
 - [encoding/json](http://golang.org/pkg/encoding/json/)
 - [encoding/xml](http://golang.org/pkg/encoding/xml/)
@@ -26,9 +26,9 @@ This project test the below go serializers, which compares with go standard _jso
 - [easyjson](https://github.com/mailru/easyjson)
 - [jsoniter](https://github.com/json-iterator/go)
 
-###  Excluded Serializers
+### 排除的 Serializers
 
-Given existed [benchmark](https://github.com/alecthomas/go_serialization_benchmarks) by alecthomas，the below serializers are excluded from this test because of their poor performance.
+基于 alecthomas 已有的[测试](https://github.com/alecthomas/go_serialization_benchmarks)，下面的库由于性能的原因没有进行测试。
 
 - [encoding/gob](http://golang.org/pkg/encoding/gob/)
 - [github.com/alecthomas/binary](http://github.com/alecthomas/binary)
@@ -38,25 +38,25 @@ Given existed [benchmark](https://github.com/alecthomas/go_serialization_benchma
 - [gopkg.in/vmihailenco/msgpack.v2](http://gopkg.in/vmihailenco/msgpack.v2)
 - [bson](http://github.com/micro/go-bson)
 
-### Test Environment
+### 测试环境
 go version: **1.8.1**
 
 
-- For `MessagePack`，you need install the tool and use `go generate` to generate code:
+- 对于 `MessagePack`，你需要安装库以及利用`go generate`生成相关的类:
 
   ```go
   go get github.com/tinylib/msgp
   go generate
   ```
 
-- For `ProtoBuf`, you need to install [protoc](https://github.com/google/protobuf/releases)，protobuf lib and generate code：
+- 对于`ProtoBuf`,你需要安装[protoc编译器](https://github.com/google/protobuf/releases)，以及protoc库以及生成相关的类：
 
   ```go
   go get github.com/golang/protobuf
   go generate
   ```
 
-- For `gogo/protobuf`, use the below commands：
+- 对于`gogo/protobuf`,你需要安装库以及生成相关的类：
 
   ```go
   go get github.com/gogo/protobuf/gogoproto
@@ -64,50 +64,51 @@ go version: **1.8.1**
   go generate
   ```
 
-- For `flatbuffers`, you need to install [flatbuffers compiler](https://github.com/google/flatbuffers/releases,  and flatbuffers lib：
+- 对于`flatbuffers`,你需要安装[flatbuffers编译器](https://github.com/google/flatbuffers/releases, 以及flatbuffers库：
 
   ```go
   go get github.com/google/flatbuffers/go
   go generate
   ```
 
-- For `thrift`, you need to install [thrift compiler](https://thrift.apache.org/download), and thrift lib：
+- 对于`thrift`,), 你需要安装[thrift编译器](https://thrift.apache.org/download)以及thrift库：
 
   ```go
   go get git.apache.org/thrift.git/lib/go/thrift
   go generate
   ```
 
-- For `Avro`, you need to install goavro：
+- 对于`Avro`,你需要安装goavro库：
 
     ```go
     go get github.com/linkedin/goavro
     go generate
     ```
 
-- For `gencode`, you need to install gencode, and geneate code by gencode：
+- 对于`gencode`,你需要安装gencode库,并使用gencode库的工具产生数据对象：
 
   ```go
   go get github.com/andyleap/gencode
   bin\gencode.exe go -schema=gencode.schema -package gosercomp
   ```
 
+  `gencode`也是一个高性能的编解码库，提供了代码生成工具，而且产生的数据非常的小。
 
-- For `easyjson`, you need to install easyjson:
+- 对于`easyjson`,你需要安装easyjson库:
 
   ```go
   go get github.com/mailru/easyjson
   go generate
   ```
 
-- For `zebraPack `, you need to install zebraPack, and generate code：
+- 对于`zebraPack `,你需要安装zebraPack库,并使用zebraPack工具产生数据对象：
 
   ```go
   go get github.com/glycerine/zebrapack
   go generate zebrapack_data.go 
   ```
 
-- For `ugorji/go/codec` you need to install codecgen and `codec` lib:
+- 对于`ugorji/go/codec`,你需要安装代码生成工具和`codec`库:
 
 ```go
   go get -tags=unsafe  -u github.com/ugorji/go/codec/codecgen
@@ -116,20 +117,20 @@ go version: **1.8.1**
   codecgen.exe -o data_codec.go data.go
 ```
 
+`ugorji/go/codec`是一个高性能的编解码框架，支持 msgpack、cbor、binc、json等格式。本测试中测试了 cbor  和 msgpack的编解码，可以和上面的 `tinylib/msgp`框架进行比较。
 
-`ugorji/go/codec` supports msgpack、cbor、binc、json, and this project test its  cbor and msgpack.
+> 事实上，这里通过`go generate`生成相关的类，你也可以通过命令行生成，请参考`data.go`中的注释。 但是你需要安装相关的工具，如Thrift,并把它们加入到环境变量Path中
 
-> Actually，you can use `go generate` to generate code. 
-
-**Test:**
+**运行下面的命令测试:**
 
 ```
 go test -bench=. -benchmem
 ```
 
-### Test Data Model
+### 测试数据
 
-All tests are using the same data model as below:
+所有的测试基于以下的struct,自动生成的struct， 比如protobuf也和此结构基本一致。
+所以本测试的数据以小数据为主， 不同的测试数据(数据大小，数据类型)可能会导致各框架的表现不一样，注意区别。
 
 ```go
 type ColorGroup struct {
@@ -140,7 +141,7 @@ type ColorGroup struct {
 `
 ```
 
-### Benchmark
+### 性能测试结果
 
 ```
 BenchmarkMarshalByJson-4                       	 2000000	       867 ns/op	     368 B/op	       3 allocs/op
@@ -215,9 +216,19 @@ BenchmarkMarshalByMsgpackV2-4                  	 1000000	      1968 ns/op	     1
 BenchmarkUnmarshalByMsgpackv2-4                	 1000000	      1692 ns/op	     232 B/op	      11 allocs/op
 ```
 
+多次测试结果差不多。 从结果上上来看， **MessagePack**,**gogo/protobuf**,和**flatbuffers**差不多，这三个优秀的库在序列化和反序列化上各有千秋，而且都是跨语言的。 从便利性上来讲，你可以选择**MessagePack**和**gogo/protobuf**都可以，两者都有大厂在用。 flatbuffers有点反人类，因为它的操作很底层，而且从结果上来看，序列化的性能要差一点。但是它有一个好处，那就是如果你只需要特定的字段， 你无须将所有的字段都反序列化。从结果上看，不反序列化字段每个调用只用了9.54纳秒，这是因为字段只有在被访问的时候才从byte数组转化为相应的类型。 因此在特殊的场景下，它可以提高N被的性能。但是序列化的代码的面相太难看了。
 
-## Size of marshalled results
+新增加了**gencode**的测试，它表现相当出色，而且生成的字节也非常的小。
 
+**Codec**的Unmarshal性能不错，但是Marshal性能不是太好。
+
+**colfer**的性能也不错，它能够跨Go，Java, Javascript平台。
+
+新加入的**zebrapack**性能抢眼，不但性能卓越，而且可以实现zero allocation，值得关注。
+
+## 序列化大小
+
+下面显示了各个序列化相同的数据后的大小：
 
 ```
 	gosercomp_test.go:90: json:				 65 bytes
