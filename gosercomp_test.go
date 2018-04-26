@@ -2,6 +2,7 @@ package gosercomp
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"encoding/xml"
 	"log"
@@ -108,7 +109,7 @@ func TestMarshaledDataLen(t *testing.T) {
 	ts := thrift.NewTSerializer()
 	pf := thrift.NewTBinaryProtocolFactoryDefault() //NewTCompactProtocolFactory() or NewTJSONProtocolFactory()
 	ts.Protocol = pf.GetProtocol(ts.Transport)
-	buf, _ = ts.Write(&thriftColorGroup)
+	buf, _ = ts.Write(context.Background(), &thriftColorGroup)
 	t.Logf("thrift:\t\t\t\t %d bytes", len(buf))
 
 	someRecord, _ := goavro.NewRecord(goavro.RecordSchema(avroSchema))
@@ -337,7 +338,7 @@ func BenchmarkMarshalByThrift(b *testing.B) {
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, _ = t.Write(&thriftColorGroup)
+		_, _ = t.Write(context.Background(), &thriftColorGroup)
 	}
 }
 func BenchmarkUnmarshalByThrift(b *testing.B) {
@@ -347,7 +348,7 @@ func BenchmarkUnmarshalByThrift(b *testing.B) {
 
 	t0 := thrift.NewTSerializer()
 	t0.Protocol = pf.GetProtocol(t0.Transport)
-	s, _ := t0.Write(&thriftColorGroup)
+	s, _ := t0.Write(context.Background(), &thriftColorGroup)
 
 	result := ThriftColorGroup{}
 	b.ResetTimer()
