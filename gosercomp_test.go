@@ -19,9 +19,10 @@ import (
 	"github.com/linkedin/goavro"
 	"github.com/tidwall/gjson"
 	"github.com/ugorji/go/codec"
-	//vitessbson "github.com/youtube/vitess/go/bson"
 
+	//vitessbson "github.com/youtube/vitess/go/bson"
 	"github.com/Sereal/Sereal/Go/sereal"
+	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/niubaoshu/gotiny"
 	msgpackv2 "gopkg.in/vmihailenco/msgpack.v2"
 )
@@ -83,6 +84,12 @@ var avroSchema = `{"namespace": "gosercomp",
 	 {"name": "colors", "type": {"type": "array", "items": "string"}}
 ]
 }`
+
+var rlpgroup = RlpColorGroup{
+	Id:     1,
+	Name:   "Reds",
+	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}
 
 func TestMarshaledDataLen(t *testing.T) {
 	log.SetFlags(log.LstdFlags)
@@ -188,6 +195,12 @@ func TestMarshaledDataLen(t *testing.T) {
 
 	buf, _ = msgpackv2.Marshal(&group)
 	t.Logf("msgpackv2:\t\t\t %d bytes", len(buf))
+
+	buf, err := rlp.EncodeToBytes(&rlpgroup)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("rlp:\t\t\t %d bytes", len(buf))
 }
 func BenchmarkMarshalByJson(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -832,5 +845,20 @@ func BenchmarkUnmarshalByMsgpackv2(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		msgpackv2.Unmarshal(bytes, v)
+	}
+}
+
+func BenchmarkMarshalByRlp(b *testing.B) {
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		rlp.EncodeToBytes(&rlpgroup)
+	}
+}
+func BenchmarkUnmarshalByRlp(b *testing.B) {
+	bytes, _ := rlp.EncodeToBytes(&rlpgroup)
+	v := &RlpColorGroup{}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		rlp.DecodeBytes(bytes, v)
 	}
 }
