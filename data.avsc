@@ -1,0 +1,9 @@
+{"namespace": "gosercomp",
+"type": "record",
+"name": "AvroColorGroup",
+"fields": [
+	 {"name": "id", "type": "int"},
+	 {"name": "name",  "type": "string"},
+	 {"name": "colors", "type": {"type": "array", "items": "string"}}
+]
+}

@@ -75,7 +75,7 @@ go version: **1.10**
 - For `thrift`, you need to install [thrift compiler](https://thrift.apache.org/download), and thrift lib：
 
   ```go
-  go get git.apache.org/thrift.git/lib/go/thrift
+  go get github.com/apache/thrift/lib/go/thrift
   go generate
   ```
 
@@ -143,110 +143,65 @@ type ColorGroup struct {
 
 ### Benchmark
 
+**Marshal**
+
+_include marshalled bytes_
+
 ```
-BenchmarkMarshalByJson-4                       	 2000000	       713 ns/op
-BenchmarkUnmarshalByJson-4                     	  500000	      2291 ns/op
-
-BenchmarkMarshalByXml-4                        	  300000	      4140 ns/op
-BenchmarkUnmarshalByXml-4                      	  100000	     13508 ns/op
-
-BenchmarkMarshalByMsgp-4                       	10000000	       119 ns/op
-BenchmarkUnmarshalByMsgp-4                     	10000000	       222 ns/op
-
-BenchmarkMarshalByProtoBuf-4                   	 5000000	       307 ns/op
-BenchmarkUnmarshalByProtoBuf-4                 	 2000000	       766 ns/op
-
-BenchmarkMarshalByGogoProtoBuf-4               	10000000	       109 ns/op
-BenchmarkUnmarshalByGogoProtoBuf-4             	 5000000	       398 ns/op
-
-BenchmarkMarshalByFlatBuffers-4                	 5000000	       346 ns/op
-BenchmarkUnmarshalByFlatBuffers-4              	2000000000	         0.87 ns/op
-BenchmarkUnmarshalByFlatBuffers_withFields-4   	10000000	       147 ns/op
-
-BenchmarkMarshalByThrift-4                     	 3000000	       445 ns/op
-BenchmarkUnmarshalByThrift-4                   	 1000000	      1336 ns/op
-
-BenchmarkMarshalByAvro-4                       	 3000000	       509 ns/op
-BenchmarkUnmarshalByAvro-4                     	  500000	      3259 ns/op
-
-BenchmarkMarshalByGencode-4                    	30000000	        42.3 ns/op
-BenchmarkUnmarshalByGencode-4                  	10000000	       120 ns/op
-
-BenchmarkMarshalByUgorjiCodecAndCbor-4         	 2000000	       731 ns/op
-BenchmarkUnmarshalByUgorjiCodecAndCbor-4       	 2000000	       614 ns/op
-
-BenchmarkMarshalByUgorjiCodecAndMsgp-4         	 2000000	       665 ns/op
-BenchmarkUnmarshalByUgorjiCodecAndMsgp-4       	 2000000	       637 ns/op
-
-BenchmarkMarshalByUgorjiCodecAndBinc-4         	 2000000	       690 ns/op
-BenchmarkUnmarshalByUgorjiCodecAndBinc-4       	 1000000	      1075 ns/op
-
-BenchmarkMarshalByUgorjiCodecAndJson-4         	 2000000	       964 ns/op
-BenchmarkUnmarshalByUgorjiCodecAndJson-4       	 2000000	       768 ns/op
-
-BenchmarkMarshalByEasyjson-4                   	 5000000	       313 ns/op
-BenchmarkUnmarshalByEasyjson-4                 	 3000000	       474 ns/op
-
-BenchmarkMarshalByFfjson-4                     	 2000000	       943 ns/op
-BenchmarkUnmarshalByFfjson-4                   	 1000000	      1386 ns/op
-
-BenchmarkMarshalByJsoniter-4                   	 2000000	       751 ns/op
-BenchmarkUnmarshalByJsoniter-4                 	 3000000	       457 ns/op
-
-BenchmarkUnmarshalByGJSON-4                    	 1000000	      1733 ns/op
-
-BenchmarkMarshalByGoMemdump-4                  	  300000	      4840 ns/op
-BenchmarkUnmarshalByGoMemdump-4                	 1000000	      1445 ns/op
-
-BenchmarkMarshalByColfer-4                     	50000000	        32.9 ns/op
-BenchmarkUnmarshalByColfer-4                   	10000000	       206 ns/op
-
-BenchmarkMarshalByZebrapack-4                  	10000000	       287 ns/op
-BenchmarkUnmarshalByZebrapack-4                	 5000000	       242 ns/op
-
-BenchmarkMarshalByGotiny-4                     	 5000000	       363 ns/op
-BenchmarkUnmarshalByGotiny-4                   	 5000000	       264 ns/op
-
-BenchmarkMarshalByHprose-4                     	 3000000	       517 ns/op
-BenchmarkUnmarshalByHprose-4                   	 2000000	       673 ns/op
-
-BenchmarkMarshalBySereal-4                     	 1000000	      2197 ns/op
-BenchmarkUnmarshalBySereal-4                   	 2000000	       727 ns/op
-
-BenchmarkMarshalByMsgpackV2-4                  	 1000000	      1840 ns/op
-BenchmarkUnmarshalByMsgpackv2-4                	 1000000	      1585 ns/op
-
-BenchmarkMarshalByRlp-4                        	 3000000	       518 ns/op
-BenchmarkUnmarshalByRlp-4                      	 1000000	      1104 ns/op
+BenchmarkMarshalByJson-4                 	 1920922	       623 ns/op	        65.0 marshaledBytes	     128 B/op	       2 allocs/op
+BenchmarkMarshalByXml-4                  	  292286	      3715 ns/op	       137 marshaledBytes	    4736 B/op	      11 allocs/op
+BenchmarkMarshalByMsgp-4                 	10683840	       109 ns/op	        47.0 marshaledBytes	      80 B/op	       1 allocs/op
+BenchmarkMarshalByProtoBuf-4             	 3971731	       304 ns/op	        36.0 marshaledBytes	      80 B/op	       2 allocs/op
+BenchmarkMarshalByGogoProtoBuf-4         	 9633577	       121 ns/op	        36.0 marshaledBytes	      48 B/op	       1 allocs/op
+BenchmarkMarshalByFlatBuffers-4          	 3628875	       328 ns/op	       108 marshaledBytes	      16 B/op	       1 allocs/op
+BenchmarkMarshalByThrift-4               	 2702652	       440 ns/op	        63.0 marshaledBytes	      64 B/op	       1 allocs/op
+BenchmarkMarshalByAvro-4                 	 3656216	       327 ns/op	        32.0 marshaledBytes	       0 B/op	       0 allocs/op
+BenchmarkMarshalByGencode-4              	27901552	        42.4 ns/op	        34.0 marshaledBytes	       0 B/op	       0 allocs/op
+BenchmarkMarshalByUgorjiCodecAndCbor-4   	 2023094	       589 ns/op	        47.0 marshaledBytes	      96 B/op	       2 allocs/op
+BenchmarkMarshalByUgorjiCodecAndMsgp-4   	 1987399	       593 ns/op	        47.0 marshaledBytes	      96 B/op	       2 allocs/op
+BenchmarkMarshalByUgorjiCodecAndBinc-4   	 1988001	       600 ns/op	        47.0 marshaledBytes	      96 B/op	       2 allocs/op
+BenchmarkMarshalByUgorjiCodecAndJson-4   	 1667370	       714 ns/op	        65.0 marshaledBytes	      96 B/op	       2 allocs/op
+BenchmarkMarshalByEasyjson-4             	 4324338	       272 ns/op	        65.0 marshaledBytes	     128 B/op	       1 allocs/op
+BenchmarkMarshalByFfjson-4               	 1335627	       896 ns/op	        65.0 marshaledBytes	     424 B/op	       9 allocs/op
+BenchmarkMarshalByJsoniter-4             	 2443514	       506 ns/op	        65.0 marshaledBytes	      88 B/op	       2 allocs/op
+BenchmarkMarshalByGoMemdump-4            	  260101	      4306 ns/op	       200 marshaledBytes	    1024 B/op	      30 allocs/op
+BenchmarkMarshalByColfer-4               	33450418	        34.9 ns/op	        35.0 marshaledBytes	       0 B/op	       0 allocs/op
+BenchmarkMarshalByZebrapack-4            	 9203962	       134 ns/op	 322138670 marshaledBytes	      72 B/op	       0 allocs/op
+BenchmarkMarshalByGotiny-4               	 3498696	       334 ns/op	        32.0 marshaledBytes	     144 B/op	       5 allocs/op
+BenchmarkMarshalByHprose-4               	 3028422	       394 ns/op	 148392678 marshaledBytes	     209 B/op	       1 allocs/op
+BenchmarkMarshalBySereal-4               	  512172	      2084 ns/op	        76.0 marshaledBytes	     792 B/op	      22 allocs/op
+BenchmarkMarshalByMsgpackV2-4            	  715090	      1710 ns/op	        47.0 marshaledBytes	     192 B/op	       5 allocs/op
+BenchmarkMarshalByRlp-4                  	 2544832	       463 ns/op	        32.0 marshaledBytes	      64 B/op	       3 allocs/op
 ```
 
 
-## Size of marshalled results
-
+**Unmarshal**
 
 ```
-    gosercomp_test.go:98: json:				     65 bytes
-    gosercomp_test.go:101: xml:				     137 bytes
-    gosercomp_test.go:104: msgp:				 47 bytes
-    gosercomp_test.go:107: protobuf:		     36 bytes
-    gosercomp_test.go:110: gogoprotobuf:		 36 bytes
-    gosercomp_test.go:114: flatbuffers:			 108 bytes
-    gosercomp_test.go:120: thrift:				 63 bytes
-    gosercomp_test.go:134: avro:				 32 bytes
-    gosercomp_test.go:143: gencode:				 34 bytes
-    gosercomp_test.go:149: UgorjiCodec_Cbor:	 47 bytes
-    gosercomp_test.go:155: UgorjiCodec_Msgp:	 47 bytes
-    gosercomp_test.go:161: UgorjiCodec_Bin:		 53 bytes
-    gosercomp_test.go:163: UgorjiCodec_Json:	 91 bytes
-    gosercomp_test.go:166: easyjson:			 65 bytes
-    gosercomp_test.go:169: ffjson:				 65 bytes
-    gosercomp_test.go:172: jsoniter:			 65 bytes
-    gosercomp_test.go:176: memdump:				 200 bytes
-    gosercomp_test.go:179: colfer:				 35 bytes
-    gosercomp_test.go:182: zebrapack:			 35 bytes
-    gosercomp_test.go:185: gotiny:				 32 bytes
-    gosercomp_test.go:190: hprose:				 32 bytes
-    gosercomp_test.go:194: sereal:				 76 bytes
-    gosercomp_test.go:197: msgpackv2:			 47 bytes
-    gosercomp_test.go:203: rlp:			         32 bytes
+BenchmarkUnmarshalByJson-4                     	  569730	      1998 ns/op	     248 B/op	       9 allocs/op
+BenchmarkUnmarshalByXml-4                      	   98018	     12382 ns/op	    3033 B/op	      74 allocs/op
+BenchmarkUnmarshalByMsgp-4                     	 6168337	       194 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByProtoBuf-4                 	 1591766	       705 ns/op	     192 B/op	      11 allocs/op
+BenchmarkUnmarshalByGogoProtoBuf-4             	 2921624	       405 ns/op	     144 B/op	       8 allocs/op
+BenchmarkUnmarshalByFlatBuffers-4              	1000000000	         0.490 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByFlatBuffers_withFields-4   	 9671664	       123 ns/op	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByThrift-4                   	 1000000	      1037 ns/op	     416 B/op	      11 allocs/op
+BenchmarkUnmarshalByAvro-4                     	   54542	     21568 ns/op	   12186 B/op	     224 allocs/op
+BenchmarkUnmarshalByGencode-4                  	 9364777	       123 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndCbor-4       	 2225858	       538 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndMsgp-4       	 2172009	       550 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndBinc-4       	 2227891	       537 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndJson-4       	 1713320	       702 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByEasyjson-4                 	 2470573	       482 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByFfjson-4                   	  910078	      1315 ns/op	     480 B/op	      13 allocs/op
+BenchmarkUnmarshalByJsoniter-4                 	 2254818	       515 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByGJSON-4                    	  742209	      1664 ns/op	     624 B/op	       7 allocs/op
+BenchmarkUnmarshalByGoMemdump-4                	  904111	      1276 ns/op	    2280 B/op	      10 allocs/op
+BenchmarkUnmarshalByColfer-4                   	 5646224	       209 ns/op	      96 B/op	       6 allocs/op
+BenchmarkUnmarshalByZebrapack-4                	 5051925	       232 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByGotiny-4                   	 3737158	       336 ns/op	     120 B/op	       7 allocs/op
+BenchmarkUnmarshalByHprose-4                   	 1915485	       624 ns/op	     288 B/op	       9 allocs/op
+BenchmarkUnmarshalBySereal-4                   	 1759366	       681 ns/op	      80 B/op	       6 allocs/op
+BenchmarkUnmarshalByMsgpackv2-4                	  872976	      1425 ns/op	     232 B/op	      11 allocs/op
+BenchmarkUnmarshalByRlp-4                      	 1326530	       901 ns/op	     104 B/op	      11 allocs/op
 ```

@@ -5,18 +5,16 @@ import (
 	"context"
 	"encoding/json"
 	"encoding/xml"
-	"log"
 	"reflect"
 	"testing"
 
-	thrift "git.apache.org/thrift.git/lib/go/thrift"
 	memdump "github.com/alexflint/go-memdump"
+	thrift "github.com/apache/thrift/lib/go/thrift"
 	goproto "github.com/gogo/protobuf/proto"
 	"github.com/golang/protobuf/proto"
 	flatbuffers "github.com/google/flatbuffers/go"
 	hprose "github.com/hprose/hprose-golang/io"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/linkedin/goavro"
 	"github.com/tidwall/gjson"
 	"github.com/ugorji/go/codec"
 
@@ -28,6 +26,12 @@ import (
 )
 
 var group = ColorGroup{
+	Id:     1,
+	Name:   "Reds",
+	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}
+
+var avroGroup = AvroColorGroup{
 	Id:     1,
 	Name:   "Reds",
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
@@ -91,121 +95,13 @@ var rlpgroup = RlpColorGroup{
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
 
-func TestMarshaledDataLen(t *testing.T) {
-	log.SetFlags(log.LstdFlags)
-
-	buf, _ := json.Marshal(group)
-	t.Logf("json:\t\t\t\t %d bytes", len(buf))
-
-	buf, _ = xml.Marshal(group)
-	t.Logf("xml:\t\t\t\t %d bytes", len(buf))
-
-	buf, _ = group.MarshalMsg(nil)
-	t.Logf("msgp:\t\t\t\t %d bytes", len(buf))
-
-	buf, _ = proto.Marshal(&protobufGroup)
-	t.Logf("protobuf:\t\t\t\t %d bytes", len(buf))
-
-	buf, _ = goproto.Marshal(&gogoProtobufGroup)
-	t.Logf("gogoprotobuf:\t\t\t %d bytes", len(buf))
-
-	builder := flatbuffers.NewBuilder(0)
-	buf = serializeByFlatBuffers(builder, &group)
-	t.Logf("flatbuffers:\t\t\t %d bytes", len(buf))
-
-	ts := thrift.NewTSerializer()
-	pf := thrift.NewTBinaryProtocolFactoryDefault() //NewTCompactProtocolFactory() or NewTJSONProtocolFactory()
-	ts.Protocol = pf.GetProtocol(ts.Transport)
-	buf, _ = ts.Write(context.Background(), &thriftColorGroup)
-	t.Logf("thrift:\t\t\t\t %d bytes", len(buf))
-
-	someRecord, _ := goavro.NewRecord(goavro.RecordSchema(avroSchema))
-	someRecord.Set("id", int32(1))
-	someRecord.Set("name", "Reds")
-	colors := []string{"Crimson", "Red", "Ruby", "Maroon"}
-	s := make([]interface{}, len(colors))
-	for i, v := range colors {
-		s[i] = v
-	}
-	someRecord.Set("colors", s)
-	acodec, _ := goavro.NewCodec(avroSchema)
-	buff := new(bytes.Buffer)
-	_ = acodec.Encode(buff, someRecord)
-	t.Logf("avro:\t\t\t\t %d bytes", len(buff.Bytes()))
-
-	var group1 = GencodeColorGroup{
-		Id:     1,
-		Name:   "Reds",
-		Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
-	}
-	buff2 := make([]byte, group1.Size())
-	b, _ := group1.Marshal(buff2)
-	t.Logf("gencode:\t\t\t\t %d bytes", len(b))
-
-	var buf3 bytes.Buffer
-	var ch codec.CborHandle
-	enc := codec.NewEncoder(&buf3, &ch)
-	_ = enc.Encode(group)
-	t.Logf("UgorjiCodec_Cbor:\t\t %d bytes", len(buf3.Bytes()))
-
-	var buf4 bytes.Buffer
-	var mh codec.MsgpackHandle
-	enc4 := codec.NewEncoder(&buf4, &mh)
-	enc4.Encode(group)
-	t.Logf("UgorjiCodec_Msgp:\t\t %d bytes", len(buf4.Bytes()))
-
-	var buf5 bytes.Buffer
-	var mh5 codec.BincHandle
-	enc5 := codec.NewEncoder(&buf5, &mh5)
-	_ = enc5.Encode(group)
-	t.Logf("UgorjiCodec_Bin:\t\t\t %d bytes", len(buf5.Bytes()))
-	_ = enc5.Encode(group)
-	t.Logf("UgorjiCodec_Json:\t\t %d bytes", len(buf5.Bytes()))
-
-	buf, _ = egroup.MarshalJSON()
-	t.Logf("easyjson:\t\t\t %d bytes", len(buf))
-
-	buf, _ = fgroup.MarshalJSON()
-	t.Logf("ffjson:\t\t\t\t %d bytes", len(buf))
-
-	buf, _ = jsoniter.Marshal(&group)
-	t.Logf("jsoniter:\t\t\t %d bytes", len(buf))
-
-	var buf6 bytes.Buffer
-	memdump.Encode(&buf6, &group)
-	t.Logf("memdump:\t\t\t\t %d bytes", len(buf6.Bytes()))
-
-	l, _ := colferGroup.MarshalLen()
-	t.Logf("colfer:\t\t\t\t %d bytes", l)
-
-	buf, _ = zgroup.MarshalMsg(buf[:0])
-	t.Logf("zebrapack:\t\t\t %d bytes", len(buf))
-
-	buf = gotiny.Encodes(&group)
-	t.Logf("gotiny:\t\t\t\t %d bytes", len(buf))
-
-	writer := hprose.NewWriter(true)
-	ss := &HproseSerializer{writer: writer}
-	_ = ss.Marshal(&group)
-	t.Logf("hprose:\t\t\t\t %d bytes", len(buf))
-
-	encoder := sereal.NewEncoderV3()
-	buf, _ = encoder.Marshal(&group)
-	t.Logf("sereal:\t\t\t\t %d bytes", len(buf))
-
-	buf, _ = msgpackv2.Marshal(&group)
-	t.Logf("msgpackv2:\t\t\t %d bytes", len(buf))
-
-	buf, err := rlp.EncodeToBytes(&rlpgroup)
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Logf("rlp:\t\t\t %d bytes", len(buf))
-}
 func BenchmarkMarshalByJson(b *testing.B) {
+	var bb []byte
 	for i := 0; i < b.N; i++ {
-		json.Marshal(group)
+		bb, _ = json.Marshal(group)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByJson(b *testing.B) {
 	bytes, _ := json.Marshal(group)
@@ -217,9 +113,12 @@ func BenchmarkUnmarshalByJson(b *testing.B) {
 }
 
 func BenchmarkMarshalByXml(b *testing.B) {
+	var bb []byte
 	for i := 0; i < b.N; i++ {
-		xml.Marshal(group)
+		bb, _ = xml.Marshal(group)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByXml(b *testing.B) {
 	bytes, _ := xml.Marshal(group)
@@ -245,9 +144,11 @@ func BenchmarkUnmarshalByXml(b *testing.B) {
 // }
 
 func BenchmarkMarshalByMsgp(b *testing.B) {
+	var bb []byte
 	for i := 0; i < b.N; i++ {
-		group.MarshalMsg(nil)
+		bb, _ = group.MarshalMsg(nil)
 	}
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByMsgp(b *testing.B) {
 	bytes, _ := group.MarshalMsg(nil)
@@ -259,9 +160,12 @@ func BenchmarkUnmarshalByMsgp(b *testing.B) {
 }
 
 func BenchmarkMarshalByProtoBuf(b *testing.B) {
+	var bb []byte
 	for i := 0; i < b.N; i++ {
-		proto.Marshal(&protobufGroup)
+		bb, _ = proto.Marshal(&protobufGroup)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByProtoBuf(b *testing.B) {
 	bytes, _ := proto.Marshal(&protobufGroup)
@@ -273,9 +177,12 @@ func BenchmarkUnmarshalByProtoBuf(b *testing.B) {
 }
 
 func BenchmarkMarshalByGogoProtoBuf(b *testing.B) {
+	var bb []byte
 	for i := 0; i < b.N; i++ {
-		goproto.Marshal(&gogoProtobufGroup)
+		bb, _ = goproto.Marshal(&gogoProtobufGroup)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByGogoProtoBuf(b *testing.B) {
 	bytes, _ := proto.Marshal(&gogoProtobufGroup)
@@ -314,10 +221,13 @@ func serializeByFlatBuffers(builder *flatbuffers.Builder, cg *ColorGroup) []byte
 
 func BenchmarkMarshalByFlatBuffers(b *testing.B) {
 	builder := flatbuffers.NewBuilder(0)
+	var bb []byte
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		serializeByFlatBuffers(builder, &group)
+		bb = serializeByFlatBuffers(builder, &group)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 
 func BenchmarkUnmarshalByFlatBuffers(b *testing.B) {
@@ -349,10 +259,13 @@ func BenchmarkMarshalByThrift(b *testing.B) {
 	pf := thrift.NewTBinaryProtocolFactoryDefault() //NewTCompactProtocolFactory() or NewTJSONProtocolFactory()
 	t.Protocol = pf.GetProtocol(t.Transport)
 
+	var bb []byte
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, _ = t.Write(context.Background(), &thriftColorGroup)
+		bb, _ = t.Write(context.Background(), &thriftColorGroup)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByThrift(b *testing.B) {
 	t := thrift.NewTDeserializer()
@@ -371,60 +284,36 @@ func BenchmarkUnmarshalByThrift(b *testing.B) {
 }
 
 func BenchmarkMarshalByAvro(b *testing.B) {
-	someRecord, err := goavro.NewRecord(goavro.RecordSchema(avroSchema))
-	someRecord.Set("id", int32(1))
-	someRecord.Set("name", "Reds")
-	colors := []string{"Crimson", "Red", "Ruby", "Maroon"}
-	s := make([]interface{}, len(colors))
-	for i, v := range colors {
-		s[i] = v
-	}
-	someRecord.Set("colors", s)
-
-	codec, err := goavro.NewCodec(avroSchema)
-	if err != nil {
-		panic(err)
-	}
-
 	buf := new(bytes.Buffer)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		buf.Reset()
-		err = codec.Encode(buf, someRecord)
+		err := avroGroup.Serialize(buf)
 		if err != nil {
-			panic(err)
+			b.Fatal(err)
 		}
 	}
+
+	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
 }
 
 func BenchmarkUnmarshalByAvro(b *testing.B) {
-	codec, err := goavro.NewCodec(avroSchema)
-	if err != nil {
-		panic(err)
-	}
-	someRecord, err := goavro.NewRecord(goavro.RecordSchema(avroSchema))
-	someRecord.Set("id", int32(1))
-	someRecord.Set("name", "Reds")
-	colors := []string{"Crimson", "Red", "Ruby", "Maroon"}
-	s := make([]interface{}, len(colors))
-	for i, v := range colors {
-		s[i] = v
-	}
-	someRecord.Set("colors", s)
-
 	buf := new(bytes.Buffer)
-	err = codec.Encode(buf, someRecord)
+	err := avroGroup.Serialize(buf)
 	if err != nil {
-		panic(err)
+		b.Fatal(err)
 	}
-	objectBytes := buf.Bytes()
+
+	bb := buf.Bytes()
+	r := bytes.NewReader(bb)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_, err = codec.Decode(bytes.NewReader(objectBytes))
+		r.Reset(bb)
+		_, err = DeserializeAvroColorGroup(r)
 		if err != nil {
-			panic(err)
+			b.Fatal(err)
 		}
 	}
 }
@@ -437,11 +326,13 @@ func BenchmarkMarshalByGencode(b *testing.B) {
 	}
 
 	buf := make([]byte, group.Size())
-
+	var bb []byte
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		group.Marshal(buf)
+		bb, _ = group.Marshal(buf)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByGencode(b *testing.B) {
 	var group = GencodeColorGroup{
@@ -468,8 +359,10 @@ func BenchmarkMarshalByUgorjiCodecAndCbor(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		buf.Reset()
-		_ = enc.Encode(group)
+		enc.Encode(group)
 	}
+
+	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
 }
 func BenchmarkUnmarshalByUgorjiCodecAndCbor(b *testing.B) {
 	var buf bytes.Buffer
@@ -498,6 +391,8 @@ func BenchmarkMarshalByUgorjiCodecAndMsgp(b *testing.B) {
 		buf.Reset()
 		_ = enc.Encode(group)
 	}
+
+	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
 }
 func BenchmarkUnmarshalByUgorjiCodecAndMsgp(b *testing.B) {
 	var buf bytes.Buffer
@@ -525,6 +420,8 @@ func BenchmarkMarshalByUgorjiCodecAndBinc(b *testing.B) {
 		buf.Reset()
 		_ = enc.Encode(group)
 	}
+
+	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
 }
 func BenchmarkUnmarshalByUgorjiCodecAndBinc(b *testing.B) {
 	var buf bytes.Buffer
@@ -553,6 +450,8 @@ func BenchmarkMarshalByUgorjiCodecAndJson(b *testing.B) {
 		buf.Reset()
 		_ = enc.Encode(group)
 	}
+
+	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
 }
 func BenchmarkUnmarshalByUgorjiCodecAndJson(b *testing.B) {
 	var buf bytes.Buffer
@@ -572,12 +471,16 @@ func BenchmarkUnmarshalByUgorjiCodecAndJson(b *testing.B) {
 }
 
 func BenchmarkMarshalByEasyjson(b *testing.B) {
+	var bb []byte
+	var err error
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		if _, err := egroup.MarshalJSON(); err != nil {
+		if bb, err = egroup.MarshalJSON(); err != nil {
 			b.Fatal(err)
 		}
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByEasyjson(b *testing.B) {
 	data, err := egroup.MarshalJSON()
@@ -595,12 +498,17 @@ func BenchmarkUnmarshalByEasyjson(b *testing.B) {
 }
 
 func BenchmarkMarshalByFfjson(b *testing.B) {
+	var bb []byte
+	var err error
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		if _, err := fgroup.MarshalJSON(); err != nil {
+		if bb, err = fgroup.MarshalJSON(); err != nil {
 			b.Fatal(err)
 		}
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByFfjson(b *testing.B) {
 	data, err := fgroup.MarshalJSON()
@@ -618,12 +526,16 @@ func BenchmarkUnmarshalByFfjson(b *testing.B) {
 }
 
 func BenchmarkMarshalByJsoniter(b *testing.B) {
+	var bb []byte
+	var err error
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		if _, err := jsoniter.Marshal(&group); err != nil {
+		if bb, err = jsoniter.Marshal(&group); err != nil {
 			b.Fatal(err)
 		}
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByJsoniter(b *testing.B) {
 	data, err := jsoniter.Marshal(&group)
@@ -686,6 +598,8 @@ func BenchmarkMarshalByGoMemdump(b *testing.B) {
 		buf.Reset()
 		memdump.Encode(&buf, &group)
 	}
+
+	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
 }
 func BenchmarkUnmarshalByGoMemdump(b *testing.B) {
 	result := &ColorGroup{}
@@ -709,6 +623,8 @@ func BenchmarkMarshalByColfer(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		colferGroup.MarshalTo(buf)
 	}
+
+	b.ReportMetric(float64(l), "marshaledBytes")
 }
 
 func BenchmarkUnmarshalByColfer(b *testing.B) {
@@ -727,6 +643,8 @@ func BenchmarkMarshalByZebrapack(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		bytes, _ = zgroup.MarshalMsg(bytes)
 	}
+
+	b.ReportMetric(float64(len(bytes)), "marshaledBytes")
 }
 
 func BenchmarkUnmarshalByZebrapack(b *testing.B) {
@@ -746,19 +664,19 @@ func BenchmarkMarshalByGotiny(b *testing.B) {
 	var bytes []byte
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		bytes = gotiny.Encodes(&group)
+		bytes = gotiny.Marshal(&group)
 	}
 
-	_ = bytes
+	b.ReportMetric(float64(len(bytes)), "marshaledBytes")
 }
 
 func BenchmarkUnmarshalByGotiny(b *testing.B) {
-	bytes := gotiny.Encodes(&group)
+	bytes := gotiny.Marshal(&group)
+
 	v := &ColorGroup{}
-	//b.SetBytes(int64(len(bts)))
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		gotiny.Decodes(bytes, v)
+		gotiny.Unmarshal(bytes, v)
 	}
 }
 
@@ -790,10 +708,13 @@ func BenchmarkMarshalByHprose(b *testing.B) {
 	writer := hprose.NewWriter(true)
 	s := &HproseSerializer{writer: writer}
 
+	var bb []byte
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		_ = s.Marshal(&group)
+		bb = s.Marshal(&group)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 
 func BenchmarkUnmarshalByHprose(b *testing.B) {
@@ -815,10 +736,14 @@ func BenchmarkUnmarshalByHprose(b *testing.B) {
 func BenchmarkMarshalBySereal(b *testing.B) {
 	encoder := sereal.NewEncoderV3()
 
+	var bb []byte
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		encoder.Marshal(&group)
+		bb, _ = encoder.Marshal(&group)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 
 func BenchmarkUnmarshalBySereal(b *testing.B) {
@@ -834,10 +759,14 @@ func BenchmarkUnmarshalBySereal(b *testing.B) {
 }
 
 func BenchmarkMarshalByMsgpackV2(b *testing.B) {
+	var bb []byte
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		msgpackv2.Marshal(&group)
+		bb, _ = msgpackv2.Marshal(&group)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByMsgpackv2(b *testing.B) {
 	bytes, _ := msgpackv2.Marshal(&group)
@@ -849,10 +778,14 @@ func BenchmarkUnmarshalByMsgpackv2(b *testing.B) {
 }
 
 func BenchmarkMarshalByRlp(b *testing.B) {
+	var bb []byte
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		rlp.EncodeToBytes(&rlpgroup)
+		bb, _ = rlp.EncodeToBytes(&rlpgroup)
 	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByRlp(b *testing.B) {
 	bytes, _ := rlp.EncodeToBytes(&rlpgroup)
