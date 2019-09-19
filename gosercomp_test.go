@@ -644,7 +644,7 @@ func BenchmarkMarshalByZebrapack(b *testing.B) {
 		bytes, _ = zgroup.MarshalMsg(bytes)
 	}
 
-	b.ReportMetric(float64(len(bytes)), "marshaledBytes")
+	b.ReportMetric(float64(zgroup.Msgsize()), "marshaledBytes")
 }
 
 func BenchmarkUnmarshalByZebrapack(b *testing.B) {
@@ -711,6 +711,7 @@ func BenchmarkMarshalByHprose(b *testing.B) {
 	var bb []byte
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		writer.Clear()
 		bb = s.Marshal(&group)
 	}
 
