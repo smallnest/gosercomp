@@ -50,6 +50,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/pquerna/ffjson v0.0.0-20190930134022-aa0246cd15f7 h1:xoIK0ctDddBMnc74udxJYBqlo9Ylnsp1waqjLsnef20=
 github.com/pquerna/ffjson v0.0.0-20190930134022-aa0246cd15f7/go.mod h1:YARuvh7BUWHNhzDq2OM5tzR2RiCcN2D7sapiKyCel/M=
+github.com/sbinet/go-gnuplot v0.0.0-20130514120836-9167d8eb1ac4 h1:DjPYuV8FWDg57bkdJ2DQUB6PMQJUapXdJ1uCvPC7XT0=
+github.com/sbinet/go-gnuplot v0.0.0-20130514120836-9167d8eb1ac4/go.mod h1:cBjaN6xLFdcYFeCkvNXnUCPPeHA23BR6Yg6liSwsLjE=
 github.com/segmentio/encoding v0.1.0 h1:V/FrZFA2Fm4Hpk3JdA+3JWN6fJnp15dZOnB+CI3Wcbw=
 github.com/segmentio/encoding v0.1.0/go.mod h1:RWhr02uzMB9gQC1x+MfYxedtmBibb9cZ6Vv9VxRSSbw=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

@@ -20,6 +20,7 @@ require (
 	github.com/niubaoshu/gotiny v0.0.3
 	github.com/philhofer/fwd v1.0.0 // indirect
 	github.com/pquerna/ffjson v0.0.0-20190930134022-aa0246cd15f7
+	github.com/sbinet/go-gnuplot v0.0.0-20130514120836-9167d8eb1ac4
 	github.com/segmentio/encoding v0.1.0
 	github.com/tidwall/gjson v1.3.2
 	github.com/tinylib/msgp v1.1.0

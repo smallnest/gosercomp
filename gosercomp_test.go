@@ -1,4 +1,4 @@
-package gosercomp
+package main
 
 import (
 	"bytes"
