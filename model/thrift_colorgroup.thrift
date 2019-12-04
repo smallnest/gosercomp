@@ -1,4 +1,4 @@
-namespace go gosercomp
+namespace go model
 
 struct ThriftColorGroup {
   1: i32 id = 0,

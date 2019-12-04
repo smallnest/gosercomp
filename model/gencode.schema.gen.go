@@ -1,4 +1,4 @@
-package gosercomp
+package model
 
 import (
 	"io"

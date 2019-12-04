@@ -1,5 +1,6 @@
-package gosercomp;
+syntax="proto2";
 
+package model;
 
 message GogoProtoColorGroup {
     required int32 id = 1;

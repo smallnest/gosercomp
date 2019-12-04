@@ -1,4 +1,6 @@
-package gosercomp;
+syntax="proto2";
+
+package model;
 
 
 message ProtoColorGroup {

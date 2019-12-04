@@ -1,0 +1,7 @@
+package model
+
+type ColferColorGroup struct {
+	id     int32
+	name   text
+	colors []text
+}

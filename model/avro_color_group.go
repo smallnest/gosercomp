@@ -4,54 +4,87 @@
  *     data.avsc
  */
 
-package gosercomp
+package model
 
 import (
-	"io"
-
 	"github.com/actgardner/gogen-avro/compiler"
-	"github.com/actgardner/gogen-avro/container"
 	"github.com/actgardner/gogen-avro/vm"
 	"github.com/actgardner/gogen-avro/vm/types"
+	"io"
 )
 
 type AvroColorGroup struct {
-	Id     int32
-	Name   string
+	Id int32
+
+	Name string
+
 	Colors []string
-}
-
-func NewAvroColorGroupWriter(writer io.Writer, codec container.Codec, recordsPerBlock int64) (*container.Writer, error) {
-	str := &AvroColorGroup{}
-	return container.NewWriter(writer, codec, recordsPerBlock, str.Schema())
-}
-
-func DeserializeAvroColorGroup(r io.Reader) (*AvroColorGroup, error) {
-	t := NewAvroColorGroup()
-
-	deser, err := compiler.CompileSchemaBytes([]byte(t.Schema()), []byte(t.Schema()))
-	if err != nil {
-		return nil, err
-	}
-
-	err = vm.Eval(r, deser, t)
-	return t, err
 }
 
 func NewAvroColorGroup() *AvroColorGroup {
 	return &AvroColorGroup{}
 }
 
-func (r *AvroColorGroup) Schema() string {
-	return "{\"fields\":[{\"name\":\"id\",\"type\":\"int\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"colors\",\"type\":{\"items\":\"string\",\"type\":\"array\"}}],\"name\":\"AvroColorGroup\",\"namespace\":\"gosercomp\",\"type\":\"record\"}"
+func DeserializeAvroColorGroup(r io.Reader) (*AvroColorGroup, error) {
+	t := NewAvroColorGroup()
+	deser, err := compiler.CompileSchemaBytes([]byte(t.Schema()), []byte(t.Schema()))
+	if err != nil {
+		return nil, err
+	}
+
+	err = vm.Eval(r, deser, t)
+	if err != nil {
+		return nil, err
+	}
+	return t, err
 }
 
-func (r *AvroColorGroup) SchemaName() string {
-	return "gosercomp.AvroColorGroup"
+func DeserializeAvroColorGroupFromSchema(r io.Reader, schema string) (*AvroColorGroup, error) {
+	t := NewAvroColorGroup()
+
+	deser, err := compiler.CompileSchemaBytes([]byte(schema), []byte(t.Schema()))
+	if err != nil {
+		return nil, err
+	}
+
+	err = vm.Eval(r, deser, t)
+	if err != nil {
+		return nil, err
+	}
+	return t, err
+}
+
+func writeAvroColorGroup(r *AvroColorGroup, w io.Writer) error {
+	var err error
+
+	err = vm.WriteInt(r.Id, w)
+	if err != nil {
+		return err
+	}
+
+	err = vm.WriteString(r.Name, w)
+	if err != nil {
+		return err
+	}
+
+	err = writeArrayString(r.Colors, w)
+	if err != nil {
+		return err
+	}
+
+	return err
 }
 
 func (r *AvroColorGroup) Serialize(w io.Writer) error {
 	return writeAvroColorGroup(r, w)
+}
+
+func (r *AvroColorGroup) Schema() string {
+	return "{\"fields\":[{\"name\":\"id\",\"type\":\"int\"},{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"colors\",\"type\":{\"items\":\"string\",\"type\":\"array\"}}],\"name\":\"AvroColorGroup\",\"namespace\":\"model\",\"type\":\"record\"}"
+}
+
+func (r *AvroColorGroup) SchemaName() string {
+	return "model.AvroColorGroup"
 }
 
 func (_ *AvroColorGroup) SetBoolean(v bool)    { panic("Unsupported operation") }
@@ -62,54 +95,35 @@ func (_ *AvroColorGroup) SetDouble(v float64)  { panic("Unsupported operation") 
 func (_ *AvroColorGroup) SetBytes(v []byte)    { panic("Unsupported operation") }
 func (_ *AvroColorGroup) SetString(v string)   { panic("Unsupported operation") }
 func (_ *AvroColorGroup) SetUnionElem(v int64) { panic("Unsupported operation") }
+
 func (r *AvroColorGroup) Get(i int) types.Field {
 	switch i {
+
 	case 0:
+
 		return (*types.Int)(&r.Id)
+
 	case 1:
+
 		return (*types.String)(&r.Name)
+
 	case 2:
+
 		r.Colors = make([]string, 0)
+
 		return (*ArrayStringWrapper)(&r.Colors)
 
 	}
 	panic("Unknown field index")
 }
+
 func (r *AvroColorGroup) SetDefault(i int) {
 	switch i {
 
 	}
 	panic("Unknown field index")
 }
+
 func (_ *AvroColorGroup) AppendMap(key string) types.Field { panic("Unsupported operation") }
 func (_ *AvroColorGroup) AppendArray() types.Field         { panic("Unsupported operation") }
 func (_ *AvroColorGroup) Finalize()                        {}
-
-type AvroColorGroupReader struct {
-	r io.Reader
-	p *vm.Program
-}
-
-func NewAvroColorGroupReader(r io.Reader) (*AvroColorGroupReader, error) {
-	containerReader, err := container.NewReader(r)
-	if err != nil {
-		return nil, err
-	}
-
-	t := NewAvroColorGroup()
-	deser, err := compiler.CompileSchemaBytes([]byte(containerReader.AvroContainerSchema()), []byte(t.Schema()))
-	if err != nil {
-		return nil, err
-	}
-
-	return &AvroColorGroupReader{
-		r: containerReader,
-		p: deser,
-	}, nil
-}
-
-func (r *AvroColorGroupReader) Read() (*AvroColorGroup, error) {
-	t := NewAvroColorGroup()
-	err := vm.Eval(r.r, r.p, t)
-	return t, err
-}

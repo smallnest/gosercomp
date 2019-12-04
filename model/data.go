@@ -1,7 +1,6 @@
-package gosercomp
+package model
 
-//go:generate easyjson -all
-type EColorGroup struct {
+type ColorGroup struct {
 	Id     int      `json:"id" xml:"id,attr" msg:"id"`
 	Name   string   `json:"name" xml:"name" msg:"name"`
 	Colors []string `json:"colors" xml:"colors" msg:"colors"`

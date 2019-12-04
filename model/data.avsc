@@ -1,4 +1,4 @@
-{"namespace": "gosercomp",
+{"namespace": "model",
 "type": "record",
 "name": "AvroColorGroup",
 "fields": [
