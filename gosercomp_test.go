@@ -22,6 +22,7 @@ import (
 	"github.com/Sereal/Sereal/Go/sereal"
 	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/niubaoshu/gotiny"
+	sjson "github.com/segmentio/encoding/json"
 	msgpackv2 "gopkg.in/vmihailenco/msgpack.v2"
 )
 
@@ -794,5 +795,22 @@ func BenchmarkUnmarshalByRlp(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		rlp.DecodeBytes(bytes, v)
+	}
+}
+
+func BenchmarkMarshalBySegmentioJSON(b *testing.B) {
+	var bb []byte
+	for i := 0; i < b.N; i++ {
+		bb, _ = sjson.Marshal(group)
+	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+}
+func BenchmarkUnmarshalBySegmentioJSON(b *testing.B) {
+	bytes, _ := json.Marshal(group)
+	result := ColorGroup{}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		sjson.Unmarshal(bytes, &result)
 	}
 }
