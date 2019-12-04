@@ -99,5 +99,29 @@ BenchmarkMarshalBySegmentioJSON-4        	 2069793	       584 ns/op	        65.0
 **Unmarshal**
 
 ```
-
+BenchmarkUnmarshalByJson-4                 	  474681	      2354 ns/op
+BenchmarkUnmarshalByXml-4                  	   93476	     12787 ns/op
+BenchmarkUnmarshalByMsgp-4                 	 5169606	       201 ns/op
+BenchmarkUnmarshalByProtoBuf-4             	 2382018	       507 ns/op
+BenchmarkUnmarshalByGogoProtoBuf-4         	 2882487	       413 ns/op
+BenchmarkUnmarshalByThrift-4               	 1000000	      1303 ns/op
+BenchmarkUnmarshalByAvro-4                 	   40338	     26255 ns/op
+BenchmarkUnmarshalByGencode-4              	 9043816	       148 ns/op
+BenchmarkUnmarshalByUgorjiCodecAndCbor-4   	 1339586	       884 ns/op
+BenchmarkUnmarshalByUgorjiCodecAndMsgp-4   	 1000000	      1319 ns/op
+BenchmarkUnmarshalByUgorjiCodecAndBinc-4   	  867388	      1458 ns/op
+BenchmarkUnmarshalByUgorjiCodecAndJson-4   	 1000000	      1199 ns/op
+BenchmarkUnmarshalByEasyjson-4             	 1929847	       707 ns/op
+BenchmarkUnmarshalByFfjson-4               	  844473	      2286 ns/op
+BenchmarkUnmarshalByJsoniter-4             	 1966244	       808 ns/op
+BenchmarkUnmarshalByGJSON-4                	  589440	      2668 ns/op
+BenchmarkUnmarshalByGoMemdump-4            	  844342	      1500 ns/op
+BenchmarkUnmarshalByColfer-4               	 5667135	       247 ns/op
+BenchmarkUnmarshalByZebrapack-4            	 3494541	       323 ns/op
+BenchmarkUnmarshalByGotiny-4               	 3546631	       488 ns/op
+BenchmarkUnmarshalByHprose-4               	 1779548	       664 ns/op
+BenchmarkUnmarshalBySereal-4               	 1714032	       699 ns/op
+BenchmarkUnmarshalByMsgpackv2-4            	 1000000	      1731 ns/op
+BenchmarkUnmarshalByRlp-4                  	 1000000	      1019 ns/op
+BenchmarkUnmarshalBySegmentioJSON-4        	 1792550	       663 ns/op
 ```
