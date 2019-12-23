@@ -15,19 +15,14 @@ require (
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/hprose/hprose-golang v2.0.4+incompatible
 	github.com/json-iterator/go v1.1.7
-	github.com/kr/pretty v0.1.0 // indirect
 	github.com/mailru/easyjson v0.7.0
 	github.com/niubaoshu/gotiny v0.0.3
 	github.com/philhofer/fwd v1.0.0 // indirect
 	github.com/pquerna/ffjson v0.0.0-20190930134022-aa0246cd15f7
-	github.com/sbinet/go-gnuplot v0.0.0-20130514120836-9167d8eb1ac4
 	github.com/segmentio/encoding v0.1.0
 	github.com/tidwall/gjson v1.3.2
-	github.com/tinylib/msgp v1.1.0
+	github.com/tinylib/msgp v1.1.1
 	github.com/ugorji/go/codec v1.1.7
 	github.com/vmihailenco/msgpack/v4 v4.3.0
-	golang.org/x/crypto v0.0.0-20190605123033-f99c8df09eb5 // indirect
-	golang.org/x/sys v0.0.0-20190606165138-5da285871e9c // indirect
-	golang.org/x/tools v0.0.0-20190606124116-d0a3d012864b // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 )

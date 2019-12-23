@@ -25,7 +25,8 @@ import (
 )
 
 func BenchmarkMarshalByJson(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		bb, _ = json.Marshal(group)
 	}
@@ -42,7 +43,8 @@ func BenchmarkUnmarshalByJson(b *testing.B) {
 }
 
 func BenchmarkMarshalByXml(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		bb, _ = xml.Marshal(group)
 	}
@@ -58,22 +60,10 @@ func BenchmarkUnmarshalByXml(b *testing.B) {
 	}
 }
 
-// func BenchmarkMarshalByBson(b *testing.B) {
-// 	for i := 0; i < b.N; i++ {
-// 		vitessbson.Marshal(group)
-// 	}
-// }
-// func BenchmarkUnmarshalByBson(b *testing.B) {
-// 	bytes, _ := vitessbson.Marshal(group)
-// 	result := ColorGroup{}
-// 	b.ResetTimer()
-// 	for i := 0; i < b.N; i++ {
-// 		vitessbson.Unmarshal(bytes, &result)
-// 	}
-// }
-
 func BenchmarkMarshalByMsgp(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
+	b.ResetTimer()
+
 	for i := 0; i < b.N; i++ {
 		bb, _ = group.MarshalMsg(nil)
 	}
@@ -89,16 +79,18 @@ func BenchmarkUnmarshalByMsgp(b *testing.B) {
 }
 
 func BenchmarkMarshalByProtoBuf(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
+
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		bb, _ = proto.Marshal(&protobufGroup)
 	}
-
 	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByProtoBuf(b *testing.B) {
 	bytes, _ := proto.Marshal(&protobufGroup)
 	result := model.ProtoColorGroup{}
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		proto.Unmarshal(bytes, &result)
@@ -106,7 +98,9 @@ func BenchmarkUnmarshalByProtoBuf(b *testing.B) {
 }
 
 func BenchmarkMarshalByGogoProtoBuf(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
+
+	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		bb, _ = goproto.Marshal(&gogoProtobufGroup)
 	}
@@ -116,6 +110,7 @@ func BenchmarkMarshalByGogoProtoBuf(b *testing.B) {
 func BenchmarkUnmarshalByGogoProtoBuf(b *testing.B) {
 	bytes, _ := proto.Marshal(&gogoProtobufGroup)
 	result := model.GogoProtoColorGroup{}
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		goproto.Unmarshal(bytes, &result)
@@ -127,7 +122,8 @@ func BenchmarkMarshalByThrift(b *testing.B) {
 	pf := thrift.NewTBinaryProtocolFactoryDefault() //NewTCompactProtocolFactory() or NewTJSONProtocolFactory()
 	t.Protocol = pf.GetProtocol(t.Transport)
 
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		bb, _ = t.Write(context.Background(), &thriftColorGroup)
@@ -152,18 +148,20 @@ func BenchmarkUnmarshalByThrift(b *testing.B) {
 }
 
 func BenchmarkMarshalByAvro(b *testing.B) {
-	buf := new(bytes.Buffer)
+
+	var bb = make([]byte, 0, 1024)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		buf.Reset()
+		buf := new(bytes.Buffer)
 		err := avroGroup.Serialize(buf)
 		if err != nil {
 			b.Fatal(err)
 		}
+		bb = buf.Bytes()
 	}
 
-	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 
 func BenchmarkUnmarshalByAvro(b *testing.B) {
@@ -193,11 +191,10 @@ func BenchmarkMarshalByGencode(b *testing.B) {
 		Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 	}
 
-	buf := make([]byte, group.Size())
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		bb, _ = group.Marshal(buf)
+		bb, _ = group.Marshal(bb)
 	}
 
 	b.ReportMetric(float64(len(bb)), "marshaledBytes")
@@ -210,7 +207,6 @@ func BenchmarkUnmarshalByGencode(b *testing.B) {
 	}
 
 	buf, _ := group.Marshal(nil)
-
 	var groupResult model.GencodeColorGroup
 
 	b.ResetTimer()
@@ -221,7 +217,7 @@ func BenchmarkUnmarshalByGencode(b *testing.B) {
 
 func BenchmarkMarshalByUgorjiCodecAndCbor(b *testing.B) {
 	var ch codec.CborHandle
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -251,13 +247,14 @@ func BenchmarkUnmarshalByUgorjiCodecAndCbor(b *testing.B) {
 
 func BenchmarkMarshalByUgorjiCodecAndMsgp(b *testing.B) {
 	var mh codec.MsgpackHandle
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		var buf bytes.Buffer
 		enc := codec.NewEncoder(&buf, &mh)
 		_ = enc.Encode(group)
+		bb = buf.Bytes()
 	}
 
 	b.ReportMetric(float64(len(bb)), "marshaledBytes")
@@ -269,9 +266,10 @@ func BenchmarkUnmarshalByUgorjiCodecAndMsgp(b *testing.B) {
 	_ = enc.Encode(group)
 
 	objectBytes := buf.Bytes()
-	var g model.ColorGroup
+
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
+		var g model.ColorGroup
 		dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 		_ = dec.Decode(&g)
 	}
@@ -279,7 +277,7 @@ func BenchmarkUnmarshalByUgorjiCodecAndMsgp(b *testing.B) {
 
 func BenchmarkMarshalByUgorjiCodecAndBinc(b *testing.B) {
 	var mh codec.BincHandle
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -308,7 +306,7 @@ func BenchmarkUnmarshalByUgorjiCodecAndBinc(b *testing.B) {
 
 func BenchmarkMarshalByUgorjiCodecAndJson(b *testing.B) {
 	var mh codec.JsonHandle
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -337,7 +335,7 @@ func BenchmarkUnmarshalByUgorjiCodecAndJson(b *testing.B) {
 }
 
 func BenchmarkMarshalByEasyjson(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 	var err error
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -364,7 +362,7 @@ func BenchmarkUnmarshalByEasyjson(b *testing.B) {
 }
 
 func BenchmarkMarshalByFfjson(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 	var err error
 
 	b.ResetTimer()
@@ -392,7 +390,7 @@ func BenchmarkUnmarshalByFfjson(b *testing.B) {
 }
 
 func BenchmarkMarshalByJsoniter(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 	var err error
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -434,15 +432,16 @@ func BenchmarkUnmarshalByGJSON(b *testing.B) {
 }
 
 func BenchmarkMarshalByGoMemdump(b *testing.B) {
-	var buf bytes.Buffer
-	//w := bufio.NewWriter(&buf)
+	var bb []byte
 
 	for i := 0; i < b.N; i++ {
+		var buf bytes.Buffer
 		buf.Reset()
 		memdump.Encode(&buf, &group)
+		bb = buf.Bytes()
 	}
 
-	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByGoMemdump(b *testing.B) {
 	result := &model.ColorGroup{}
@@ -460,7 +459,7 @@ func BenchmarkUnmarshalByGoMemdump(b *testing.B) {
 
 func BenchmarkMarshalByColfer(b *testing.B) {
 	l, _ := colferGroup.MarshalLen()
-	buf := make([]byte, l)
+	buf := make([]byte, 1024)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -481,7 +480,7 @@ func BenchmarkUnmarshalByColfer(b *testing.B) {
 }
 
 func BenchmarkMarshalByZebrapack(b *testing.B) {
-	var bytes []byte
+	var bytes = make([]byte, 0, 1024)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		bytes, _ = zgroup.MarshalMsg(bytes)
@@ -504,7 +503,7 @@ func BenchmarkUnmarshalByZebrapack(b *testing.B) {
 }
 
 func BenchmarkMarshalByGotiny(b *testing.B) {
-	var bytes []byte
+	var bytes = make([]byte, 0, 1024)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		bytes = gotiny.Marshal(&group)
@@ -551,7 +550,7 @@ func BenchmarkMarshalByHprose(b *testing.B) {
 	writer := hprose.NewWriter(true)
 	s := &HproseSerializer{writer: writer}
 
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		writer.Clear()
@@ -580,7 +579,7 @@ func BenchmarkUnmarshalByHprose(b *testing.B) {
 func BenchmarkMarshalBySereal(b *testing.B) {
 	encoder := sereal.NewEncoderV3()
 
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -603,7 +602,7 @@ func BenchmarkUnmarshalBySereal(b *testing.B) {
 }
 
 func BenchmarkMarshalByVmihMsgpackv4(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -622,7 +621,7 @@ func BenchmarkUnmarshalByVmihMsgpackv4(b *testing.B) {
 }
 
 func BenchmarkMarshalByRlp(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
@@ -641,7 +640,7 @@ func BenchmarkUnmarshalByRlp(b *testing.B) {
 }
 
 func BenchmarkMarshalBySegmentioJSON(b *testing.B) {
-	var bb []byte
+	var bb = make([]byte, 0, 1024)
 	for i := 0; i < b.N; i++ {
 		bb, _ = sjson.Marshal(group)
 	}
