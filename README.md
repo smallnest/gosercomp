@@ -18,7 +18,7 @@ This project test the below go serializers, which compares with go standard _jso
 - [gotiny](https://github.com/niubaoshu/gotiny)
 - [github.com/ugorji/go/codec](http://github.com/ugorji/go/codec)
 - [hprose-golang](https://github.com/hprose/hprose-golang/tree/master/io)
-- [vmihailenco/msgpack.v2](https://github.com/vmihailenco/msgpack)
+- [vmihailenco/msgpack/v4](https://github.com/vmihailenco/msgpack)
 - [Sereal](https://github.com/Sereal/Sereal)
 - [ffjson](https://github.com/pquerna/ffjson)
 - [easyjson](https://github.com/mailru/easyjson)
@@ -34,7 +34,6 @@ Given existed [benchmark](https://github.com/alecthomas/go_serialization_benchma
 - [github.com/davecgh/go-xdr/xdr](http://github.com/davecgh/go-xdr/xdr)
 - [labix.org/v2/mgo/bson](http://labix.org/v2/mgo/bson)
 - [github.com/DeDiS/protobuf](http://github.com/DeDiS/protobuf)
-- [gopkg.in/vmihailenco/msgpack.v2](http://gopkg.in/vmihailenco/msgpack.v2)
 - [bson](http://github.com/micro/go-bson)
 - [go-memdump](https://github.com/alexflint/go-memdump)
 - [github.com/google/flatbuffers](http://github.com/google/flatbuffers)
@@ -46,7 +45,7 @@ go version: **1.13.4**
 **Test:**
 
 ```
-go test -bench=. 
+go test -bench=.
 ```
 
 ### Test Data Model
