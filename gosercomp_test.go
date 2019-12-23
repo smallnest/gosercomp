@@ -220,17 +220,18 @@ func BenchmarkUnmarshalByGencode(b *testing.B) {
 }
 
 func BenchmarkMarshalByUgorjiCodecAndCbor(b *testing.B) {
-	var buf bytes.Buffer
 	var ch codec.CborHandle
-	enc := codec.NewEncoder(&buf, &ch)
+	var bb []byte
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		buf.Reset()
+		var buf bytes.Buffer
+		enc := codec.NewEncoder(&buf, &ch)
 		enc.Encode(group)
+		bb = buf.Bytes()
 	}
 
-	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByUgorjiCodecAndCbor(b *testing.B) {
 	var buf bytes.Buffer
@@ -241,26 +242,25 @@ func BenchmarkUnmarshalByUgorjiCodecAndCbor(b *testing.B) {
 	objectBytes := buf.Bytes()
 
 	var g model.ColorGroup
-	dec := codec.NewDecoder(bytes.NewReader(objectBytes), &ch)
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		dec.ResetBytes(objectBytes)
+		dec := codec.NewDecoder(bytes.NewReader(objectBytes), &ch)
 		_ = dec.Decode(&g)
 	}
 }
 
 func BenchmarkMarshalByUgorjiCodecAndMsgp(b *testing.B) {
-	var buf bytes.Buffer
 	var mh codec.MsgpackHandle
-	enc := codec.NewEncoder(&buf, &mh)
+	var bb []byte
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		buf.Reset()
+		var buf bytes.Buffer
+		enc := codec.NewEncoder(&buf, &mh)
 		_ = enc.Encode(group)
 	}
 
-	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByUgorjiCodecAndMsgp(b *testing.B) {
 	var buf bytes.Buffer
@@ -269,27 +269,27 @@ func BenchmarkUnmarshalByUgorjiCodecAndMsgp(b *testing.B) {
 	_ = enc.Encode(group)
 
 	objectBytes := buf.Bytes()
-	dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 	var g model.ColorGroup
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		dec.ResetBytes(objectBytes)
+		dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 		_ = dec.Decode(&g)
 	}
 }
 
 func BenchmarkMarshalByUgorjiCodecAndBinc(b *testing.B) {
-	var buf bytes.Buffer
 	var mh codec.BincHandle
-	enc := codec.NewEncoder(&buf, &mh)
+	var bb []byte
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		buf.Reset()
+		var buf bytes.Buffer
+		enc := codec.NewEncoder(&buf, &mh)
 		_ = enc.Encode(group)
+		bb = buf.Bytes()
 	}
 
-	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByUgorjiCodecAndBinc(b *testing.B) {
 	var buf bytes.Buffer
@@ -298,28 +298,27 @@ func BenchmarkUnmarshalByUgorjiCodecAndBinc(b *testing.B) {
 	_ = enc.Encode(group)
 
 	objectBytes := buf.Bytes()
-	dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 	var g model.ColorGroup
-
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		dec.ResetBytes(objectBytes)
+		dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 		_ = dec.Decode(&g)
 	}
 }
 
 func BenchmarkMarshalByUgorjiCodecAndJson(b *testing.B) {
-	var buf bytes.Buffer
 	var mh codec.JsonHandle
-	enc := codec.NewEncoder(&buf, &mh)
+	var bb []byte
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		buf.Reset()
+		var buf bytes.Buffer
+		enc := codec.NewEncoder(&buf, &mh)
 		_ = enc.Encode(group)
+		bb = buf.Bytes()
 	}
 
-	b.ReportMetric(float64(len(buf.Bytes())), "marshaledBytes")
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
 func BenchmarkUnmarshalByUgorjiCodecAndJson(b *testing.B) {
 	var buf bytes.Buffer
@@ -328,12 +327,11 @@ func BenchmarkUnmarshalByUgorjiCodecAndJson(b *testing.B) {
 	_ = enc.Encode(group)
 
 	objectBytes := buf.Bytes()
-	dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 	var g model.ColorGroup
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		dec.ResetBytes(objectBytes)
+		dec := codec.NewDecoder(bytes.NewReader(objectBytes), &mh)
 		_ = dec.Decode(&g)
 	}
 }
