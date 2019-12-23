@@ -21,7 +21,7 @@ import (
 	model "github.com/smallnest/gosercomp/model"
 	"github.com/tidwall/gjson"
 	"github.com/ugorji/go/codec"
-	msgpackv2 "gopkg.in/vmihailenco/msgpack.v2"
+	msgpackv4 "github.com/vmihailenco/msgpack/v4"
 )
 
 func BenchmarkMarshalByJson(b *testing.B) {
@@ -604,22 +604,22 @@ func BenchmarkUnmarshalBySereal(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshalByMsgpackV2(b *testing.B) {
+func BenchmarkMarshalByVmihMsgpackv4(b *testing.B) {
 	var bb []byte
 
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		bb, _ = msgpackv2.Marshal(&group)
+		bb, _ = msgpackv4.Marshal(&group)
 	}
 
 	b.ReportMetric(float64(len(bb)), "marshaledBytes")
 }
-func BenchmarkUnmarshalByMsgpackv2(b *testing.B) {
-	bytes, _ := msgpackv2.Marshal(&group)
+func BenchmarkUnmarshalByVmihMsgpackv4(b *testing.B) {
+	bytes, _ := msgpackv4.Marshal(&group)
 	v := &model.ColorGroup{}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		msgpackv2.Unmarshal(bytes, v)
+		msgpackv4.Unmarshal(bytes, v)
 	}
 }
 
