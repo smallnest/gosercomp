@@ -24,6 +24,7 @@ This project test the below go serializers, which compares with go standard _jso
 - [easyjson](https://github.com/mailru/easyjson)
 - [jsoniter](https://github.com/json-iterator/go)
 - [go-ethereum/rlp](https://github.com/ethereum/go-ethereum)
+- [go-memdump](https://github.com/alexflint/go-memdump)
 
 ###  Excluded Serializers
 
@@ -35,9 +36,7 @@ Given existed [benchmark](https://github.com/alecthomas/go_serialization_benchma
 - [labix.org/v2/mgo/bson](http://labix.org/v2/mgo/bson)
 - [github.com/DeDiS/protobuf](http://github.com/DeDiS/protobuf)
 - [bson](http://github.com/micro/go-bson)
-- [go-memdump](https://github.com/alexflint/go-memdump)
 - [github.com/google/flatbuffers](http://github.com/google/flatbuffers)
-- [go-memdump](https://github.com/alexflint/go-memdump)
 
 ### Test Environment
 go version: **1.13.4**
