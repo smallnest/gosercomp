@@ -49,8 +49,8 @@ var protobufGroup = model.ProtoColorGroup{
 }
 
 var gogoProtobufGroup = model.GogoProtoColorGroup{
-	Id:     1,
-	Name:   "Reds",
+	Id:     proto.Int32(1),
+	Name:   proto.String("Reds"),
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
 

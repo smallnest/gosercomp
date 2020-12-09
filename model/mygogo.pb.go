@@ -5,8 +5,8 @@ package model
 
 import (
 	fmt "fmt"
-	github_com_gogo_protobuf_proto "github.com/gogo/protobuf/proto"
-	proto "github.com/gogo/protobuf/proto"
+	github_com_golang_protobuf_proto "github.com/golang/protobuf/proto"
+	proto "github.com/golang/protobuf/proto"
 	io "io"
 	math "math"
 	math_bits "math/bits"
@@ -21,12 +21,15 @@ var _ = math.Inf
 // is compatible with the proto package it is being compiled against.
 // A compilation error at this line likely means your copy of the
 // proto package needs to be updated.
-const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
+const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type GogoProtoColorGroup struct {
-	Id     int32    `protobuf:"varint,1,req,name=id" json:"id"`
-	Name   string   `protobuf:"bytes,2,req,name=name" json:"name"`
-	Colors []string `protobuf:"bytes,3,rep,name=colors" json:"colors,omitempty"`
+	Id                   *int32   `protobuf:"varint,1,req,name=id" json:"id,omitempty"`
+	Name                 *string  `protobuf:"bytes,2,req,name=name" json:"name,omitempty"`
+	Colors               []string `protobuf:"bytes,3,rep,name=colors" json:"colors,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *GogoProtoColorGroup) Reset()         { *m = GogoProtoColorGroup{} }
@@ -63,15 +66,15 @@ func (m *GogoProtoColorGroup) XXX_DiscardUnknown() {
 var xxx_messageInfo_GogoProtoColorGroup proto.InternalMessageInfo
 
 func (m *GogoProtoColorGroup) GetId() int32 {
-	if m != nil {
-		return m.Id
+	if m != nil && m.Id != nil {
+		return *m.Id
 	}
 	return 0
 }
 
 func (m *GogoProtoColorGroup) GetName() string {
-	if m != nil {
-		return m.Name
+	if m != nil && m.Name != nil {
+		return *m.Name
 	}
 	return ""
 }
@@ -90,17 +93,16 @@ func init() {
 func init() { proto.RegisterFile("mygogo.proto", fileDescriptor_dd40715f6243e6fe) }
 
 var fileDescriptor_dd40715f6243e6fe = []byte{
-	// 150 bytes of a gzipped FileDescriptorProto
+	// 134 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0xc9, 0xad, 0x4c, 0xcf,
 	0x4f, 0xcf, 0xd7, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0xcd, 0xcd, 0x4f, 0x49, 0xcd, 0x51,
-	0x8a, 0xe5, 0x12, 0x76, 0xcf, 0x4f, 0xcf, 0x0f, 0x00, 0x89, 0x39, 0xe7, 0xe7, 0xe4, 0x17, 0xb9,
-	0x17, 0xe5, 0x97, 0x16, 0x08, 0x89, 0x70, 0x31, 0x65, 0xa6, 0x48, 0x30, 0x2a, 0x30, 0x69, 0xb0,
-	0x3a, 0xb1, 0x9c, 0xb8, 0x27, 0xcf, 0x10, 0xc4, 0x94, 0x99, 0x22, 0x24, 0xc1, 0xc5, 0x92, 0x97,
-	0x98, 0x9b, 0x2a, 0xc1, 0xa4, 0xc0, 0xa4, 0xc1, 0x09, 0x15, 0x07, 0x8b, 0x08, 0x89, 0x71, 0xb1,
-	0x25, 0x83, 0x74, 0x17, 0x4b, 0x30, 0x2b, 0x30, 0x6b, 0x70, 0x06, 0x41, 0x79, 0x4e, 0x12, 0x27,
-	0x1e, 0xc9, 0x31, 0x5e, 0x78, 0x24, 0xc7, 0xf8, 0xe0, 0x91, 0x1c, 0xe3, 0x84, 0xc7, 0x72, 0x0c,
-	0x17, 0x1e, 0xcb, 0x31, 0xdc, 0x78, 0x2c, 0xc7, 0x00, 0x08, 0x00, 0x00, 0xff, 0xff, 0x45, 0xb3,
-	0x54, 0x60, 0x8e, 0x00, 0x00, 0x00,
+	0x0a, 0xe4, 0x12, 0x76, 0xcf, 0x4f, 0xcf, 0x0f, 0x00, 0x89, 0x39, 0xe7, 0xe7, 0xe4, 0x17, 0xb9,
+	0x17, 0xe5, 0x97, 0x16, 0x08, 0xf1, 0x71, 0x31, 0x65, 0xa6, 0x48, 0x30, 0x2a, 0x30, 0x69, 0xb0,
+	0x06, 0x31, 0x65, 0xa6, 0x08, 0x09, 0x71, 0xb1, 0xe4, 0x25, 0xe6, 0xa6, 0x4a, 0x30, 0x29, 0x30,
+	0x69, 0x70, 0x06, 0x81, 0xd9, 0x42, 0x62, 0x5c, 0x6c, 0xc9, 0x20, 0x1d, 0xc5, 0x12, 0xcc, 0x0a,
+	0xcc, 0x1a, 0x9c, 0x41, 0x50, 0x9e, 0x93, 0xc0, 0x89, 0x47, 0x72, 0x8c, 0x17, 0x1e, 0xc9, 0x31,
+	0x3e, 0x78, 0x24, 0xc7, 0x38, 0xe3, 0xb1, 0x1c, 0x03, 0x20, 0x00, 0x00, 0xff, 0xff, 0xc1, 0x60,
+	0xde, 0x44, 0x7a, 0x00, 0x00, 0x00,
 }
 
 func (m *GogoProtoColorGroup) Marshal() (dAtA []byte, err error) {
@@ -123,6 +125,10 @@ func (m *GogoProtoColorGroup) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	_ = i
 	var l int
 	_ = l
+	if m.XXX_unrecognized != nil {
+		i -= len(m.XXX_unrecognized)
+		copy(dAtA[i:], m.XXX_unrecognized)
+	}
 	if len(m.Colors) > 0 {
 		for iNdEx := len(m.Colors) - 1; iNdEx >= 0; iNdEx-- {
 			i -= len(m.Colors[iNdEx])
@@ -132,14 +138,22 @@ func (m *GogoProtoColorGroup) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 			dAtA[i] = 0x1a
 		}
 	}
-	i -= len(m.Name)
-	copy(dAtA[i:], m.Name)
-	i = encodeVarintMygogo(dAtA, i, uint64(len(m.Name)))
-	i--
-	dAtA[i] = 0x12
-	i = encodeVarintMygogo(dAtA, i, uint64(m.Id))
-	i--
-	dAtA[i] = 0x8
+	if m.Name == nil {
+		return 0, new(github_com_golang_protobuf_proto.RequiredNotSetError)
+	} else {
+		i -= len(*m.Name)
+		copy(dAtA[i:], *m.Name)
+		i = encodeVarintMygogo(dAtA, i, uint64(len(*m.Name)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if m.Id == nil {
+		return 0, new(github_com_golang_protobuf_proto.RequiredNotSetError)
+	} else {
+		i = encodeVarintMygogo(dAtA, i, uint64(*m.Id))
+		i--
+		dAtA[i] = 0x8
+	}
 	return len(dAtA) - i, nil
 }
 
@@ -160,14 +174,21 @@ func (m *GogoProtoColorGroup) Size() (n int) {
 	}
 	var l int
 	_ = l
-	n += 1 + sovMygogo(uint64(m.Id))
-	l = len(m.Name)
-	n += 1 + l + sovMygogo(uint64(l))
+	if m.Id != nil {
+		n += 1 + sovMygogo(uint64(*m.Id))
+	}
+	if m.Name != nil {
+		l = len(*m.Name)
+		n += 1 + l + sovMygogo(uint64(l))
+	}
 	if len(m.Colors) > 0 {
 		for _, s := range m.Colors {
 			l = len(s)
 			n += 1 + l + sovMygogo(uint64(l))
 		}
+	}
+	if m.XXX_unrecognized != nil {
+		n += len(m.XXX_unrecognized)
 	}
 	return n
 }
@@ -212,7 +233,7 @@ func (m *GogoProtoColorGroup) Unmarshal(dAtA []byte) error {
 			if wireType != 0 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Id", wireType)
 			}
-			m.Id = 0
+			var v int32
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return ErrIntOverflowMygogo
@@ -222,11 +243,12 @@ func (m *GogoProtoColorGroup) Unmarshal(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.Id |= int32(b&0x7F) << shift
+				v |= int32(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
+			m.Id = &v
 			hasFields[0] |= uint64(0x00000001)
 		case 2:
 			if wireType != 2 {
@@ -258,7 +280,8 @@ func (m *GogoProtoColorGroup) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Name = string(dAtA[iNdEx:postIndex])
+			s := string(dAtA[iNdEx:postIndex])
+			m.Name = &s
 			iNdEx = postIndex
 			hasFields[0] |= uint64(0x00000002)
 		case 3:
@@ -308,14 +331,15 @@ func (m *GogoProtoColorGroup) Unmarshal(dAtA []byte) error {
 			if (iNdEx + skippy) > l {
 				return io.ErrUnexpectedEOF
 			}
+			m.XXX_unrecognized = append(m.XXX_unrecognized, dAtA[iNdEx:iNdEx+skippy]...)
 			iNdEx += skippy
 		}
 	}
 	if hasFields[0]&uint64(0x00000001) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("id")
+		return new(github_com_golang_protobuf_proto.RequiredNotSetError)
 	}
 	if hasFields[0]&uint64(0x00000002) == 0 {
-		return github_com_gogo_protobuf_proto.NewRequiredNotSetError("name")
+		return new(github_com_golang_protobuf_proto.RequiredNotSetError)
 	}
 
 	if iNdEx > l {
