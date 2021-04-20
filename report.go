@@ -27,7 +27,6 @@ func main() {
 	for i, name := range libs {
 		tookFile2.WriteString(fmt.Sprintf("%s,%d\n", name, tooks[i]))
 	}
-
 }
 
 func readMarshalLog() ([]string, []int, []int) {
@@ -52,7 +51,7 @@ func readMarshalLog() ([]string, []int, []int) {
 				name = name[:strings.Index(name, "-")]
 			}
 			libs = append(libs, name)
-			tooks = append(tooks, s2i(fields[2]))
+			tooks = append(tooks, int(s2f(fields[2])))
 			marshaledBytes = append(marshaledBytes, int(s2f(fields[4])))
 		}
 	}
@@ -80,7 +79,7 @@ func readUnmarshalLog() ([]string, []int) {
 				name = name[:strings.Index(name, "-")]
 			}
 			libs = append(libs, name)
-			tooks = append(tooks, s2i(fields[2]))
+			tooks = append(tooks, int(s2f(fields[2])))
 		}
 	}
 

@@ -75,3 +75,9 @@ var rlpgroup = model.RlpColorGroup{
 	Name:   "Reds",
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
 }
+
+var gojayGroup = &model.GojayColorGroup{
+	Id:     1,
+	Name:   "Reds",
+	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}

@@ -1,0 +1,20 @@
+=== RUN   TestMarshalUnmarshalZColorGroup
+--- PASS: TestMarshalUnmarshalZColorGroup (0.00s)
+=== RUN   TestEncodeDecodeZColorGroup
+--- PASS: TestEncodeDecodeZColorGroup (0.00s)
+goos: darwin
+goarch: amd64
+pkg: github.com/smallnest/gosercomp/model
+cpu: Intel(R) Core(TM) i5-7360U CPU @ 2.30GHz
+BenchmarkMarshalMsgZColorGroup
+BenchmarkMarshalMsgZColorGroup-4   	17087162	        65.80 ns/op	      80 B/op	       1 allocs/op
+BenchmarkAppendMsgZColorGroup
+BenchmarkAppendMsgZColorGroup-4    	36530382	        32.79 ns/op	 426.93 MB/s	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalZColorGroup
+BenchmarkUnmarshalZColorGroup-4    	20214711	        58.88 ns/op	 237.77 MB/s	       0 B/op	       0 allocs/op
+BenchmarkEncodeZColorGroup
+BenchmarkEncodeZColorGroup-4       	20900733	        57.54 ns/op	 243.31 MB/s	      16 B/op	       1 allocs/op
+BenchmarkDecodeZColorGroup
+BenchmarkDecodeZColorGroup-4       	10413087	       114.2 ns/op	 122.62 MB/s	       0 B/op	       0 allocs/op
+PASS
+ok  	github.com/smallnest/gosercomp/model	7.730s

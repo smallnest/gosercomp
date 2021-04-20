@@ -62,64 +62,73 @@ type ColorGroup struct {
 
 ### Benchmark
 
+![](benchmark.png)
+
 **Marshal**
 
 _include marshalled bytes_
 
 ```
-BenchmarkMarshalByJson-6                         2543781               480 ns/op                65.0 marshaledBytes
-BenchmarkMarshalByXml-6                           401060              2842 ns/op               137 marshaledBytes
-BenchmarkMarshalByMsgp-6                        15432038                80.7 ns/op              47.0 marshaledBytes
-BenchmarkMarshalByProtoBuf-6                     8019920               150 ns/op                36.0 marshaledBytes
-BenchmarkMarshalByGogoProtoBuf-6                12277683                94.9 ns/op              36.0 marshaledBytes
-BenchmarkMarshalByThrift-6                       3795267               317 ns/op                63.0 marshaledBytes
-BenchmarkMarshalByAvro-6                         3668318               331 ns/op                32.0 marshaledBytes
-BenchmarkMarshalByGencode-6                     37568914                31.3 ns/op              34.0 marshaledBytes
-BenchmarkMarshalByUgorjiCodecAndCbor-6           1447856               849 ns/op                47.0 marshaledBytes
-BenchmarkMarshalByUgorjiCodecAndMsgp-6           1465488               806 ns/op                47.0 marshaledBytes
-BenchmarkMarshalByUgorjiCodecAndBinc-6           1469070               823 ns/op                47.0 marshaledBytes
-BenchmarkMarshalByUgorjiCodecAndJson-6           1000000              1037 ns/op                65.0 marshaledBytes
-BenchmarkMarshalByEasyjson-6                     6106801               196 ns/op                65.0 marshaledBytes
-BenchmarkMarshalByFfjson-6                       1666495               728 ns/op                65.0 marshaledBytes
-BenchmarkMarshalByJsoniter-6                     3208327               375 ns/op                65.0 marshaledBytes
-BenchmarkMarshalByGoMemdump-6                     344076              3496 ns/op               200 marshaledBytes
-BenchmarkMarshalByColfer-6                      50134317                23.9 ns/op              35.0 marshaledBytes
-BenchmarkMarshalByZebrapack-6                    9549326               116 ns/op               109 marshaledBytes
-BenchmarkMarshalByGotiny-6                       4663609               258 ns/op                32.0 marshaledBytes
-BenchmarkMarshalByHprose-6                       4645060               259 ns/op                49.0 marshaledBytes
-BenchmarkMarshalBySereal-6                        750622              1590 ns/op                76.0 marshaledBytes
-BenchmarkMarshalByVmihMsgpackv4-6                2378013               500 ns/op                55.0 marshaledBytes
-BenchmarkMarshalByRlp-6                          3351589               359 ns/op                32.0 marshaledBytes
-BenchmarkMarshalBySegmentioJSON-6                3249405               369 ns/op                65.0 marshaledBytes
+BenchmarkMarshalByJson-4                   	 2408637	       520.3 ns/op	        65.00 marshaledBytes	     128 B/op	       2 allocs/op
+BenchmarkMarshalByXml-4                    	  389919	      3041 ns/op	       137.0 marshaledBytes	    4736 B/op	      11 allocs/op
+BenchmarkMarshalByMsgp-4                   	11220867	        93.59 ns/op	        47.00 marshaledBytes	      80 B/op	       1 allocs/op
+BenchmarkMarshalByProtoBuf-4               	 3287916	       367.2 ns/op	        36.00 marshaledBytes	      64 B/op	       2 allocs/op
+BenchmarkMarshalByGogoProtoBuf-4           	12096730	       104.3 ns/op	        36.00 marshaledBytes	      48 B/op	       1 allocs/op
+BenchmarkMarshalByThrift-4                 	 3559412	       391.1 ns/op	        63.00 marshaledBytes	      64 B/op	       1 allocs/op
+BenchmarkMarshalByAvro-4                   	 3334384	       367.6 ns/op	        32.00 marshaledBytes	     112 B/op	       2 allocs/op
+BenchmarkMarshalByGencode-4                	30378223	        38.41 ns/op	        34.00 marshaledBytes	       0 B/op	       0 allocs/op
+BenchmarkMarshalByUgorjiCodecAndCbor-4     	 1000000	      1001 ns/op	        47.00 marshaledBytes	    1504 B/op	       6 allocs/op
+BenchmarkMarshalByUgorjiCodecAndMsgp-4     	 1258886	       933.4 ns/op	        47.00 marshaledBytes	    1504 B/op	       6 allocs/op
+BenchmarkMarshalByUgorjiCodecAndBinc-4     	 1290403	       894.1 ns/op	        47.00 marshaledBytes	    1504 B/op	       6 allocs/op
+BenchmarkMarshalByUgorjiCodecAndJson-4     	 1000000	      1077 ns/op	        65.00 marshaledBytes	    1584 B/op	       6 allocs/op
+BenchmarkMarshalByEasyjson-4               	 6468608	       191.0 ns/op	        65.00 marshaledBytes	     128 B/op	       1 allocs/op
+BenchmarkMarshalByFfjson-4                 	 1600815	       739.6 ns/op	        65.00 marshaledBytes	     408 B/op	       9 allocs/op
+BenchmarkMarshalByJsoniter-4               	 3355567	       364.2 ns/op	        65.00 marshaledBytes	      88 B/op	       2 allocs/op
+BenchmarkMarshalByGojay-4                  	 3120411	       352.8 ns/op	        65.00 marshaledBytes	     536 B/op	       2 allocs/op
+BenchmarkMarshalByGoMemdump-4              	  293272	      4105 ns/op	       200.0 marshaledBytes	    1352 B/op	      26 allocs/op
+BenchmarkMarshalByColfer-4                 	42171025	        28.28 ns/op	        35.00 marshaledBytes	       0 B/op	       0 allocs/op
+BenchmarkMarshalByZebrapack-4              	 8410303	       174.7 ns/op	       109.0 marshaledBytes	     127 B/op	       0 allocs/op
+BenchmarkMarshalByGotiny-4                 	 4003556	       300.4 ns/op	        32.00 marshaledBytes	     144 B/op	       5 allocs/op
+BenchmarkMarshalByHprose-4                 	 3809161	       321.6 ns/op	        49.00 marshaledBytes	      24 B/op	       1 allocs/op
+BenchmarkMarshalBySereal-4                 	  680457	      1627 ns/op	        76.00 marshaledBytes	     728 B/op	      22 allocs/op
+BenchmarkMarshalByVmihMsgpackv4-4          	 2115049	       565.9 ns/op	        55.00 marshaledBytes	     232 B/op	       5 allocs/op
+BenchmarkMarshalByRlp-4                    	 4013892	       315.4 ns/op	        32.00 marshaledBytes	      64 B/op	       3 allocs/op
+BenchmarkMarshalBySegmentioJSON-4          	 2330972	       439.3 ns/op	        65.00 marshaledBytes	    1072 B/op	       2 allocs/op
 ```
 
 
 **Unmarshal**
 
 ```
-BenchmarkUnmarshalByJson-6                        752025              1597 ns/op
-BenchmarkUnmarshalByXml-6                         128037              9597 ns/op
-BenchmarkUnmarshalByMsgp-6                       8075196               148 ns/op
-BenchmarkUnmarshalByProtoBuf-6                   3069420               382 ns/op
-BenchmarkUnmarshalByGogoProtoBuf-6               4064895               304 ns/op
-BenchmarkUnmarshalByThrift-6                     1405612               856 ns/op
-BenchmarkUnmarshalByAvro-6                         76148             16803 ns/op
-BenchmarkUnmarshalByGencode-6                   12796027                92.0 ns/op
-BenchmarkUnmarshalByUgorjiCodecAndCbor-6         1000000              1116 ns/op
-BenchmarkUnmarshalByUgorjiCodecAndMsgp-6         1000000              1221 ns/op
-BenchmarkUnmarshalByUgorjiCodecAndBinc-6         1000000              1104 ns/op
-BenchmarkUnmarshalByUgorjiCodecAndJson-6          600756              1934 ns/op
-BenchmarkUnmarshalByEasyjson-6                   3208314               384 ns/op
-BenchmarkUnmarshalByFfjson-6                      925518              1250 ns/op
-BenchmarkUnmarshalByJsoniter-6                   3092865               388 ns/op
-BenchmarkUnmarshalByGJSON-6                      1000000              1276 ns/op
-BenchmarkUnmarshalByGoMemdump-6                  1339832               934 ns/op
-BenchmarkUnmarshalByColfer-6                     7762653               156 ns/op
-BenchmarkUnmarshalByZebrapack-6                  5323958               224 ns/op
-BenchmarkUnmarshalByGotiny-6                     4870737               241 ns/op
-BenchmarkUnmarshalByHprose-6                     2527753               474 ns/op
-BenchmarkUnmarshalBySereal-6                     2114608               565 ns/op
-BenchmarkUnmarshalByVmihMsgpackv4-6              1432388               823 ns/op
-BenchmarkUnmarshalByRlp-6                        1675710               706 ns/op
-BenchmarkUnmarshalBySegmentioJSON-6              2772384               430 ns/op
+BenchmarkUnmarshalByJson-4                 	  729801	      1705 ns/op	     248 B/op	       9 allocs/op
+BenchmarkUnmarshalByXml-4                  	  117837	     13677 ns/op	    2911 B/op	      70 allocs/op
+BenchmarkUnmarshalByMsgp-4                 	 7498039	       157.8 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByProtoBuf-4             	 1896331	       649.2 ns/op	     176 B/op	      11 allocs/op
+BenchmarkUnmarshalByGogoProtoBuf-4         	 3178382	       363.4 ns/op	     160 B/op	      10 allocs/op
+BenchmarkUnmarshalByThrift-4               	 1260399	       937.7 ns/op	     416 B/op	      11 allocs/op
+BenchmarkUnmarshalByAvro-4                 	   63712	     18816 ns/op	   12330 B/op	     234 allocs/op
+BenchmarkUnmarshalByGencode-4              	11907836	       102.5 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndCbor-4   	 1000000	      1224 ns/op	     656 B/op	       8 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndMsgp-4   	  906704	      1365 ns/op	     768 B/op	      10 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndBinc-4   	 1000000	      1495 ns/op	     656 B/op	       8 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndJson-4   	  592894	      2043 ns/op	    1168 B/op	      10 allocs/op
+BenchmarkUnmarshalByEasyjson-4             	 2678743	       439.5 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByFfjson-4               	 1000000	      1081 ns/op	     472 B/op	      13 allocs/op
+BenchmarkUnmarshalByJsoniter-4             	 2987168	       401.3 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByGJSON-4                	  869682	      1459 ns/op	     616 B/op	       7 allocs/op
+BenchmarkUnmarshalByGojay-4                	 1854678	       647.4 ns/op	     280 B/op	       9 allocs/op
+BenchmarkUnmarshalByGoMemdump-4            	 2214979	       555.0 ns/op	     736 B/op	       9 allocs/op
+BenchmarkUnmarshalByColfer-4               	 6796684	       172.0 ns/op	      96 B/op	       6 allocs/op
+BenchmarkUnmarshalByZebrapack-4            	 4861705	       247.8 ns/op	      32 B/op	       5 allocs/op
+BenchmarkUnmarshalByGotiny-4               	 4232330	       361.4 ns/op	     120 B/op	       7 allocs/op
+BenchmarkUnmarshalByHprose-4               	 2235748	       567.4 ns/op	     272 B/op	       9 allocs/op
+BenchmarkUnmarshalBySereal-4               	 2116989	       572.9 ns/op	      80 B/op	       6 allocs/op
+BenchmarkUnmarshalByVmihMsgpackv4-4        	 1303030	       919.4 ns/op	     264 B/op	      11 allocs/op
+BenchmarkUnmarshalByRlp-4                  	 1599290	       744.9 ns/op	     104 B/op	      11 allocs/op
+BenchmarkUnmarshalBySegmentioJSON-4        	 2571625	       474.2 ns/op	      32 B/op	       5 allocs/op
 ```
+
+
+**Marshaled Size**
+
+![](size.png)
