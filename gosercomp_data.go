@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/golang/protobuf/proto"
+	"github.com/thrift-iterator/go/general"
 
 	model "github.com/smallnest/gosercomp/model"
 )
@@ -80,4 +81,17 @@ var gojayGroup = &model.GojayColorGroup{
 	Id:     1,
 	Name:   "Reds",
 	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}
+
+var thrfitIterGroup = model.ThriftIterColorGroup{
+	ID:     1,
+	Name:   "Reds",
+	Colors: []string{"Crimson", "Red", "Ruby", "Maroon"},
+}
+
+var thrfitIterGroupDynamic = general.Struct{
+	1: int64(1),
+	2: string("Reds"),
+	// 3: general.List{string("Crimson"), string("Red"), string("Ruby"), string("Maroon")},
+	3: general.List{"Crimson", "Red", "Ruby", "Maroon"},
 }
