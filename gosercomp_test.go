@@ -20,6 +20,8 @@ import (
 	"github.com/niubaoshu/gotiny"
 	sjson "github.com/segmentio/encoding/json"
 	model "github.com/smallnest/gosercomp/model"
+	thrift_iter "github.com/thrift-iterator/go"
+	"github.com/thrift-iterator/go/general"
 	"github.com/tidwall/gjson"
 	"github.com/ugorji/go/codec"
 	msgpackv4 "github.com/vmihailenco/msgpack/v4"
@@ -151,6 +153,42 @@ func BenchmarkUnmarshalByThrift(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		t.Read(&result, s)
+	}
+}
+
+func BenchmarkMarshalByThriftIterator(b *testing.B) {
+	bb := make([]byte, 0, 1024)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		bb, _ = thrift_iter.Marshal(thrfitIterGroup)
+	}
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+}
+
+func BenchmarkUnmarshalByThriftIterator(b *testing.B) {
+	bb, _ := thrift_iter.Marshal(thrfitIterGroup)
+	var val model.ThriftIterColorGroup
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		thrift_iter.Unmarshal(bb, &val)
+	}
+}
+
+func BenchmarkMarshalByThriftIteratorDynamic(b *testing.B) {
+	bb := make([]byte, 0, 1024)
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		bb, _ = thrift_iter.Marshal(thrfitIterGroupDynamic)
+	}
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+}
+
+func BenchmarkUnmarshalByThriftIteratorDynamic(b *testing.B) {
+	bb, _ := thrift_iter.Marshal(thrfitIterGroup)
+	var val general.Struct
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = thrift_iter.Unmarshal(bb, &val)
 	}
 }
 
