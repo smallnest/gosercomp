@@ -192,6 +192,28 @@ func BenchmarkUnmarshalByThriftIteratorDynamic(b *testing.B) {
 	}
 }
 
+func BenchmarkMarshalByThriftIteratorEncoder(b *testing.B) {
+	t := thrift.NewTSerializer()
+	encoder := thrift_iter.NewEncoder(t.Transport)
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = encoder.Encode(thrfitIterGroupDynamic)
+	}
+	b.ReportMetric(float64(t.Transport.Len()/b.N), "marshaledBytes")
+}
+
+func BenchmarkUnmarshalByThriftIteratorDecoder(b *testing.B) {
+	bb, _ := thrift_iter.Marshal(thrfitIterGroup)
+	var val general.Struct
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		decoder := thrift_iter.NewDecoder(nil, bb)
+		_ = decoder.Decode(&val)
+	}
+}
+
 func BenchmarkMarshalByAvro(b *testing.B) {
 	bb := make([]byte, 0, 1024)
 

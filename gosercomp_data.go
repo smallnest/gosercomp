@@ -90,7 +90,7 @@ var thrfitIterGroup = model.ThriftIterColorGroup{
 }
 
 var thrfitIterGroupDynamic = general.Struct{
-	1: int64(1),
+	1: int32(1),
 	2: string("Reds"),
 	// 3: general.List{string("Crimson"), string("Red"), string("Ruby"), string("Maroon")},
 	3: general.List{"Crimson", "Red", "Ruby", "Maroon"},
