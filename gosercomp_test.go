@@ -8,9 +8,10 @@ import (
 	"reflect"
 	"testing"
 
-	thrift "git.apache.org/thrift.git/lib/go/thrift"
 	"github.com/Sereal/Sereal/Go/sereal"
 	memdump "github.com/alexflint/go-memdump"
+	thrift "github.com/apache/thrift/lib/go/thrift"
+	"github.com/bytedance/sonic"
 	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/francoispqt/gojay"
 	goproto "github.com/gogo/protobuf/proto"
@@ -22,7 +23,6 @@ import (
 	model "github.com/smallnest/gosercomp/model"
 	thrift_iter "github.com/thrift-iterator/go"
 	"github.com/thrift-iterator/go/general"
-	"github.com/tidwall/gjson"
 	"github.com/ugorji/go/codec"
 	msgpackv4 "github.com/vmihailenco/msgpack/v4"
 )
@@ -152,7 +152,7 @@ func BenchmarkUnmarshalByThrift(b *testing.B) {
 	result := model.ThriftColorGroup{}
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		t.Read(&result, s)
+		t.Read(context.Background(), &result, s)
 	}
 }
 
@@ -490,8 +490,21 @@ func BenchmarkUnmarshalByJsoniter(b *testing.B) {
 	}
 }
 
-func BenchmarkUnmarshalByGJSON(b *testing.B) {
-	data, err := json.Marshal(group)
+func BenchmarkMarshalBySonic(b *testing.B) {
+	bb := make([]byte, 0, 1024)
+	var err error
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		if bb, err = sonic.Marshal(&group); err != nil {
+			b.Fatal(err)
+		}
+	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+}
+
+func BenchmarkUnmarshalBySonic(b *testing.B) {
+	data, err := sonic.Marshal(&group)
 	if err != nil {
 		b.Fatal(err)
 	}
@@ -499,11 +512,26 @@ func BenchmarkUnmarshalByGJSON(b *testing.B) {
 	var g model.ColorGroup
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
-		if err := gjson.Unmarshal(data, &g); err != nil {
+		if err := sonic.Unmarshal(data, &g); err != nil {
 			b.Fatal(err)
 		}
 	}
 }
+
+// func BenchmarkUnmarshalByGJSON(b *testing.B) {
+// 	data, err := json.Marshal(group)
+// 	if err != nil {
+// 		b.Fatal(err)
+// 	}
+
+// 	var g model.ColorGroup
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		if err := gjson.Unmarshal(data, &g); err != nil {
+// 			b.Fatal(err)
+// 		}
+// 	}
+// }
 
 func BenchmarkMarshalByGojay(b *testing.B) {
 	bb := make([]byte, 0, 1024)

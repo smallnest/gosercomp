@@ -8,6 +8,8 @@ require (
 	github.com/Sereal/Sereal v0.0.0-20190618215532-0b8ac451a863
 	github.com/actgardner/gogen-avro/v7 v7.3.1
 	github.com/alexflint/go-memdump v0.0.0-20160830180315-750db99b78d6
+	github.com/apache/thrift v0.15.0
+	github.com/bytedance/sonic v1.0.0-rc.3 // indirect
 	github.com/ethereum/go-ethereum v1.9.3
 	github.com/francoispqt/gojay v1.2.13
 	github.com/glycerine/zebrapack v4.1.0+incompatible
@@ -20,7 +22,7 @@ require (
 	github.com/pquerna/ffjson v0.0.0-20190930134022-aa0246cd15f7
 	github.com/segmentio/encoding v0.1.0
 	github.com/thrift-iterator/go v0.0.0-20190402154806-9b5a67519118
-	github.com/tidwall/gjson v1.3.2
+	github.com/tidwall/gjson v1.10.2
 	github.com/tinylib/msgp v1.1.5
 	github.com/ugorji/go/codec v1.1.7
 	github.com/v2pro/plz v0.0.0-20200805122259-422184e41b6e // indirect
