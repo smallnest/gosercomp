@@ -8,10 +8,12 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/CrowdStrike/csproto"
 	"github.com/Sereal/Sereal/Go/sereal"
 	memdump "github.com/alexflint/go-memdump"
 	thrift "github.com/apache/thrift/lib/go/thrift"
-	"github.com/bytedance/sonic"
+
+	// "github.com/bytedance/sonic"
 	"github.com/ethereum/go-ethereum/rlp"
 	"github.com/francoispqt/gojay"
 	goproto "github.com/gogo/protobuf/proto"
@@ -104,6 +106,26 @@ func BenchmarkUnmarshalByProtoBuf(b *testing.B) {
 	}
 }
 
+func BenchmarkMarshalByProtoBuf_csproto(b *testing.B) {
+	bb := make([]byte, 0, 1024)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		bb, _ = csproto.Marshal(&protobufGroup)
+	}
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+}
+
+func BenchmarkUnmarshalByProtoBuf_csproto(b *testing.B) {
+	bytes, _ := proto.Marshal(&protobufGroup)
+	result := model.ProtoColorGroup{}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		csproto.Unmarshal(bytes, &result)
+	}
+}
+
 func BenchmarkMarshalByGogoProtoBuf(b *testing.B) {
 	bb := make([]byte, 0, 1024)
 
@@ -122,6 +144,27 @@ func BenchmarkUnmarshalByGogoProtoBuf(b *testing.B) {
 	b.ResetTimer()
 	for i := 0; i < b.N; i++ {
 		goproto.Unmarshal(bytes, &result)
+	}
+}
+
+func BenchmarkMarshalByGogoProtoBuf_csproto(b *testing.B) {
+	bb := make([]byte, 0, 1024)
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		bb, _ = csproto.Marshal(&gogoProtobufGroup)
+	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+}
+
+func BenchmarkUnmarshalByGogoProtoBuf_csproto(b *testing.B) {
+	bytes, _ := proto.Marshal(&gogoProtobufGroup)
+	result := model.GogoProtoColorGroup{}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		csproto.Unmarshal(bytes, &result)
 	}
 }
 
@@ -490,33 +533,33 @@ func BenchmarkUnmarshalByJsoniter(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshalBySonic(b *testing.B) {
-	bb := make([]byte, 0, 1024)
-	var err error
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		if bb, err = sonic.Marshal(&group); err != nil {
-			b.Fatal(err)
-		}
-	}
+// func BenchmarkMarshalBySonic(b *testing.B) {
+// 	bb := make([]byte, 0, 1024)
+// 	var err error
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		if bb, err = sonic.Marshal(&group); err != nil {
+// 			b.Fatal(err)
+// 		}
+// 	}
 
-	b.ReportMetric(float64(len(bb)), "marshaledBytes")
-}
+// 	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+// }
 
-func BenchmarkUnmarshalBySonic(b *testing.B) {
-	data, err := sonic.Marshal(&group)
-	if err != nil {
-		b.Fatal(err)
-	}
+// func BenchmarkUnmarshalBySonic(b *testing.B) {
+// 	data, err := sonic.Marshal(&group)
+// 	if err != nil {
+// 		b.Fatal(err)
+// 	}
 
-	var g model.ColorGroup
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		if err := sonic.Unmarshal(data, &g); err != nil {
-			b.Fatal(err)
-		}
-	}
-}
+// 	var g model.ColorGroup
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		if err := sonic.Unmarshal(data, &g); err != nil {
+// 			b.Fatal(err)
+// 		}
+// 	}
+// }
 
 // func BenchmarkUnmarshalByGJSON(b *testing.B) {
 // 	data, err := json.Marshal(group)
