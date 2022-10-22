@@ -21,7 +21,6 @@ import (
 	"github.com/golang/protobuf/proto"
 	hprose "github.com/hprose/hprose-golang/io"
 	jsoniter "github.com/json-iterator/go"
-	"github.com/niubaoshu/gotiny"
 	sjson "github.com/segmentio/encoding/json"
 	model "github.com/smallnest/gosercomp/model"
 	thrift_iter "github.com/thrift-iterator/go"
@@ -665,26 +664,6 @@ func BenchmarkUnmarshalByZebrapack(b *testing.B) {
 		if err != nil {
 			b.Fatal(err)
 		}
-	}
-}
-
-func BenchmarkMarshalByGotiny(b *testing.B) {
-	bytes := make([]byte, 0, 1024)
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		bytes = gotiny.Marshal(&group)
-	}
-
-	b.ReportMetric(float64(len(bytes)), "marshaledBytes")
-}
-
-func BenchmarkUnmarshalByGotiny(b *testing.B) {
-	bytes := gotiny.Marshal(&group)
-
-	v := &model.ColorGroup{}
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		gotiny.Unmarshal(bytes, v)
 	}
 }
 
