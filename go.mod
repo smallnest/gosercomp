@@ -10,10 +10,11 @@ require (
 	github.com/actgardner/gogen-avro/v7 v7.3.1
 	github.com/alexflint/go-memdump v0.0.0-20160830180315-750db99b78d6
 	github.com/apache/thrift v0.16.0
-	github.com/bytedance/sonic v1.0.0-rc.3 // indirect
+	github.com/bytedance/sonic v1.5.0 // indirect
 	github.com/ethereum/go-ethereum v1.9.3
 	github.com/francoispqt/gojay v1.2.13
 	github.com/glycerine/zebrapack v4.1.0+incompatible
+	github.com/goccy/go-json v0.7.2 // indirect
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/protobuf v1.5.2
 	github.com/hprose/hprose-golang v2.0.4+incompatible
@@ -24,6 +25,7 @@ require (
 	github.com/segmentio/encoding v0.1.0
 	github.com/thrift-iterator/go v0.0.0-20190402154806-9b5a67519118
 	github.com/tidwall/gjson v1.10.2
+	github.com/tidwall/sjson v1.2.3 // indirect
 	github.com/tinylib/msgp v1.1.6
 	github.com/ttacon/chalk v0.0.0-20160626202418-22c06c80ed31 // indirect
 	github.com/ugorji/go/codec v1.1.7

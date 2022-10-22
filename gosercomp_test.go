@@ -12,6 +12,7 @@ import (
 	"github.com/Sereal/Sereal/Go/sereal"
 	memdump "github.com/alexflint/go-memdump"
 	thrift "github.com/apache/thrift/lib/go/thrift"
+	"github.com/bytedance/sonic"
 
 	// "github.com/bytedance/sonic"
 	"github.com/ethereum/go-ethereum/rlp"
@@ -533,33 +534,33 @@ func BenchmarkUnmarshalByJsoniter(b *testing.B) {
 	}
 }
 
-// func BenchmarkMarshalBySonic(b *testing.B) {
-// 	bb := make([]byte, 0, 1024)
-// 	var err error
-// 	b.ResetTimer()
-// 	for i := 0; i < b.N; i++ {
-// 		if bb, err = sonic.Marshal(&group); err != nil {
-// 			b.Fatal(err)
-// 		}
-// 	}
+func BenchmarkMarshalBySonic(b *testing.B) {
+	bb := make([]byte, 0, 1024)
+	var err error
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		if bb, err = sonic.Marshal(&group); err != nil {
+			b.Fatal(err)
+		}
+	}
 
-// 	b.ReportMetric(float64(len(bb)), "marshaledBytes")
-// }
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+}
 
-// func BenchmarkUnmarshalBySonic(b *testing.B) {
-// 	data, err := sonic.Marshal(&group)
-// 	if err != nil {
-// 		b.Fatal(err)
-// 	}
+func BenchmarkUnmarshalBySonic(b *testing.B) {
+	data, err := sonic.Marshal(&group)
+	if err != nil {
+		b.Fatal(err)
+	}
 
-// 	var g model.ColorGroup
-// 	b.ResetTimer()
-// 	for i := 0; i < b.N; i++ {
-// 		if err := sonic.Unmarshal(data, &g); err != nil {
-// 			b.Fatal(err)
-// 		}
-// 	}
-// }
+	var g model.ColorGroup
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		if err := sonic.Unmarshal(data, &g); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
 
 // func BenchmarkUnmarshalByGJSON(b *testing.B) {
 // 	data, err := json.Marshal(group)
