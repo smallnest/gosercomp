@@ -106,25 +106,25 @@ func BenchmarkUnmarshalByProtoBuf(b *testing.B) {
 	}
 }
 
-func BenchmarkMarshalByProtoBuf_csproto(b *testing.B) {
-	bb := make([]byte, 0, 1024)
+// func BenchmarkMarshalByProtoBuf_csproto(b *testing.B) {
+// 	bb := make([]byte, 0, 1024)
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		bb, _ = csproto.Marshal(&protobufGroup)
-	}
-	b.ReportMetric(float64(len(bb)), "marshaledBytes")
-}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		bb, _ = csproto.Marshal(&protobufGroup)
+// 	}
+// 	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+// }
 
-func BenchmarkUnmarshalByProtoBuf_csproto(b *testing.B) {
-	bytes, _ := proto.Marshal(&protobufGroup)
-	result := model.ProtoColorGroup{}
+// func BenchmarkUnmarshalByProtoBuf_csproto(b *testing.B) {
+// 	bytes, _ := proto.Marshal(&protobufGroup)
+// 	result := model.ProtoColorGroup{}
 
-	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
-		csproto.Unmarshal(bytes, &result)
-	}
-}
+// 	b.ResetTimer()
+// 	for i := 0; i < b.N; i++ {
+// 		csproto.Unmarshal(bytes, &result)
+// 	}
+// }
 
 func BenchmarkMarshalByGogoProtoBuf(b *testing.B) {
 	bb := make([]byte, 0, 1024)
