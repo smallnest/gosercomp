@@ -3,10 +3,9 @@ module github.com/smallnest/gosercomp
 go 1.16
 
 require (
-	github.com/CrowdStrike/csproto v0.1.0-rc1
 	github.com/DataDog/zstd v1.4.1 // indirect
 	github.com/Sereal/Sereal v0.0.0-20190618215532-0b8ac451a863
-	github.com/actgardner/gogen-avro/v7 v7.3.1
+	github.com/actgardner/gogen-avro/v10 v10.2.1
 	github.com/alexflint/go-memdump v0.0.0-20160830180315-750db99b78d6
 	github.com/apache/thrift v0.17.0
 	github.com/bytedance/sonic v1.5.0

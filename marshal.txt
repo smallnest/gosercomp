@@ -1,0 +1,62 @@
+goos: linux
+goarch: amd64
+pkg: github.com/smallnest/gosercomp
+cpu: Intel(R) Xeon(R) Platinum 8350C CPU @ 2.60GHz
+BenchmarkMarshalByJson-128                        	14686754	       409.9 ns/op	        65.00 marshaledBytes	     128 B/op	       2 allocs/op
+BenchmarkUnmarshalByJson-128                      	 3686817	      1620 ns/op	     264 B/op	      10 allocs/op
+BenchmarkMarshalByXml-128                         	 1607601	      3653 ns/op	       137.0 marshaledBytes	    4736 B/op	      11 allocs/op
+BenchmarkUnmarshalByXml-128                       	  642338	      9330 ns/op	    2944 B/op	      70 allocs/op
+BenchmarkMarshalByMsgp-128                        	58969218	        89.23 ns/op	        47.00 marshaledBytes	      80 B/op	       1 allocs/op
+BenchmarkUnmarshalByMsgp-128                      	44847105	       130.5 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByProtoBuf-128                    	18711894	       319.7 ns/op	        36.00 marshaledBytes	      64 B/op	       2 allocs/op
+BenchmarkUnmarshalByProtoBuf-128                  	 9588375	       623.8 ns/op	     176 B/op	      11 allocs/op
+BenchmarkMarshalByGogoProtoBuf-128                	64853598	        91.63 ns/op	        36.00 marshaledBytes	      48 B/op	       1 allocs/op
+BenchmarkUnmarshalByGogoProtoBuf-128              	16403505	       361.0 ns/op	     160 B/op	      10 allocs/op
+BenchmarkMarshalByThrift-128                      	21282273	       280.1 ns/op	        63.00 marshaledBytes	      64 B/op	       1 allocs/op
+BenchmarkUnmarshalByThrift-128                    	10086872	       591.2 ns/op	      96 B/op	       6 allocs/op
+BenchmarkMarshalByThriftIterator-128              	15182798	       405.0 ns/op	        63.00 marshaledBytes	     248 B/op	       6 allocs/op
+BenchmarkUnmarshalByThriftIterator-128            	14676235	       404.5 ns/op	     168 B/op	       7 allocs/op
+BenchmarkMarshalByThriftIteratorDynamic-128       	14164002	       424.2 ns/op	        63.00 marshaledBytes	     200 B/op	       5 allocs/op
+BenchmarkUnmarshalByThriftIteratorDynamic-128     	 5442894	      1100 ns/op	     592 B/op	      18 allocs/op
+BenchmarkMarshalByThriftIteratorEncoder-128       	22584140	       301.4 ns/op	        63.00 marshaledBytes	     190 B/op	       0 allocs/op
+BenchmarkUnmarshalByThriftIteratorDecoder-128     	 5118466	      1149 ns/op	     616 B/op	      19 allocs/op
+BenchmarkMarshalByAvro-128                        	20309242	       291.0 ns/op	        32.00 marshaledBytes	     112 B/op	       2 allocs/op
+BenchmarkUnmarshalByAvro-128                      	  297520	     20542 ns/op	   12086 B/op	     220 allocs/op
+BenchmarkMarshalByGencode-128                     	172495432	        34.67 ns/op	        34.00 marshaledBytes	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByGencode-128                   	60741229	        98.02 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByUgorjiCodecAndCbor-128          	 5413527	      1100 ns/op	        47.00 marshaledBytes	    1504 B/op	       6 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndCbor-128        	 5342264	      1124 ns/op	     656 B/op	       8 allocs/op
+BenchmarkMarshalByUgorjiCodecAndMsgp-128          	 5506003	      1095 ns/op	        47.00 marshaledBytes	    1504 B/op	       6 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndMsgp-128        	 4680814	      1279 ns/op	     768 B/op	      10 allocs/op
+BenchmarkMarshalByUgorjiCodecAndBinc-128          	 5494076	      1098 ns/op	        47.00 marshaledBytes	    1504 B/op	       6 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndBinc-128        	 5337432	      1117 ns/op	     656 B/op	       8 allocs/op
+BenchmarkMarshalByUgorjiCodecAndJson-128          	 4686051	      1287 ns/op	        65.00 marshaledBytes	    1584 B/op	       6 allocs/op
+BenchmarkUnmarshalByUgorjiCodecAndJson-128        	 3320816	      1814 ns/op	    1168 B/op	      10 allocs/op
+BenchmarkMarshalByEasyjson-128                    	28965076	       207.2 ns/op	        65.00 marshaledBytes	     128 B/op	       1 allocs/op
+BenchmarkUnmarshalByEasyjson-128                  	16391872	       364.5 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByFfjson-128                      	 5155263	      1160 ns/op	        65.00 marshaledBytes	     412 B/op	       9 allocs/op
+BenchmarkUnmarshalByFfjson-128                    	 3690754	      1630 ns/op	     474 B/op	      13 allocs/op
+BenchmarkMarshalByJsoniter-128                    	17772622	       340.9 ns/op	        65.00 marshaledBytes	      88 B/op	       2 allocs/op
+BenchmarkUnmarshalByJsoniter-128                  	16519059	       359.3 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalBySonic-128                       	20734894	       289.9 ns/op	        65.00 marshaledBytes	     197 B/op	       4 allocs/op
+BenchmarkUnmarshalBySonic-128                     	24296146	       244.2 ns/op	     100 B/op	       1 allocs/op
+BenchmarkMarshalByGojay-128                       	14108596	       427.7 ns/op	        65.00 marshaledBytes	     538 B/op	       2 allocs/op
+BenchmarkUnmarshalByGojay-128                     	 9174777	       655.0 ns/op	     281 B/op	       9 allocs/op
+BenchmarkMarshalByGoMemdump-128                   	 1549594	      3867 ns/op	       200.0 marshaledBytes	    1512 B/op	      27 allocs/op
+BenchmarkUnmarshalByGoMemdump-128                 	 9249566	       648.4 ns/op	     736 B/op	       9 allocs/op
+BenchmarkMarshalByColfer-128                      	218679188	        27.14 ns/op	        35.00 marshaledBytes	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalByColfer-128                    	34725226	       173.1 ns/op	      96 B/op	       6 allocs/op
+BenchmarkMarshalByZebrapack-128                   	45961786	       135.5 ns/op	       109.0 marshaledBytes	     186 B/op	       0 allocs/op
+BenchmarkUnmarshalByZebrapack-128                 	29725020	       194.9 ns/op	      32 B/op	       5 allocs/op
+BenchmarkMarshalByHprose-128                      	26713210	       222.5 ns/op	        49.00 marshaledBytes	      24 B/op	       1 allocs/op
+BenchmarkUnmarshalByHprose-128                    	11691974	       514.5 ns/op	     272 B/op	       9 allocs/op
+BenchmarkMarshalBySereal-128                      	 3448353	      1732 ns/op	        76.00 marshaledBytes	     728 B/op	      22 allocs/op
+BenchmarkUnmarshalBySereal-128                    	12431442	       475.5 ns/op	      80 B/op	       6 allocs/op
+BenchmarkMarshalByVmihMsgpackv4-128               	11828109	       511.7 ns/op	        55.00 marshaledBytes	     232 B/op	       5 allocs/op
+BenchmarkUnmarshalByVmihMsgpackv4-128             	 7488711	       797.4 ns/op	     264 B/op	      11 allocs/op
+BenchmarkMarshalByRlp-128                         	22955569	       261.4 ns/op	        32.00 marshaledBytes	      64 B/op	       3 allocs/op
+BenchmarkUnmarshalByRlp-128                       	 9380006	       636.1 ns/op	     104 B/op	      11 allocs/op
+BenchmarkMarshalBySegmentioJSON-128               	 9817324	       610.8 ns/op	        65.00 marshaledBytes	    1072 B/op	       2 allocs/op
+BenchmarkUnmarshalBySegmentioJSON-128             	14856350	       398.7 ns/op	      32 B/op	       5 allocs/op
+PASS
+ok  	github.com/smallnest/gosercomp	381.763s

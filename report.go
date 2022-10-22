@@ -9,24 +9,31 @@ import (
 )
 
 func main() {
-	libs, tooks, marshaledBytes := readMarshalLog()
+	libs, tooks0, marshaledBytes := readMarshalLog()
 	tookFile, _ := os.OpenFile("marshal_took.csv", os.O_CREATE|os.O_RDWR, 0777)
 	marshaledBytesFile, _ := os.OpenFile("marshaledBytes.csv", os.O_CREATE|os.O_RDWR, 0777)
 	defer tookFile.Close()
 	defer marshaledBytesFile.Close()
 
 	for i, name := range libs {
-		tookFile.WriteString(fmt.Sprintf("%s,%d\n", name, tooks[i]))
+		tookFile.WriteString(fmt.Sprintf("%s,%d\n", name, tooks0[i]))
 		marshaledBytesFile.WriteString(fmt.Sprintf("%s,%d\n", name, marshaledBytes[i]))
 	}
 
-	libs, tooks = readUnmarshalLog()
+	libs, tooks1 := readUnmarshalLog()
 	tookFile2, _ := os.OpenFile("unmarshal_took.csv", os.O_CREATE|os.O_RDWR, 0777)
 	defer tookFile2.Close()
 
 	for i, name := range libs {
-		tookFile2.WriteString(fmt.Sprintf("%s,%d\n", name, tooks[i]))
+		tookFile2.WriteString(fmt.Sprintf("%s,%d\n", name, tooks1[i]))
 	}
+	tookFile3, _ := os.OpenFile("lib_took.csv", os.O_CREATE|os.O_RDWR, 0777)
+	defer tookFile3.Close()
+
+	for i, name := range libs {
+		tookFile3.WriteString(fmt.Sprintf("%s,%d,%d\n", name, tooks0[i], tooks1[i]))
+	}
+
 }
 
 func readMarshalLog() ([]string, []int, []int) {
