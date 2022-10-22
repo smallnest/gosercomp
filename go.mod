@@ -9,7 +9,7 @@ require (
 	github.com/Sereal/Sereal v0.0.0-20190618215532-0b8ac451a863
 	github.com/actgardner/gogen-avro/v7 v7.3.1
 	github.com/alexflint/go-memdump v0.0.0-20160830180315-750db99b78d6
-	github.com/apache/thrift v0.16.0
+	github.com/apache/thrift v0.17.0
 	github.com/bytedance/sonic v1.5.0 // indirect
 	github.com/ethereum/go-ethereum v1.9.3
 	github.com/francoispqt/gojay v1.2.13
@@ -35,6 +35,6 @@ require (
 	github.com/vmihailenco/msgpack/v4 v4.3.0
 	golang.org/x/net v0.0.0-20201027133719-8eef5233e2a1 // indirect
 	google.golang.org/genproto v0.0.0-20200526211855-cb27e3aa2013 // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15 // indirect
 )
