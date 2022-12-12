@@ -802,3 +802,53 @@ func BenchmarkUnmarshalBySegmentioJSON(b *testing.B) {
 		sjson.Unmarshal(bytes, &result)
 	}
 }
+
+func BenchmarkMarshalByMusgo(b *testing.B) {
+	bb := make([]byte, 1024)
+	n := group.MarshalMUS(bb)
+	bb = bb[:n]
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = group.MarshalMUS(bb)
+	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+}
+
+func BenchmarkUnmarshalByMusgo(b *testing.B) {
+	bb := make([]byte, 1024)
+	n := group.MarshalMUS(bb)
+	bb = bb[:n]
+
+	result := model.ColorGroup{}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		result.UnmarshalMUS(bb)
+	}
+}
+
+func BenchmarkMarshalByMusgoUnsafe(b *testing.B) {
+	bb := make([]byte, 1024)
+	n := group.MarshalMUSUnsafe(bb)
+	bb = bb[:n]
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		_ = group.MarshalMUS(bb)
+	}
+
+	b.ReportMetric(float64(len(bb)), "marshaledBytes")
+}
+
+func BenchmarkUnmarshalByMusgoUnsafe(b *testing.B) {
+	bb := make([]byte, 1024)
+	n := group.MarshalMUSUnsafe(bb)
+	bb = bb[:n]
+
+	result := model.ColorGroup{}
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		result.UnmarshalMUSUnsafe(bb)
+	}
+}
